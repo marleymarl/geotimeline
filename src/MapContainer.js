@@ -61,7 +61,7 @@ handleCancel = () => {
 }
 
 handleSubmit = () => {
-	
+
 }
 
 componentDidMount() {
@@ -123,10 +123,11 @@ onClick={this.onMarkerClick}
 	visible={this.state.showModal} 
 	onOk={this.handleOk}
 	onCancel={this.handleCancel}
+	okText='Save Footprint'
 >
 <DatePicker onChange={value => this.setState({activeDate: value._d})} />
 <TimePicker onChange={value => console.log(value)} />
-<Button type="primary" onClick={() => { console.log('yo') }}>Save Footprint</Button>
+
 </Modal>
 </div>
 );
