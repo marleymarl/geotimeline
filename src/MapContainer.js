@@ -18,8 +18,19 @@ function onChange(date, dateString) {
 
 export class MapContainer extends Component {
 state = {
-footPrints: [{lat: 37.774929, lon: -122.419416}],
-activeMarker: {},
+footPrints: [{lat: 37.774929, lon: -122.419416, date: '', time: ''}],
+activeDate: '',
+activeLon: '',
+activeLat: '',
+activeTime: '',
+activeMarker: {
+	lat: '',
+	lon: '',
+	date: '',
+	time: ''
+
+},
+patientId: this.props.patientId,
 showingInfoWindow: false,
 showModal: false,
 selectedPlace: {}
@@ -31,12 +42,30 @@ let markerLatLng = clickEvent.latLng
 }
 
 superMarkerClick = (markerProps, marker, clickEvent) => {
+
 	this.setState({selectedPlace: markerProps, activeMarker: marker, showModal: true})
 	//set state with activeMarker info, then use this.state.activeMarker.props to populate info for Modal
 	//change Modal visible state to true
 	//then take date and time data from the pickers, along with activeMarker props and push that as footprint into the footprint array in state
 	//on Component Save (needs to be parent component method) take footprint array and save it as a child prop of CaseTimeline Component
 	//CaseTimeline is parent of MapContainer which is parent of Map, Marker, Modal, Form, DatePicker, TimePicker
+
+}
+
+handleOk = () => {
+
+}
+
+handleCancel = () => {
+
+}
+
+handleSubmit = () => {
+	
+}
+
+componentDidMount() {
+	console.log('patient id: ' + this.state.patientId)
 }
 
 
@@ -59,6 +88,7 @@ lng: -79.3832,
 }}
 onClick={this.onMarkerClick}
 >
+
   <Marker
     title={'The marker`s title will appear as a tooltip.'}
     name={'Eaton Centre'}
@@ -80,7 +110,7 @@ onClick={this.onMarkerClick}
           maxWidth={800}>
             <div>
            <Form>
-              <DatePicker onChange={value => console.log(value)} />
+              <DatePicker onChange={value => console.log(value._d)} />
               <TimePicker />
               <Button type="primary" onClick={() => { console.log('yo') }}>Save Footprint</Button>
             </Form>
@@ -94,7 +124,7 @@ onClick={this.onMarkerClick}
 	onOk={this.handleOk}
 	onCancel={this.handleCancel}
 >
-<DatePicker onChange={value => console.log(value)} />
+<DatePicker onChange={value => this.setState({activeDate: value._d})} />
 <TimePicker onChange={value => console.log(value)} />
 <Button type="primary" onClick={() => { console.log('yo') }}>Save Footprint</Button>
 </Modal>

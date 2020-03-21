@@ -6,7 +6,7 @@ import MapContainer from './MapContainer'
 function App() {
   return (
     <div className="App">
-      <MapContainer />
+      <MapContainer patientId={'1234567'}/>
     </div>
   );
 }
