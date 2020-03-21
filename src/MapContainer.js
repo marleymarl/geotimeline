@@ -21,6 +21,7 @@ state = {
 footPrints: [{lat: 37.774929, lon: -122.419416}],
 activeMarker: {},
 showingInfoWindow: false,
+showModal: false,
 selectedPlace: {}
 }
 
@@ -30,7 +31,7 @@ let markerLatLng = clickEvent.latLng
 }
 
 superMarkerClick = (markerProps, marker, clickEvent) => {
-	this.setState({selectedPlace: markerProps, activeMarker: marker, showingInfoWindow: true})
+	this.setState({selectedPlace: markerProps, activeMarker: marker, showModal: true})
 	//set state with activeMarker info, then use this.state.activeMarker.props to populate info for Modal
 	//change Modal visible state to true
 	//then take date and time data from the pickers, along with activeMarker props and push that as footprint into the footprint array in state
@@ -50,6 +51,7 @@ position={{lat: footprint}}
 onClick={this.onMarkerClick}
 />)
 return(
+<div>
 <Map google={this.props.google} style={map_style}
 initialCenter={{
 lat: 43.6532, //change this to be set based on location input on form prior to map
@@ -86,6 +88,17 @@ onClick={this.onMarkerClick}
             </div>
         </InfoWindow>
 </Map>
+
+<Modal 
+	visible={this.state.showModal} 
+	onOk={this.handleOk}
+	onCancel={this.handleCancel}
+>
+<DatePicker onChange={value => console.log(value)} />
+<TimePicker onChange={value => console.log(value)} />
+<Button type="primary" onClick={() => { console.log('yo') }}>Save Footprint</Button>
+</Modal>
+</div>
 );
 
 }
