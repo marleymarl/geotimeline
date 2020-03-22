@@ -52,9 +52,10 @@ export class MapContainer extends Component {
   }
 
   superMarkerClick = (markerProps, marker, clickEvent) => {
-    debugger
+    // debugger
 
-    this.setState({selectedPlace: markerProps, activeMarker: marker, showModal: true})
+    // this.setState({selectedPlace: markerProps, activeMarker: marker, showModal: true})
+    this.setState({ selectedPlace: markerProps, activeMarker: marker, showingInfoWindow: true })
     //set state with activeMarker info, then use this.state.activeMarker.props to populate info for Modal
     //change Modal visible state to true
     //then take date and time data from the pickers, along with activeMarker props and push that as footprint into the footprint array in state
@@ -153,7 +154,7 @@ export class MapContainer extends Component {
         >
 
           {this.displayFootprints()}
-          {/* <InfoWindow
+          <InfoWindow
             marker={this.state.activeMarker}
             visible={this.state.showingInfoWindow}
             maxWidth={800}
@@ -166,7 +167,7 @@ export class MapContainer extends Component {
               </Form>
               
             </div>
-          </InfoWindow> */}
+          </InfoWindow>
         </Map>
 
         <Modal 
