@@ -24,12 +24,12 @@ export class MapContainer extends Component {
     activeLon: '',
     activeLat: '',
     activeTime: '',
-    activeMarker: {
-      lat: '',
-      lon: '',
-      date: '',
-      time: ''
-    },
+    // activeMarker: {
+    //   lat: '',
+    //   lon: '',
+    //   date: '',
+    //   time: ''
+    // },
     patientId: this.props.patientId,
     showingInfoWindow: false,
     showModal: false,
@@ -92,7 +92,7 @@ export class MapContainer extends Component {
       date: activeDate,
       time: activeTime
     });
-
+    debugger
     // update state
     return (this.setState({
       footPrints: newFootPrints,
@@ -122,12 +122,14 @@ export class MapContainer extends Component {
   render() {    
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
+      debugger
+
       return (
         {
           key: idx,
           patient_id: this.state.patientId,
-          date: footprint.date,
-          time: footprint.time,
+          date: footprint.date.toDateString(),
+          time: footprint.time.toTimeString(),
           // city: // to add later
           latitude: footprint.lat,
           longitude: footprint.lng
@@ -177,7 +179,9 @@ export class MapContainer extends Component {
           okText='Save Footprint'
         >
         <DatePicker onChange={value => {
+          debugger
           this.setState({activeDate: value._d}) 
+          debugger
           console.log(value._d)}} />
         <TimePicker onChange={value => {
           this.setState({activeTime: value._d}) 
