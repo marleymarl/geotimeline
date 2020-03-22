@@ -293,7 +293,7 @@ export class MapContainer extends Component {
           className="download-csv"
           // style={{ float: 'right',  }}
         >
-          DOWNLOAD ME
+          Save to CSV
         </CSVLink>;
       </div>
     );
