@@ -24,12 +24,12 @@ export class MapContainer extends Component {
     activeLon: '',
     activeLat: '',
     activeTime: '',
-    // activeMarker: {
-    //   lat: '',
-    //   lon: '',
-    //   date: '',
-    //   time: ''
-    // },
+    activeMarker: {
+      lat: '',
+      lon: '',
+      date: '',
+      time: ''
+    },
     patientId: this.props.patientId,
     showingInfoWindow: false,
     showModal: false,
@@ -47,7 +47,8 @@ export class MapContainer extends Component {
     // if infowWindow is already open, close info window, else open modal
     if (this.state.showingInfoWindow) {
       this.setState({
-        showingInfoWindow: false
+        showingInfoWindow: false,
+        activeMarker: null
       });
     } else {
       this.setState({
@@ -186,11 +187,13 @@ export class MapContainer extends Component {
           >
             <div>
               <Form>
-                <DatePicker onChange={value => console.log(value._d)} />
+                <DatePicker onChange={value => {
+                  console.log(value._d);
+                  return this.setState({ activeDate: value._d });
+                }} />
                 <TimePicker />
                 <Button type="primary" onClick={() => { console.log('yo') }}>Save Footprint</Button>
               </Form>
-              
             </div>
           </InfoWindow>
         </Map>
@@ -201,14 +204,14 @@ export class MapContainer extends Component {
           onCancel={this.handleCancel}
           okText='Save Footprint'
         >
-        <DatePicker onChange={value => {
-          // debugger
-          this.setState({activeDate: value._d}) 
-          // debugger
-          console.log(value._d)}} />
-        <TimePicker onChange={value => {
-          this.setState({activeTime: value._d}) 
-          console.log(value._d)}} />
+          <DatePicker onChange={value => {
+            // debugger
+            this.setState({activeDate: value._d}) 
+            // debugger
+            console.log(value._d)}} />
+          <TimePicker onChange={value => {
+            this.setState({activeTime: value._d}) 
+            console.log(value._d)}} />
         </Modal>
 
         {/* Table outside of map that shows info from state  */}
