@@ -8,7 +8,7 @@ import 'antd/dist/antd.css';
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
 
 const map_style = {
-  width: '90%',
+  width: '60%',
   height: '100%',
 }
 
@@ -24,12 +24,12 @@ export class MapContainer extends Component {
     activeLon: '',
     activeLat: '',
     activeTime: '',
-    activeMarker: {
-      lat: '',
-      lon: '',
-      date: '',
-      time: ''
-    },
+    // activeMarker: {
+    //   lat: '',
+    //   lon: '',
+    //   date: '',
+    //   time: ''
+    // },
     patientId: this.props.patientId,
     showingInfoWindow: false,
     showModal: false,
@@ -92,7 +92,7 @@ export class MapContainer extends Component {
       date: activeDate,
       time: activeTime
     });
-
+    debugger
     // update state
     return (this.setState({
       footPrints: newFootPrints,
@@ -126,8 +126,8 @@ export class MapContainer extends Component {
         {
           key: idx,
           patient_id: this.state.patientId,
-          date: footprint.date,
-          time: footprint.time,
+          date: footprint.date.toDateString(),
+          time: footprint.time.toTimeString(),
           // city: // to add later
           latitude: footprint.lat,
           longitude: footprint.lng
@@ -136,11 +136,11 @@ export class MapContainer extends Component {
     });
 
     const columns = [ 
-      { title: 'patient_id', dataIndex: 'patient_id', width: 20 }, 
-      { title: 'date', dataIndex: 'date', width: 20 },
-      { title: 'time', dataIndex: 'time', width: 20 },
-      { title: 'latitude', dataIndex: 'latitude', width: 20 },
-      { title: 'longitude', dataIndex: 'longitude', width: 20 }
+      { title: 'patient_id', dataIndex: 'patient_id' }, 
+      { title: 'date', dataIndex: 'date' },
+      { title: 'time', dataIndex: 'time' },
+      { title: 'latitude', dataIndex: 'latitude' },
+      { title: 'longitude', dataIndex: 'longitude' }
     ];
 
     return(
@@ -177,7 +177,9 @@ export class MapContainer extends Component {
           okText='Save Footprint'
         >
         <DatePicker onChange={value => {
+          debugger
           this.setState({activeDate: value._d}) 
+          debugger
           console.log(value._d)}} />
         <TimePicker onChange={value => {
           this.setState({activeTime: value._d}) 
