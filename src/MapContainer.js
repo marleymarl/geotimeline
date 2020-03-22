@@ -5,6 +5,7 @@ import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import { DatePicker, TimePicker, Form, Button, Modal, Table } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
+import { CSVLink, CSVDownload } from "react-csv";
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
 
@@ -172,6 +173,19 @@ export class MapContainer extends Component {
   }
 
 
+  formatData = () => {
+    let csvData = [ ["date", "time", "latitude", "longitude"] ];
+
+    this.state.footPrints.forEach((footPrint) => {
+      let newFootPrintArr = [];
+      newFootPrintArr.push(footPrint.date, footPrint.time, footPrint.lat, footPrint.lng);
+      csvData.push(newFootPrintArr);
+    });
+
+    return csvData;
+  }
+
+
   componentDidMount() {
     console.log('patient id: ' + this.state.patientId)
   }
@@ -200,9 +214,11 @@ export class MapContainer extends Component {
       { title: 'latitude', dataIndex: 'latitude' },
       { title: 'longitude', dataIndex: 'longitude' }
     ];
+
+    let csvData = this.formatData();
     
     return(
-      <div>
+      <div className="outer-wrap">
         <Map google={this.props.google} style={map_style}
           initialCenter={{
           lat: 43.6532, //change this to be set based on location input on form prior to map
@@ -261,7 +277,7 @@ export class MapContainer extends Component {
             this.setState({activeTime: value._d}) 
             console.log(value._d)}} />
         </Modal>
-
+        
         {/* Table outside of map that shows info from state  */}
         <Table
           dataSource={dataSource}
@@ -271,6 +287,14 @@ export class MapContainer extends Component {
           size='small'
           style={{ width: '40%', float: 'right' }}
         />
+
+        <CSVLink 
+          data={this.state.footPrints} 
+          className="download-csv"
+          // style={{ float: 'right',  }}
+        >
+          Save to CSV
+        </CSVLink>;
       </div>
     );
   }
