@@ -4,6 +4,7 @@ import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 // import { Formik, ErrorMessage } from 'formik';
 import { DatePicker, TimePicker, Form, Button, Modal, Table } from 'antd';
 import 'antd/dist/antd.css';
+import * as moment from 'moment';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
 
@@ -23,13 +24,13 @@ export class MapContainer extends Component {
     activeDate: '',
     activeLon: '',
     activeLat: '',
-    activeTime: '',
-    // activeMarker: {
-    //   lat: '',
-    //   lon: '',
-    //   date: '',
-    //   time: ''
-    // },
+    activeTime: '', 
+    activeMarker: {
+      lat: '',
+      lon: '',
+      date: '',
+      time: ''
+    },
     patientId: this.props.patientId,
     showingInfoWindow: false,
     showModal: false,
@@ -44,24 +45,47 @@ export class MapContainer extends Component {
     const latitude = markerLatLng.lat();
     const longitude = markerLatLng.lng();
 
-    this.setState({
-      showModal: true,
-      activeLat: latitude,
-      activeLon: longitude
-    });
+    // if infowWindow is already open, close info window, else open modal
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false,
+        activeMarker: null
+      });
+    } else {
+      this.setState({
+        showModal: true,
+        activeLat: latitude,
+        activeLon: longitude
+      });
+    }
   }
 
-  superMarkerClick = (markerProps, marker, clickEvent) => {
-    // debugger
 
-    // this.setState({selectedPlace: markerProps, activeMarker: marker, showModal: true})
-    this.setState({ selectedPlace: markerProps, activeMarker: marker, showingInfoWindow: true })
+  // When user clicks on a red marker, an infobox pops up displaying the time for that marker
+  superMarkerClick = (markerProps, marker, clickEvent) => {
+    const latitude = markerProps.position.lat;
+    const longitude = markerProps.position.lng;
+
+    // grab footPrint in state that matches with lat/lng position
+    const footPrint = this.state.footPrints.filter((footprint)=> {
+      return footprint.lat === latitude && footprint.lng === longitude;
+    })[0];    
+
+    // update state with date/time and active marker
+    this.setState({ 
+      selectedPlace: markerProps, 
+      activeMarker: marker, 
+      showingInfoWindow: true,
+      activeDate: footPrint.date,
+      activeTime: footPrint.time
+    });
     //set state with activeMarker info, then use this.state.activeMarker.props to populate info for Modal
-    //change Modal visible state to true
+    //change info window visible state to true
     //then take date and time data from the pickers, along with activeMarker props and push that as footprint into the footprint array in state
     //on Component Save (needs to be parent component method) take footprint array and save it as a child prop of CaseTimeline Component
     //CaseTimeline is parent of MapContainer which is parent of Map, Marker, Modal, Form, DatePicker, TimePicker
   }
+
 
   displayFootprints = () => {
     return this.state.footPrints.map((footprint, index) => {
@@ -78,6 +102,7 @@ export class MapContainer extends Component {
     })
   }
 
+
   // When user clicks "save foot print" after inputing time data in modal
   handleOk = () => {
     const { activeLat, activeLon, activeDate, activeTime } = this.state
@@ -92,7 +117,7 @@ export class MapContainer extends Component {
       date: activeDate,
       time: activeTime
     });
-    debugger
+    
     // update state
     return (this.setState({
       footPrints: newFootPrints,
@@ -102,21 +127,54 @@ export class MapContainer extends Component {
     }));
   }
 
+
   // clear active lat/lon and turn modal off
   handleCancel = () => {
     return (
       this.setState({
         activeLat: '',
         activeLon: '',
-        showModal: false
+        showModal: false,
+        showingInfoWindow: false
       })
     );
   }
 
+
+  // update footprint with new date/time
+  handleUpdate = (prop) => {
+    const { activeDate, activeTime, activeMarker } = this.state;
+    const latitude = activeMarker.position.lat()
+    const longitude = activeMarker.position.lng()
+
+    // shallow copy footprints array
+    let newFootPrints = this.state.footPrints.slice();
+    
+    // grab footprint and index in newFootPrints that matches lat/lon
+    let footPrint = newFootPrints.filter((footprint) => {
+      return footprint.lat === latitude && footprint.lng === longitude;
+    })[0];
+
+    // update the footprint with the new date/times
+    footPrint.date = activeDate;
+    footPrint.time = activeTime;
+
+    // update state to show new footprints with updated date/time
+    return (
+      this.setState({
+        footPrints: newFootPrints,
+        showingInfoWindow: false,
+        activeDate: '',
+        activeTime: '',
+        activeMarker: '',
+      })
+    );
+  }
+
+
   componentDidMount() {
     console.log('patient id: ' + this.state.patientId)
   }
-
 
 
   render() {    
@@ -142,7 +200,7 @@ export class MapContainer extends Component {
       { title: 'latitude', dataIndex: 'latitude' },
       { title: 'longitude', dataIndex: 'longitude' }
     ];
-
+    
     return(
       <div>
         <Map google={this.props.google} style={map_style}
@@ -154,36 +212,54 @@ export class MapContainer extends Component {
         >
 
           {this.displayFootprints()}
-          <InfoWindow
+          {/* <InfoWindow
             marker={this.state.activeMarker}
             visible={this.state.showingInfoWindow}
             maxWidth={800}
+          > */}
+          <Modal
+            visible={this.state.showingInfoWindow}
+            marker={this.state.activeMarker}
+            maxWidth={800}
+            onOk={this.handleUpdate}
+            onCancel={this.handleCancel}
+            okText='Update Footprint'
           >
             <div>
-              <Form>
-                <DatePicker onChange={value => console.log(value._d)} />
-                <TimePicker />
-                <Button type="primary" onClick={() => { console.log('yo') }}>Save Footprint</Button>
-              </Form>
-              
+              {/* <Form> */}
+                <DatePicker 
+                  defaultValue={moment(this.state.activeMarker.date)}
+                  onChange={value => {
+                    console.log(value._d);
+                    return this.setState({ activeDate: value._d });
+                }} />
+                <TimePicker 
+                  defaultValue={moment(this.state.activeTime)}
+                  onChange={ value => {
+                    return this.setState({ activeTime: value._d });
+                }} />
+                {/* <Button type="primary" onClick={() => { 
+                  debugger
+                  console.log('yo'); 
+                }}>Save Footprint</Button> */}
+              {/* </Form> */}
             </div>
-          </InfoWindow>
+          </Modal>
+          {/* </InfoWindow> */}
         </Map>
 
         <Modal 
-          visible={this.state.showModal} 
+          visible={this.state.showModal}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           okText='Save Footprint'
         >
-        <DatePicker onChange={value => {
-          debugger
-          this.setState({activeDate: value._d}) 
-          debugger
-          console.log(value._d)}} />
-        <TimePicker onChange={value => {
-          this.setState({activeTime: value._d}) 
-          console.log(value._d)}} />
+          <DatePicker onChange={value => {
+            this.setState({activeDate: value._d}) 
+            console.log(value._d)}} />
+          <TimePicker onChange={value => {
+            this.setState({activeTime: value._d}) 
+            console.log(value._d)}} />
         </Modal>
 
         {/* Table outside of map that shows info from state  */}

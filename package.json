@@ -10,6 +10,7 @@
     "formik": "^2.1.4",
     "formik-antd": "^2.0.0",
     "google-maps-react": "^2.0.2",
+    "moment": "^2.24.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-router": "^5.1.2",
