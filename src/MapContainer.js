@@ -18,28 +18,36 @@ function onChange(date, dateString) {
 
 export class MapContainer extends Component {
 state = {
-footPrints: [],
-// footPrints: [{lat: 43.65509405622337, lng: -79.38795019216536, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64756139911764, lng: -79.41372555024623, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64420752674433, lng: -79.39767521150111, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'} ],
-activeDate: '',
-activeLon: '',
-activeLat: '',
-activeTime: '',
-activeMarker: {
-	lat: '',
-	lon: '',
-	date: '',
-	time: ''
-
-},
+  footPrints: [],
+  // footPrints: [{lat: 43.65509405622337, lng: -79.38795019216536, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64756139911764, lng: -79.41372555024623, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64420752674433, lng: -79.39767521150111, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'} ],
+  activeDate: '',
+  activeLon: '',
+  activeLat: '',
+  activeTime: '',
+  activeMarker: {
+    lat: '',
+    lon: '',
+    date: '',
+    time: ''
+  },
 patientId: this.props.patientId,
 showingInfoWindow: false,
 showModal: false,
 selectedPlace: {}
 }
 
+// When user clicks on the map, a red marker shows up
 onMarkerClick = (mapProps, map, clickEvent) => {
-console.log('Greg is awesome because: ' + JSON.stringify(clickEvent))
-let markerLatLng = clickEvent.latLng
+  console.log('Greg is awesome because: ' + JSON.stringify(clickEvent))
+  let markerLatLng = clickEvent.latLng
+  const latitude = markerLatLng.lat();
+  const longitude = markerLatLng.lng();
+  
+  this.setState({
+    showModal: true,
+    activeLat: latitude,
+    activeLon: longitude
+  });
 }
 
 superMarkerClick = (markerProps, marker, clickEvent) => {
@@ -69,7 +77,7 @@ displayFootprints = () => {
 }
 
 handleOk = () => {
-
+  
 }
 
 handleCancel = () => {
@@ -77,7 +85,7 @@ handleCancel = () => {
 }
 
 handleSubmit = () => {
-
+  
 }
 
 componentDidMount() {
@@ -87,91 +95,91 @@ componentDidMount() {
 
 
 render() {
-const currentMarkers = this.state.footPrints.map((footprint) => <Marker
-title={footprint.title}
-details={footprint.details}
-datetime={footprint.datetime}
-key={footprint.lat + footprint.lon}
-position={{lat: footprint}}
-onClick={this.onMarkerClick}
-/>)
- // footPrints: [{ lat: 37.774929, lon: -122.419416, date: '', time: '' }],
-    // format datasource for rendering table (datasource is an arr of objects)
-    const dataSource = this.state.footPrints.map((footprint, idx) => {
-      return (
-        {
-          key: idx,
-          patient_id: this.state.patientId,
-          date: footprint.date,
-          time: footprint.time,
-          // city: // to add later
-          latitude: footprint.lat,
-          longitude: footprint.lng
-        }
-      );
-    });
+  const currentMarkers = this.state.footPrints.map((footprint) => <Marker
+    title={footprint.title}
+    details={footprint.details}
+    datetime={footprint.datetime}
+    key={footprint.lat + footprint.lon}
+    position={{lat: footprint}}
+    onClick={this.onMarkerClick}
+  />)
+  
+  // format datasource for rendering table (datasource is an arr of objects)
+  const dataSource = this.state.footPrints.map((footprint, idx) => {
+    return (
+      {
+        key: idx,
+        patient_id: this.state.patientId,
+        date: footprint.date,
+        time: footprint.time,
+        // city: // to add later
+        latitude: footprint.lat,
+        longitude: footprint.lng
+      }
+    );
+  });
 
-const columns = [ 
-      { title: 'patient_id', dataIndex: 'patient_id', width: 20 }, 
-      { title: 'date', dataIndex: 'date', width: 20 },
-      { title: 'time', dataIndex: 'time', width: 20 },
-      { title: 'latitude', dataIndex: 'latitude', width: 20 },
-      { title: 'longitude', dataIndex: 'longitude', width: 20 }
-    ];
+  const columns = [ 
+        { title: 'patient_id', dataIndex: 'patient_id', width: 20 }, 
+        { title: 'date', dataIndex: 'date', width: 20 },
+        { title: 'time', dataIndex: 'time', width: 20 },
+        { title: 'latitude', dataIndex: 'latitude', width: 20 },
+        { title: 'longitude', dataIndex: 'longitude', width: 20 }
+  ];
 
-return(
-<div>
-<Map google={this.props.google} style={map_style}
-initialCenter={{
-lat: 43.6532, //change this to be set based on location input on form prior to map
-lng: -79.3832,
-}}
-onClick={this.onMarkerClick}
->
+  return(
+    <div>
+      <Map google={this.props.google} style={map_style}
+        initialCenter={{
+        lat: 43.6532, //change this to be set based on location input on form prior to map
+        lng: -79.3832,
+        }}
+        onClick={this.onMarkerClick}
+      >
 
-  {this.displayFootprints()}
-    <InfoWindow
+        {this.displayFootprints()}
+        <InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}
-          maxWidth={800}>
-            <div>
-           <Form>
+          maxWidth={800}
+        >
+          <div>
+            <Form>
               <DatePicker onChange={value => console.log(value._d)} />
               <TimePicker />
               <Button type="primary" onClick={() => { console.log('yo') }}>Save Footprint</Button>
             </Form>
             
-            </div>
+          </div>
         </InfoWindow>
-</Map>
+      </Map>
 
-<Modal 
-	visible={this.state.showModal} 
-	onOk={this.handleOk}
-	onCancel={this.handleCancel}
-	okText='Save Footprint'
->
-<DatePicker onChange={value => {
-	this.setState({activeDate: value._d}) 
-	console.log(value._d)}} />
-<TimePicker onChange={value => {
-	this.setState({activeTime: value._d}) 
-	console.log(value._d)}} />
+      <Modal 
+        visible={this.state.showModal} 
+        onOk={this.handleOk}
+        onCancel={this.handleCancel}
+        okText='Save Footprint'
+      >
+      <DatePicker onChange={value => {
+        this.setState({activeDate: value._d}) 
+        console.log(value._d)}} />
+      <TimePicker onChange={value => {
+        this.setState({activeTime: value._d}) 
+        console.log(value._d)}} />
+      </Modal>
 
-</Modal>
-{/* Table outside of map that shows info from state  */}
-        <Table
-          dataSource={dataSource}
-          columns={columns}
-          pagination={false}    // buttons on bottom of table that show how which page to jump to
-          className='table-column'
-          size='small'
-          style={{ width: '40%', float: 'right' }}
-        />
-</div>
-);
-
-}
+      {/* Table outside of map that shows info from state  */}
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}    // buttons on bottom of table that show how which page to jump to
+        className='table-column'
+        size='small'
+        style={{ width: '40%', float: 'right' }}
+      />
+    </div>
+    );
+  }
 }
 
 export default GoogleApiWrapper({
