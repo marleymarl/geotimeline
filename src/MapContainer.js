@@ -24,7 +24,7 @@ export class MapContainer extends Component {
     activeDate: '',
     activeLon: '',
     activeLat: '',
-    activeTime: '',
+    activeTime: '', 
     activeMarker: {
       lat: '',
       lon: '',
@@ -45,11 +45,8 @@ export class MapContainer extends Component {
     const latitude = markerLatLng.lat();
     const longitude = markerLatLng.lng();
 
-    debugger
-
     // if infowWindow is already open, close info window, else open modal
     if (this.state.showingInfoWindow) {
-      debugger
       this.setState({
         showingInfoWindow: false,
         activeMarker: null
@@ -61,13 +58,11 @@ export class MapContainer extends Component {
         activeLon: longitude
       });
     }
-
   }
 
 
   // When user clicks on a red marker, an infobox pops up displaying the time for that marker
   superMarkerClick = (markerProps, marker, clickEvent) => {
-    
     const latitude = markerProps.position.lat;
     const longitude = markerProps.position.lng;
 
@@ -146,12 +141,32 @@ export class MapContainer extends Component {
   }
 
 
-  handleUpdate() {
+  // update footprint with new date/time
+  handleUpdate = (prop) => {
+    const { activeDate, activeTime, activeMarker } = this.state;
+    const latitude = activeMarker.position.lat()
+    const longitude = activeMarker.position.lng()
+
+    // shallow copy footprints array
+    let newFootPrints = this.state.footPrints.slice();
+    
+    // grab footprint and index in newFootPrints that matches lat/lon
+    let footPrint = newFootPrints.filter((footprint) => {
+      return footprint.lat === latitude && footprint.lng === longitude;
+    })[0];
+
+    // update the footprint with the new date/times
+    footPrint.date = activeDate;
+    footPrint.time = activeTime;
+
+    // update state to show new footprints with updated date/time
     return (
       this.setState({
+        footPrints: newFootPrints,
         showingInfoWindow: false,
-        activeDate: this.state.activeDate,
-        activeTime: this.state.activeTime
+        activeDate: '',
+        activeTime: '',
+        activeMarker: '',
       })
     );
   }
