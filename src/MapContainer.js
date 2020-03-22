@@ -2,7 +2,7 @@ import React, {Component } from 'react';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 // import { Form, FormItem, Input, InputNumber, Checkbox, DatePicker, TimePicker } from "formik-antd";
 // import { Formik, ErrorMessage } from 'formik';
-import { DatePicker, TimePicker, Form, Button, Modal } from 'antd';
+import { DatePicker, TimePicker, Form, Button, Modal, Table } from 'antd';
 import 'antd/dist/antd.css';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
@@ -95,6 +95,30 @@ key={footprint.lat + footprint.lon}
 position={{lat: footprint}}
 onClick={this.onMarkerClick}
 />)
+ // footPrints: [{ lat: 37.774929, lon: -122.419416, date: '', time: '' }],
+    // format datasource for rendering table (datasource is an arr of objects)
+    const dataSource = this.state.footPrints.map((footprint, idx) => {
+      return (
+        {
+          key: idx,
+          patient_id: this.state.patientId,
+          date: footprint.date,
+          time: footprint.time,
+          // city: // to add later
+          latitude: footprint.lat,
+          longitude: footprint.lng
+        }
+      );
+    });
+
+const columns = [ 
+      { title: 'patient_id', dataIndex: 'patient_id', width: 20 }, 
+      { title: 'date', dataIndex: 'date', width: 20 },
+      { title: 'time', dataIndex: 'time', width: 20 },
+      { title: 'latitude', dataIndex: 'latitude', width: 20 },
+      { title: 'longitude', dataIndex: 'longitude', width: 20 }
+    ];
+
 return(
 <div>
 <Map google={this.props.google} style={map_style}
@@ -135,6 +159,15 @@ onClick={this.onMarkerClick}
 	console.log(value._d)}} />
 
 </Modal>
+{/* Table outside of map that shows info from state  */}
+        <Table
+          dataSource={dataSource}
+          columns={columns}
+          pagination={false}    // buttons on bottom of table that show how which page to jump to
+          className='table-column'
+          size='small'
+          style={{ width: '40%', float: 'right' }}
+        />
 </div>
 );
 
