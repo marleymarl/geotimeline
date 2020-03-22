@@ -18,7 +18,8 @@ function onChange(date, dateString) {
 
 export class MapContainer extends Component {
 state = {
-footPrints: [{lat: 37.774929, lon: -122.419416, date: '', time: ''}],
+footPrints: [],
+// footPrints: [{lat: 43.65509405622337, lng: -79.38795019216536, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64756139911764, lng: -79.41372555024623, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64420752674433, lng: -79.39767521150111, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'} ],
 activeDate: '',
 activeLon: '',
 activeLat: '',
@@ -50,6 +51,21 @@ superMarkerClick = (markerProps, marker, clickEvent) => {
 	//on Component Save (needs to be parent component method) take footprint array and save it as a child prop of CaseTimeline Component
 	//CaseTimeline is parent of MapContainer which is parent of Map, Marker, Modal, Form, DatePicker, TimePicker
 
+}
+
+displayFootprints = () => {
+	return this.state.footPrints.map((footprint, index) => {
+		return <Marker
+			key={index}
+			position={{
+				lat: footprint.lat,
+				lng: footprint.lng
+			}}
+			onClick={this.superMarkerClick}
+
+		/>
+
+	})
 }
 
 handleOk = () => {
@@ -89,21 +105,7 @@ lng: -79.3832,
 onClick={this.onMarkerClick}
 >
 
-  <Marker
-    title={'The marker`s title will appear as a tooltip.'}
-    name={'Eaton Centre'}
-    position={{lat: 43.65509405622337, lng: -79.38795019216536}} 
-    onClick={this.superMarkerClick}/>
-    <Marker
-    title={'The marker`s title will appear as a tooltip.'}
-    name={'Fashion District'}
-    position={{lat: 43.64776590062451, lng: -79.41258359975814}} 
-    onClick={this.superMarkerClick}/>
-    <Marker
-    title={'The marker`s title will appear as a tooltip.'}
-    name={'Trinity Bellwoods'}
-    position={{lat: 43.64490891977491, lng: -79.40079684919975}} 
-    onClick={this.superMarkerClick}/>
+  {this.displayFootprints()}
     <InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}
@@ -125,8 +127,12 @@ onClick={this.onMarkerClick}
 	onCancel={this.handleCancel}
 	okText='Save Footprint'
 >
-<DatePicker onChange={value => this.setState({activeDate: value._d})} />
-<TimePicker onChange={value => console.log(value)} />
+<DatePicker onChange={value => {
+	this.setState({activeDate: value._d}) 
+	console.log(value._d)}} />
+<TimePicker onChange={value => {
+	this.setState({activeTime: value._d}) 
+	console.log(value._d)}} />
 
 </Modal>
 </div>
