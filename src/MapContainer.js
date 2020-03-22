@@ -118,16 +118,7 @@ export class MapContainer extends Component {
 
 
 
-  render() {
-    const currentMarkers = this.state.footPrints.map((footprint) => <Marker
-      title={footprint.title}
-      details={footprint.details}
-      datetime={footprint.datetime}
-      key={footprint.lat + footprint.lon}
-      position={{lat: footprint}}
-      onClick={this.onMapClick}
-    />)
-    
+  render() {    
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
       return (
