@@ -44,24 +44,48 @@ export class MapContainer extends Component {
     const latitude = markerLatLng.lat();
     const longitude = markerLatLng.lng();
 
-    this.setState({
-      showModal: true,
-      activeLat: latitude,
-      activeLon: longitude
-    });
+    // if infowWindow is already open, close info window, else open modal
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false
+      });
+    } else {
+      this.setState({
+        showModal: true,
+        activeLat: latitude,
+        activeLon: longitude
+      });
+    }
+
   }
 
-  superMarkerClick = (markerProps, marker, clickEvent) => {
-    // debugger
 
-    // this.setState({selectedPlace: markerProps, activeMarker: marker, showModal: true})
-    this.setState({ selectedPlace: markerProps, activeMarker: marker, showingInfoWindow: true })
+  // When user clicks on a red marker, an infobox pops up displaying the time for that marker
+  superMarkerClick = (markerProps, marker, clickEvent) => {
+    
+    const latitude = markerProps.position.lat;
+    const longitude = markerProps.position.lng;
+
+    // grab footPrint in state that matches with lat/lng position
+    const footPrint = this.state.footPrints.filter((footprint)=> {
+      return footprint.lat === latitude && footprint.lng === longitude;
+    })[0];    
+
+    // update state with date/time and active marker
+    this.setState({ 
+      selectedPlace: markerProps, 
+      activeMarker: marker, 
+      showingInfoWindow: true,
+      activeDate: footPrint.date,
+      activeTime: footPrint.time
+    });
     //set state with activeMarker info, then use this.state.activeMarker.props to populate info for Modal
-    //change Modal visible state to true
+    //change info window visible state to true
     //then take date and time data from the pickers, along with activeMarker props and push that as footprint into the footprint array in state
     //on Component Save (needs to be parent component method) take footprint array and save it as a child prop of CaseTimeline Component
     //CaseTimeline is parent of MapContainer which is parent of Map, Marker, Modal, Form, DatePicker, TimePicker
   }
+
 
   displayFootprints = () => {
     return this.state.footPrints.map((footprint, index) => {
@@ -78,6 +102,7 @@ export class MapContainer extends Component {
     })
   }
 
+
   // When user clicks "save foot print" after inputing time data in modal
   handleOk = () => {
     const { activeLat, activeLon, activeDate, activeTime } = this.state
@@ -92,7 +117,7 @@ export class MapContainer extends Component {
       date: activeDate,
       time: activeTime
     });
-    debugger
+    
     // update state
     return (this.setState({
       footPrints: newFootPrints,
@@ -101,6 +126,7 @@ export class MapContainer extends Component {
       activeLon: ''
     }));
   }
+
 
   // clear active lat/lon and turn modal off
   handleCancel = () => {
@@ -116,7 +142,6 @@ export class MapContainer extends Component {
   componentDidMount() {
     console.log('patient id: ' + this.state.patientId)
   }
-
 
 
   render() {    
@@ -177,9 +202,9 @@ export class MapContainer extends Component {
           okText='Save Footprint'
         >
         <DatePicker onChange={value => {
-          debugger
+          // debugger
           this.setState({activeDate: value._d}) 
-          debugger
+          // debugger
           console.log(value._d)}} />
         <TimePicker onChange={value => {
           this.setState({activeTime: value._d}) 
