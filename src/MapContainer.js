@@ -8,7 +8,7 @@ import 'antd/dist/antd.css';
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
 
 const map_style = {
-  width: '90%',
+  width: '60%',
   height: '100%',
 }
 
@@ -122,8 +122,6 @@ export class MapContainer extends Component {
   render() {    
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
-      debugger
-
       return (
         {
           key: idx,
@@ -138,11 +136,11 @@ export class MapContainer extends Component {
     });
 
     const columns = [ 
-      { title: 'patient_id', dataIndex: 'patient_id', width: 20 }, 
-      { title: 'date', dataIndex: 'date', width: 20 },
-      { title: 'time', dataIndex: 'time', width: 20 },
-      { title: 'latitude', dataIndex: 'latitude', width: 20 },
-      { title: 'longitude', dataIndex: 'longitude', width: 20 }
+      { title: 'patient_id', dataIndex: 'patient_id' }, 
+      { title: 'date', dataIndex: 'date' },
+      { title: 'time', dataIndex: 'time' },
+      { title: 'latitude', dataIndex: 'latitude' },
+      { title: 'longitude', dataIndex: 'longitude' }
     ];
 
     return(
