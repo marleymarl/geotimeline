@@ -4,6 +4,7 @@ import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 // import { Formik, ErrorMessage } from 'formik';
 import { DatePicker, TimePicker, Form, Button, Modal, Table } from 'antd';
 import 'antd/dist/antd.css';
+import * as moment from 'moment';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
 
@@ -184,7 +185,7 @@ export class MapContainer extends Component {
       { title: 'latitude', dataIndex: 'latitude' },
       { title: 'longitude', dataIndex: 'longitude' }
     ];
-
+    
     return(
       <div>
         <Map google={this.props.google} style={map_style}
@@ -212,12 +213,16 @@ export class MapContainer extends Component {
             <div>
               {/* <Form> */}
                 <DatePicker 
-                  defaultValue={this.state.activeMarker.date}
+                  defaultValue={moment(this.state.activeMarker.date)}
                   onChange={value => {
                     console.log(value._d);
                     return this.setState({ activeDate: value._d });
-                  }} />
-                <TimePicker />
+                }} />
+                <TimePicker 
+                  defaultValue={moment(this.state.activeTime)}
+                  onChange={ value => {
+                    return this.setState({ activeTime: value._d });
+                }} />
                 {/* <Button type="primary" onClick={() => { 
                   debugger
                   console.log('yo'); 
