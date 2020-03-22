@@ -38,7 +38,7 @@ export class MapContainer extends Component {
 
 
   // When user clicks on the map, a red marker shows up
-  onMarkerClick = (mapProps, map, clickEvent) => {
+  onMapClick = (mapProps, map, clickEvent) => {
     console.log('Greg is awesome because: ' + JSON.stringify(clickEvent))
     let markerLatLng = clickEvent.latLng
     const latitude = markerLatLng.lat();
@@ -52,6 +52,7 @@ export class MapContainer extends Component {
   }
 
   superMarkerClick = (markerProps, marker, clickEvent) => {
+    debugger
 
     this.setState({selectedPlace: markerProps, activeMarker: marker, showModal: true})
     //set state with activeMarker info, then use this.state.activeMarker.props to populate info for Modal
@@ -111,10 +112,6 @@ export class MapContainer extends Component {
     );
   }
 
-  handleSubmit = () => {
-    
-  }
-
   componentDidMount() {
     console.log('patient id: ' + this.state.patientId)
   }
@@ -128,7 +125,7 @@ export class MapContainer extends Component {
       datetime={footprint.datetime}
       key={footprint.lat + footprint.lon}
       position={{lat: footprint}}
-      onClick={this.onMarkerClick}
+      onClick={this.onMapClick}
     />)
     
     // format datasource for rendering table (datasource is an arr of objects)
@@ -161,11 +158,11 @@ export class MapContainer extends Component {
           lat: 43.6532, //change this to be set based on location input on form prior to map
           lng: -79.3832,
           }}
-          onClick={this.onMarkerClick}
+          onClick={this.onMapClick}
         >
 
           {this.displayFootprints()}
-          <InfoWindow
+          {/* <InfoWindow
             marker={this.state.activeMarker}
             visible={this.state.showingInfoWindow}
             maxWidth={800}
@@ -178,7 +175,7 @@ export class MapContainer extends Component {
               </Form>
               
             </div>
-          </InfoWindow>
+          </InfoWindow> */}
         </Map>
 
         <Modal 
