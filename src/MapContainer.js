@@ -42,7 +42,7 @@ onMarkerClick = (mapProps, map, clickEvent) => {
   let markerLatLng = clickEvent.latLng
   const latitude = markerLatLng.lat();
   const longitude = markerLatLng.lng();
-  
+
   this.setState({
     showModal: true,
     activeLat: latitude,
@@ -77,11 +77,18 @@ displayFootprints = () => {
 }
 
 handleOk = () => {
-  
+
 }
 
+// clear active lat/lon and turn modal off
 handleCancel = () => {
-
+  return (
+    this.setState({
+      activeLat: '',
+      activeLon: '',
+      showModal: false
+    })
+  );
 }
 
 handleSubmit = () => {
