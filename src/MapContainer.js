@@ -44,8 +44,11 @@ export class MapContainer extends Component {
     const latitude = markerLatLng.lat();
     const longitude = markerLatLng.lng();
 
+    debugger
+
     // if infowWindow is already open, close info window, else open modal
     if (this.state.showingInfoWindow) {
+      debugger
       this.setState({
         showingInfoWindow: false,
         activeMarker: null
@@ -135,10 +138,23 @@ export class MapContainer extends Component {
       this.setState({
         activeLat: '',
         activeLon: '',
-        showModal: false
+        showModal: false,
+        showingInfoWindow: false
       })
     );
   }
+
+
+  handleUpdate() {
+    return (
+      this.setState({
+        showingInfoWindow: false,
+        activeDate: this.state.activeDate,
+        activeTime: this.state.activeTime
+      })
+    );
+  }
+
 
   componentDidMount() {
     console.log('patient id: ' + this.state.patientId)
@@ -180,34 +196,46 @@ export class MapContainer extends Component {
         >
 
           {this.displayFootprints()}
-          <InfoWindow
+          {/* <InfoWindow
             marker={this.state.activeMarker}
             visible={this.state.showingInfoWindow}
             maxWidth={800}
+          > */}
+          <Modal
+            visible={this.state.showingInfoWindow}
+            marker={this.state.activeMarker}
+            maxWidth={800}
+            onOk={this.handleUpdate}
+            onCancel={this.handleCancel}
+            okText='Update Footprint'
           >
             <div>
-              <Form>
-                <DatePicker onChange={value => {
-                  console.log(value._d);
-                  return this.setState({ activeDate: value._d });
-                }} />
+              {/* <Form> */}
+                <DatePicker 
+                  defaultValue={this.state.activeMarker.date}
+                  onChange={value => {
+                    console.log(value._d);
+                    return this.setState({ activeDate: value._d });
+                  }} />
                 <TimePicker />
-                <Button type="primary" onClick={() => { console.log('yo') }}>Save Footprint</Button>
-              </Form>
+                {/* <Button type="primary" onClick={() => { 
+                  debugger
+                  console.log('yo'); 
+                }}>Save Footprint</Button> */}
+              {/* </Form> */}
             </div>
-          </InfoWindow>
+          </Modal>
+          {/* </InfoWindow> */}
         </Map>
 
         <Modal 
-          visible={this.state.showModal} 
+          visible={this.state.showModal}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           okText='Save Footprint'
         >
           <DatePicker onChange={value => {
-            // debugger
             this.setState({activeDate: value._d}) 
-            // debugger
             console.log(value._d)}} />
           <TimePicker onChange={value => {
             this.setState({activeTime: value._d}) 
