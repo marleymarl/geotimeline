@@ -24,10 +24,6 @@ const map_style = {
   height: '100%'
 };
 
-const dataBtnStyle = {
-  marginTop: '20px'
-};
-
 function onChange(date, dateString) {
   console.log(date, dateString);
 }
@@ -305,13 +301,18 @@ export class MapContainer extends Component {
           />
         </Modal>
         {/* Table outside of map that shows info from state  */}
-        <Button type="primary" onClick={this.openDrawer} style={dataBtnStyle}>
+        <Button
+          type="primary"
+          onClick={this.openDrawer}
+          className="dataBtnStyle"
+        >
           View Footprint Data
         </Button>
         <Drawer
           title="Footprint Data"
           visible={this.state.drawerVisible}
           width={'60%'}
+          className="drawerStyles"
           closable={true}
           onClose={this.closeDrawer}
           footer={
