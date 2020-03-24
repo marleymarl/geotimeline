@@ -287,15 +287,13 @@ export default class upFrontForm extends Component {
     //then setState({initialCenter}) with those
     //can't use all-the-cities package because it uses 'fs'
 
-    // let yo = cities.filter(city => city.name.match(city) && city.country.match(country));
-
-    // let lngLat = yo[0].loc.coordinates
-
-    // const initialCenter = {lat: lngLat[1], lng: lngLat[0]}
-
-    // console.log(initialCenter)
-
-    // this.setState({initialCenter})
+    // let yo = cities.filter(
+    //   city => city.name.match(city) && city.country.match(country)
+    // );
+    // let lngLat = yo[0].loc.coordinates;
+    // const initialCenter = { lat: lngLat[1], lng: lngLat[0] };
+    // console.log(initialCenter);
+    // this.setState({ initialCenter });
   };
 
   render() {
