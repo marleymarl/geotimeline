@@ -187,7 +187,7 @@ export class MapContainer extends Component {
 
 
   componentDidMount() {
-    console.log('patient id: ' + this.state.patientId)
+    console.log('patient id: ' + this.props.patientId)
   }
 
 

@@ -298,46 +298,34 @@ export default class upFrontForm extends Component {
     // this.setState({initialCenter})
   };
 
+  componentDidMount() {
+    console.log('up front props: ' + JSON.stringify(this.props))
+  }
+
   render() {
+    // const handlePatientIdSubmit = this.props.handlePatientIdSubmit()
     return (
       <div style={formWrapperStyles}>
         <Formik
-          initialValues={{ city: '', country: '', patientId: '' }}
+          initialValues={{ patientId: '' }}
           validate={values => {
             let errors = {};
-            if (!values.city) {
-              errors.city = 'Required';
-            }
-            if (!values.country) {
-              errors.country = 'Required';
-            }
+            
             if (!values.patientId) {
               errors.patientId = 'Required';
             }
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            let city = values.city;
-            let country = values.country;
-            // let patientId = values.patientId
+            
+            let patientId = values.patientId
             console.log(values);
-            this.testSubmit(city, country);
+            this.props.handlePatientIdSubmit(patientId);
           }}
         >
           {({ isSubmitting }) => (
             <Form {...layout} layout="horizontal">
-              <FormItem name="city" label="City" required={true}>
-                <Input name="city" />
-              </FormItem>
-              <FormItem name="country" label="Country" required={true}>
-                <Select name="country" placeholder="Select your country">
-                  {countryCodes.map(country => (
-                    <Select.Option key={country.code} value={country.code}>
-                      {country.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </FormItem>
+              
               <FormItem name="patientId" label="Patient ID" required={true}>
                 <Input name="patientId" />
               </FormItem>
