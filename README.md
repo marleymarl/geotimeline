@@ -8,7 +8,7 @@ This repository represents what is currently on the demo site for [GeoTime](http
 
 If you would like to contribute to this project, volunteer at our project listing on [helpwithcovid.com](https://helpwithcovid.com/projects/245-geotime-data-input-of-historical-footprints-of-confirmed-cases-with-lat-lon-timestamp).
 
-The inspiration for this project was to provide an easy data entry layer so anyone can capture the type of data that Korea, Taiwan and Israel have in the [Data Science for Covid19 Rep](https://github.com/jihoo-kim/Data-Science-for-COVID-19/blob/master/dataset/Patient/PatientRoute.csv). This data is needed for apps that ...
+The inspiration for this project was to provide an easy data entry layer so anyone can capture the type of data that Korea, Taiwan and Israel have in the [Data Science for Covid19 Rep](https://github.com/jihoo-kim/Data-Science-for-COVID-19/blob/master/dataset/Patient/PatientRoute.csv). This data is needed for apps that can compare movements of confirmed cases with that of app users so users could know if they potentially came into contact in the past and also to route plan in the future to avoid those areas. This data can also be used for clustering analysis and other type of critical data analysis and risk mitigation strategies. 
 
 Greg Marlin wrote a linked post that described a [rough spec](https://www.linkedin.com/posts/activity-6646431967925583873-P6hF) for these types of apps. From there is was clear that greatest need was for jurisdications outside of Korea, Taiwan and Isreal to first get this data. 
 
@@ -45,10 +45,8 @@ We are currently working on making this React component available on NPM for eas
 The main components you want are: 
 
 * the wrapper component GeoTimeline.js which is found in the ./src/components/GeoTimeline/ folder and which has a function handlePatientIdSubmit that is used in the child UpFrontForm component to pass a patientId from child to parent. The GeoTimeline component renders the UpFrontForm if no patientId is in its state and renders the MapContainer if it does. If you have no need for an UpFrontForm then you can use the MapContainer directly, however you will need some other method then of passing a patientId as props into the MapContainer component.
-* The UpFrontForm.js component mentioned above which is found at ./src/
-
-
-* the MapContainer c
+* The UpFrontForm.js component mentioned above which is found in ./src/ folder. 
+* The MapContainer.js is found in the ./src/ folder and can be used on its own if copied into another project as its own component. It takes in a patientId and GoogleMaps API key as props.  
 
 ### Getting access to the data
 
