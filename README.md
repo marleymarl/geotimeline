@@ -50,11 +50,15 @@ The main components you want are:
 
 ### Getting access to the data
 
-On the demo site... In the app.. As a prop...
+On the demo site you have access to 'Save to CSV' button to download a csv file of the patient timeline collected with the map interface. In the app you can customize a button within MapContainer.js to save the state of the footPrints array to a custom destination. We will be adding custom destination as a prop on the component in the near future. 
 
 ### What's next
 
-Partnerships, Roadmap, Getting Feedback. 
+We are seeking partnerships with app developers and testing jurisdictions to facilitate as much critical timeline data collection and sharing as possible as quickly as possible. 
+
+For Roadmap, see Issues, as well check back at this section. 
+
+To volunteer to add to this project, please see our [Volunteer Sign-up Page](https://helpwithcovid.com/projects/245-geotime-data-input-of-historical-footprints-of-confirmed-cases-with-lat-lon-timestamp), or feel free to fork this repo and make a pull request. 
 
 ### Acknowledgements
 
