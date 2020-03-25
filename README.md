@@ -1,68 +1,71 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# GeoTime - Map Data Input For Confirmed Case Location History
 
-## Available Scripts
+This is a map-based React data input component that will output historical geo-timeline information for confirmed cases like what's available for Korea, Taiwan and Israel, but for any geo. 
 
-In the project directory, you can run:
+This project won the [Supply Chain and Medical Logistics](https://devpost.com/software/geotime-map-data-input-for-confirmed-case-location-history) prize at the [EndCoronavirus.org](https://www.endcoronavirus.org/) Hackathon on March 21-22, 2020.
 
-### `yarn start`
+This repository represents what is currently on the demo site for [GeoTime](https://geotime.gregmarlin.com). 
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+If you would like to contribute to this project, volunteer at our project listing on [helpwithcovid.com](https://helpwithcovid.com/projects/245-geotime-data-input-of-historical-footprints-of-confirmed-cases-with-lat-lon-timestamp).
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+The inspiration for this project was to provide an easy data entry layer so anyone can capture the type of data that Korea, Taiwan and Israel have in the [Data Science for Covid19 Rep](https://github.com/jihoo-kim/Data-Science-for-COVID-19/blob/master/dataset/Patient/PatientRoute.csv). This data is needed for apps that ...
 
-### `yarn test`
+Greg Marlin wrote a linked post that described a [rough spec](https://www.linkedin.com/posts/activity-6646431967925583873-P6hF) for these types of apps. From there is was clear that greatest need was for jurisdications outside of Korea, Taiwan and Isreal to first get this data. 
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Application developers can freely use this open source software in their own apps to facilitate this data capture efforts, either by cloning the repo or importing using NPM. Organizations that wish to use a version of this standalone demo app as part of a dedicated application, they are welcome to do so as well. The sofware is completely MIT open sourced. If any party would like help to integrate this component or demo application and for any other strategic partnership discussion, please don't hesitate to get in touch on [LinkedIn](https://www.linkedin.com/in/greg-marlin-8a4528a/) or through our project listing on [helpwithcovid.com](https://helpwithcovid.com/projects/245-geotime-data-input-of-historical-footprints-of-confirmed-cases-with-lat-lon-timestamp).
 
-### `yarn build`
+We ask that in all cases the data should be shared openly in a patient-anonymized way for use and analysis by application developers, including those making analysis dashboards and location-based mobile applications such as those described in the rough spec. We will shortly be providing an API URL for those need somewhere to save this information too and we will be saving that information to an open source repository on a daily bais. 
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Cloning the repository
 
-### `yarn eject`
+```bash
+git clone https://github.com/marleymarl/geotime
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Installing dependencies and starting demo
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+cd geotime && npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+npm start
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This project makes heavy use of [react-google-maps](https://www.npmjs.com/package/react-google-maps) and [Ant-Design](https://ant.design/).
 
-## Learn More
+### Importing as an NPM Module
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+We are currently working on making this React component available on NPM for easy install/import. The NPM link will be here when it is available. In the meantime you can view the status of that [here](https://github.com/marleymarl/geotime-npm).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Copying Component
 
-### Code Splitting
+The main components you want are: 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+* the wrapper component GeoTimeline.js which is found in the ./src/components/GeoTimeline/ folder and which has a function handlePatientIdSubmit that is used in the child UpFrontForm component to pass a patientId from child to parent. The GeoTimeline component renders the UpFrontForm if no patientId is in its state and renders the MapContainer if it does. If you have no need for an UpFrontForm then you can use the MapContainer directly, however you will need some other method then of passing a patientId as props into the MapContainer component.
+* The UpFrontForm.js component mentioned above which is found at ./src/
 
-### Analyzing the Bundle Size
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+* the MapContainer c
 
-### Making a Progressive Web App
+### Getting access to the data
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+On the demo site... In the app.. As a prop...
 
-### Advanced Configuration
+### What's next
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+Partnerships, Roadmap, Getting Feedback. 
 
-### Deployment
+### Acknowledgements
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+We'd like to recognize the great efforts of the team at [EndCoronavirus.org](https://www.endcoronavirus.org/) for putting on such a great hackathon on such short notice. 
 
-### `yarn build` fails to minify
+### Contributors
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+@marleymarl
+@maxbildner
+@drd161
+
+
