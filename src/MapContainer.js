@@ -1,11 +1,11 @@
 import React, {Component } from 'react'; 
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+import {Map, Marker, GoogleApiWrapper} from 'google-maps-react';
 // import { Form, FormItem, Input, InputNumber, Checkbox, DatePicker, TimePicker } from "formik-antd";
 // import { Formik, ErrorMessage } from 'formik';
-import { DatePicker, TimePicker, Form, Button, Modal, Table } from 'antd';
+import { DatePicker, TimePicker, Modal, Table } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
 
@@ -14,9 +14,6 @@ const map_style = {
   height: '100%',
 }
 
-function onChange(date, dateString) {
-	console.log(date, dateString)
-}
 
 export class MapContainer extends Component {
   state = {
@@ -173,19 +170,6 @@ export class MapContainer extends Component {
   }
 
 
-  formatData = () => {
-    let csvData = [ ["date", "time", "latitude", "longitude"] ];
-
-    this.state.footPrints.forEach((footPrint) => {
-      let newFootPrintArr = [];
-      newFootPrintArr.push(footPrint.date, footPrint.time, footPrint.lat, footPrint.lng);
-      csvData.push(newFootPrintArr);
-    });
-
-    return csvData;
-  }
-
-
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId)
   }
@@ -214,8 +198,6 @@ export class MapContainer extends Component {
       { title: 'latitude', dataIndex: 'latitude' },
       { title: 'longitude', dataIndex: 'longitude' }
     ];
-
-    let csvData = this.formatData();
     
     return(
       <div className="outer-wrap">
@@ -226,13 +208,9 @@ export class MapContainer extends Component {
           }}
           onClick={this.onMapClick}
         >
-
           {this.displayFootprints()}
-          {/* <InfoWindow
-            marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}
-            maxWidth={800}
-          > */}
+ 
+          {/* Modal for updating an existing marker */}
           <Modal
             visible={this.state.showingInfoWindow}
             marker={this.state.activeMarker}
@@ -240,30 +218,24 @@ export class MapContainer extends Component {
             onOk={this.handleUpdate}
             onCancel={this.handleCancel}
             okText='Update Footprint'
-          >
+            >
             <div>
-              {/* <Form> */}
                 <DatePicker 
                   defaultValue={moment(this.state.activeMarker.date)}
                   onChange={value => {
                     console.log(value._d);
                     return this.setState({ activeDate: value._d });
-                }} />
+                  }} />
                 <TimePicker 
                   defaultValue={moment(this.state.activeTime)}
                   onChange={ value => {
                     return this.setState({ activeTime: value._d });
-                }} />
-                {/* <Button type="primary" onClick={() => { 
-                  debugger
-                  console.log('yo'); 
-                }}>Save Footprint</Button> */}
-              {/* </Form> */}
+                  }} />
             </div>
           </Modal>
-          {/* </InfoWindow> */}
         </Map>
 
+        {/* Modal for creating a new marker */}
         <Modal 
           visible={this.state.showModal}
           onOk={this.handleOk}
@@ -282,7 +254,7 @@ export class MapContainer extends Component {
         <Table
           dataSource={dataSource}
           columns={columns}
-          pagination={false}    // buttons on bottom of table that show how which page to jump to
+          pagination={false}    // buttons on bottom of table that show which page number to jump to
           className='table-column'
           size='small'
           style={{ width: '40%', float: 'right' }}
@@ -291,7 +263,6 @@ export class MapContainer extends Component {
         <CSVLink 
           data={this.state.footPrints} 
           className="download-csv"
-          // style={{ float: 'right',  }}
         >
           Save to CSV
         </CSVLink>;
