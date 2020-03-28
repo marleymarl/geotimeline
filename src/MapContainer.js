@@ -6,6 +6,7 @@ import { DatePicker, TimePicker, Form, Button, Modal, Table } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
 import { CSVLink, CSVDownload } from "react-csv";
+import DateTimePickerModal from './components/DateTimePicketModal';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
 
@@ -77,8 +78,8 @@ export class MapContainer extends Component {
       selectedPlace: markerProps, 
       activeMarker: marker, 
       showingInfoWindow: true,
-      activeDate: footPrint.date,
-      activeTime: footPrint.time
+      activeDate: moment(footPrint.date),
+      activeTime: moment(footPrint.time)
     });
     //set state with activeMarker info, then use this.state.activeMarker.props to populate info for Modal
     //change info window visible state to true
@@ -115,8 +116,8 @@ export class MapContainer extends Component {
     newFootPrints.push({
       lat: activeLat,
       lng: activeLon,
-      date: activeDate,
-      time: activeTime
+      date: activeDate.utc().toDate(),
+      time: activeTime.utc().toDate(),
     });
     
     // update state
@@ -124,10 +125,11 @@ export class MapContainer extends Component {
       footPrints: newFootPrints,
       showModal: false,
       activeLat: '',
-      activeLon: ''
+      activeLon: '',
+      activeTime: '',
+      activeDate: '',
     }));
   }
-
 
   // clear active lat/lon and turn modal off
   handleCancel = () => {
@@ -135,6 +137,8 @@ export class MapContainer extends Component {
       this.setState({
         activeLat: '',
         activeLon: '',
+        activeTime: '',
+        activeDate: '',  
         showModal: false,
         showingInfoWindow: false
       })
@@ -194,12 +198,14 @@ export class MapContainer extends Component {
   render() {    
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
+      const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
+      const formattedTime = moment(footprint.time).format('hh:mm:ss A'); // 08:05:46 PM format
       return (
         {
           key: idx,
           patient_id: this.state.patientId,
-          date: footprint.date.toDateString(),
-          time: footprint.time.toTimeString(),
+          date: formattedDate,
+          time: formattedTime,
           // city: // to add later
           latitude: footprint.lat,
           longitude: footprint.lng
@@ -233,51 +239,17 @@ export class MapContainer extends Component {
             visible={this.state.showingInfoWindow}
             maxWidth={800}
           > */}
-          <Modal
-            visible={this.state.showingInfoWindow}
-            marker={this.state.activeMarker}
-            maxWidth={800}
-            onOk={this.handleUpdate}
-            onCancel={this.handleCancel}
-            okText='Update Footprint'
-          >
-            <div>
-              {/* <Form> */}
-                <DatePicker 
-                  defaultValue={moment(this.state.activeMarker.date)}
-                  onChange={value => {
-                    console.log(value._d);
-                    return this.setState({ activeDate: value._d });
-                }} />
-                <TimePicker 
-                  defaultValue={moment(this.state.activeTime)}
-                  onChange={ value => {
-                    return this.setState({ activeTime: value._d });
-                }} />
-                {/* <Button type="primary" onClick={() => { 
-                  debugger
-                  console.log('yo'); 
-                }}>Save Footprint</Button> */}
-              {/* </Form> */}
-            </div>
-          </Modal>
-          {/* </InfoWindow> */}
         </Map>
-
-        <Modal 
-          visible={this.state.showModal}
-          onOk={this.handleOk}
+        <DateTimePickerModal
+          visible={this.state.showModal || this.state.showingInfoWindow}
+          onOk={this.state.showModal ? this.handleOk : this.handleUpdate}
           onCancel={this.handleCancel}
-          okText='Save Footprint'
-        >
-          <DatePicker onChange={value => {
-            this.setState({activeDate: value._d}) 
-            console.log(value._d)}} />
-          <TimePicker onChange={value => {
-            this.setState({activeTime: value._d}) 
-            console.log(value._d)}} />
-        </Modal>
-        
+          okText={this.state.showModal ? 'Save Footprint' : 'Update Footprint'}
+          date={this.state.activeDate}
+          time={this.state.activeTime}
+          onDateChange={activeDate => this.setState({ activeDate })}
+          onTimeChange={activeTime => this.setState({ activeTime })}
+        />
         {/* Table outside of map that shows info from state  */}
         <Table
           dataSource={dataSource}
