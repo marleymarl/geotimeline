@@ -32,6 +32,7 @@ export class MapContainer extends Component {
       date: '',
       time: ''
     },
+    
     patientId: this.props.patientId,
     showingInfoWindow: false,
     showModal: false,
@@ -102,6 +103,7 @@ export class MapContainer extends Component {
 
     })
   }
+
 
 
   // When user clicks "save foot print" after inputing time data in modal
@@ -188,10 +190,12 @@ export class MapContainer extends Component {
 
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId)
+    
   }
 
 
-  render() {    
+  render() {  
+
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
       return (
@@ -221,8 +225,8 @@ export class MapContainer extends Component {
       <div className="outer-wrap">
         <Map google={this.props.google} style={map_style}
           initialCenter={{
-          lat: 43.6532, //change this to be set based on location input on form prior to map
-          lng: -79.3832,
+          lat: this.props.initialLat, //change this to be set based on location input on form prior to map
+          lng: this.props.initialLon,
           }}
           onClick={this.onMapClick}
         >
@@ -287,7 +291,7 @@ export class MapContainer extends Component {
           size='small'
           style={{ width: '40%', float: 'right' }}
         />
-
+        
         <CSVLink 
           data={this.state.footPrints} 
           className="download-csv"
@@ -295,6 +299,7 @@ export class MapContainer extends Component {
         >
           Save to CSV
         </CSVLink>;
+
       </div>
     );
   }
