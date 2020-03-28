@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { Form, FormItem, Input, Select, SubmitButton } from 'formik-antd';
 import { Formik, ErrorMessage } from 'formik';
 import 'antd/dist/antd.css';
+// import background image
+import Background from '../src/geotimescreenshot.jpg';
 
 const { Option } = Select;
 
@@ -267,7 +269,10 @@ const formWrapperStyles = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  height: '100vh'
+  height: '100vh',
+  backgroundImage: `url(${Background})`,
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat'
 };
 
 export default class upFrontForm extends Component {
@@ -298,34 +303,54 @@ export default class upFrontForm extends Component {
     // this.setState({initialCenter})
   };
 
+<<<<<<< Updated upstream
+=======
+  componentDidMount() {
+    console.log('up front props: ' + JSON.stringify(this.props));
+  }
+
+>>>>>>> Stashed changes
   render() {
     return (
       <div style={formWrapperStyles}>
+        <div className="descriptionWrapper">
+          <h1 className="form-header">{this.props.formHeader}</h1>
+          <p className="form-text">{this.props.description}</p>
+        </div>
         <Formik
           initialValues={{ city: '', country: '', patientId: '' }}
           validate={values => {
             let errors = {};
+<<<<<<< Updated upstream
             if (!values.city) {
               errors.city = 'Required';
             }
             if (!values.country) {
               errors.country = 'Required';
             }
+=======
+
+>>>>>>> Stashed changes
             if (!values.patientId) {
               errors.patientId = 'Required';
             }
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
+<<<<<<< Updated upstream
             let city = values.city;
             let country = values.country;
             // let patientId = values.patientId
+=======
+            let patientId = values.patientId;
+>>>>>>> Stashed changes
             console.log(values);
             this.testSubmit(city, country);
           }}
         >
           {({ isSubmitting }) => (
             <Form {...layout} layout="horizontal">
+<<<<<<< Updated upstream
               <FormItem name="city" label="City" required={true}>
                 <Input name="city" />
               </FormItem>
@@ -338,6 +363,8 @@ export default class upFrontForm extends Component {
                   ))}
                 </Select>
               </FormItem>
+=======
+>>>>>>> Stashed changes
               <FormItem name="patientId" label="Patient ID" required={true}>
                 <Input name="patientId" />
               </FormItem>
