@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
-import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+
+import React, {Component } from 'react'; 
+import {Map, Marker, GoogleApiWrapper} from 'google-maps-react';
+
 // import { Form, FormItem, Input, InputNumber, Checkbox, DatePicker, TimePicker } from "formik-antd";
 // import { Formik, ErrorMessage } from 'formik';
 import { DatePicker, TimePicker, Modal, Table } from 'antd';
@@ -14,9 +16,6 @@ const map_style = {
   height: '100%',
 }
 
-function onChange(date, dateString) {
-  console.log(date, dateString)
-}
 
 export class MapContainer extends Component {
   state = {
@@ -180,10 +179,7 @@ export class MapContainer extends Component {
     );
   }
 
-
-
-
-
+  
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId)
     
@@ -214,9 +210,8 @@ export class MapContainer extends Component {
       { title: 'longitude', dataIndex: 'longitude' }
     ];
 
-    let csvData = this.formatData();
-
-    return (
+    
+    return(
       <div className="outer-wrap">
         <Map google={this.props.google} style={map_style}
           initialCenter={{
@@ -225,9 +220,10 @@ export class MapContainer extends Component {
           }}
           onClick={this.onMapClick}
         >
-
           {this.displayFootprints()}
-          
+
+ 
+          {/* Modal for updating an existing marker */}
           <Modal
             visible={this.state.showingInfoWindow}
             marker={this.state.activeMarker}
@@ -235,31 +231,27 @@ export class MapContainer extends Component {
             onOk={this.handleUpdate}
             onCancel={this.handleCancel}
             okText='Update Footprint'
-          >
+            >
             <div>
-              {/* <Form> */}
-              <DatePicker
-                defaultValue={moment(this.state.activeMarker.date)}
-                onChange={value => {
-                  console.log(value._d);
-                  return this.setState({ activeDate: value._d });
-                }} />
-              <TimePicker
-                defaultValue={moment(this.state.activeTime)}
-                onChange={value => {
-                  return this.setState({ activeTime: value._d });
-                }} />
-              {/* <Button type="primary" onClick={() => { 
-                  debugger
-                  console.log('yo'); 
-                }}>Save Footprint</Button> */}
-              {/* </Form> */}
+
+                <DatePicker 
+                  defaultValue={moment(this.state.activeMarker.date)}
+                  onChange={value => {
+                    console.log(value._d);
+                    return this.setState({ activeDate: value._d });
+                  }} />
+                <TimePicker 
+                  defaultValue={moment(this.state.activeTime)}
+                  onChange={ value => {
+                    return this.setState({ activeTime: value._d });
+                  }} />
             </div>
           </Modal>
-          {/* </InfoWindow> */}
         </Map>
 
-        <Modal
+
+        {/* Modal for creating a new marker */}
+        <Modal 
           visible={this.state.showModal}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -283,7 +275,7 @@ export class MapContainer extends Component {
         <Table
           dataSource={dataSource}
           columns={columns}
-          pagination={false}    // buttons on bottom of table that show how which page to jump to
+          pagination={false}    // buttons on bottom of table that show which page number to jump to
           className='table-column'
           size='small'
           style={{ width: '40%', float: 'right' }}
@@ -292,7 +284,6 @@ export class MapContainer extends Component {
         <CSVLink
           data={this.state.footPrints}
           className="download-csv"
-        // style={{ float: 'right',  }}
         >
           Save to CSV
         </CSVLink>;

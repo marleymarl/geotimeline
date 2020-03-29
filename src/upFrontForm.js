@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { Button } from 'antd';
 import { Form, FormItem, Input, Select, SubmitButton } from 'formik-antd';
 import { Formik, ErrorMessage } from 'formik';
 import 'antd/dist/antd.css';
@@ -311,7 +310,7 @@ export default class upFrontForm extends Component {
   }
 
   render() {
-    // const handlePatientIdSubmit = this.props.handlePatientIdSubmit()
+    
     return (
       <div style={formWrapperStyles}>
         <Formik
