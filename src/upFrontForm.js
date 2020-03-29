@@ -276,9 +276,16 @@ const formWrapperStyles = {
 };
 
 export default class upFrontForm extends Component {
-  state = {
-    initialCenter: {}
-  };
+
+  constructor() {
+    super();
+    this.state = {
+      initialCenter: {}
+    };
+    this.patientIDInput =  React.createRef();
+
+  }
+  
 
   // displaySelectOptions = () => {
   // return countryCodes.map((country, index) => {
@@ -305,6 +312,7 @@ export default class upFrontForm extends Component {
 
   componentDidMount() {
     console.log('up front props: ' + JSON.stringify(this.props));
+    this.patientIDInput.current.focus();
   }
 
   render() {
@@ -334,7 +342,7 @@ export default class upFrontForm extends Component {
           {({ isSubmitting }) => (
             <Form {...layout} layout="horizontal">
               <FormItem name="patientId" label="Patient ID" required={true}>
-                <Input name="patientId" />
+                <Input ref={this.patientIDInput} name="patientId" />
               </FormItem>
               <SubmitButton disabled={isSubmitting}>
                 Start Timeline
