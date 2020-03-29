@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 // import { Form, FormItem, Input, InputNumber, Checkbox, DatePicker, TimePicker } from "formik-antd";
 // import { Formik, ErrorMessage } from 'formik';
-import { DatePicker, TimePicker, Form, Button, Modal, Table } from 'antd';
+import { DatePicker, TimePicker, Modal, Table } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
 const now = moment().format('YYYY-MM-DD');
@@ -181,17 +181,7 @@ export class MapContainer extends Component {
   }
 
 
-  formatData = () => {
-    let csvData = [["date", "time", "latitude", "longitude"]];
 
-    this.state.footPrints.forEach((footPrint) => {
-      let newFootPrintArr = [];
-      newFootPrintArr.push(footPrint.date, footPrint.time, footPrint.lat, footPrint.lng);
-      csvData.push(newFootPrintArr);
-    });
-
-    return csvData;
-  }
 
 
   componentDidMount() {
@@ -237,11 +227,7 @@ export class MapContainer extends Component {
         >
 
           {this.displayFootprints()}
-          {/* <InfoWindow
-            marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}
-            maxWidth={800}
-          > */}
+          
           <Modal
             visible={this.state.showingInfoWindow}
             marker={this.state.activeMarker}
