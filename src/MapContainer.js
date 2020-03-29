@@ -1,6 +1,6 @@
 
-import React, {Component } from 'react'; 
-import {Map, Marker, GoogleApiWrapper} from 'google-maps-react';
+import React, { Component } from 'react';
+import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 // import { Form, FormItem, Input, InputNumber, Checkbox, DatePicker, TimePicker } from "formik-antd";
 // import { Formik, ErrorMessage } from 'formik';
@@ -31,7 +31,7 @@ export class MapContainer extends Component {
       date: '',
       time: ''
     },
-    
+
     patientId: this.props.patientId,
     showingInfoWindow: false,
     showModal: false,
@@ -179,10 +179,10 @@ export class MapContainer extends Component {
     );
   }
 
-  
+
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId)
-    
+
   }
 
 
@@ -210,19 +210,19 @@ export class MapContainer extends Component {
       { title: 'longitude', dataIndex: 'longitude' }
     ];
 
-    
-    return(
+
+    return (
       <div className="outer-wrap">
         <Map google={this.props.google} style={map_style}
           initialCenter={{
-          lat: this.props.initialLat, //change this to be set based on location input on form prior to map
-          lng: this.props.initialLon,
+            lat: this.props.initialLat, //change this to be set based on location input on form prior to map
+            lng: this.props.initialLon,
           }}
           onClick={this.onMapClick}
         >
           {this.displayFootprints()}
 
- 
+
           {/* Modal for updating an existing marker */}
           <Modal
             visible={this.state.showingInfoWindow}
@@ -231,28 +231,29 @@ export class MapContainer extends Component {
             onOk={this.handleUpdate}
             onCancel={this.handleCancel}
             okText='Update Footprint'
-            >
+          >
             <div>
 
-                <DatePicker 
-                  defaultValue={moment(this.state.activeMarker.date)}
-                  onChange={value => {
-                    console.log(value._d);
-                    return this.setState({ activeDate: value._d });
-                  }} />
-                <TimePicker 
-                  defaultValue={moment(this.state.activeTime)}
-                  onChange={ value => {
-                    return this.setState({ activeTime: value._d });
-                  }} />
+              <DatePicker
+                defaultValue={moment(this.state.activeMarker.date)}
+                onChange={value => {
+                  console.log(value._d);
+                  return this.setState({ activeDate: value._d });
+                }} />
+              <TimePicker
+                defaultValue={moment(this.state.activeTime)}
+                onChange={value => {
+                  return this.setState({ activeTime: value._d });
+                }} />
             </div>
           </Modal>
         </Map>
 
 
         {/* Modal for creating a new marker */}
-        <Modal 
+        <Modal
           visible={this.state.showModal}
+          destroyOnClose={true}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           okText='Save Footprint'
