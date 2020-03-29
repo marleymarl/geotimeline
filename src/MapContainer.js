@@ -226,6 +226,7 @@ export class MapContainer extends Component {
           {/* Modal for updating an existing marker */}
           <Modal
             visible={this.state.showingInfoWindow}
+            destroyOnClose={true}
             marker={this.state.activeMarker}
             maxWidth={800}
             onOk={this.handleUpdate}
@@ -235,7 +236,7 @@ export class MapContainer extends Component {
             <div>
 
               <DatePicker
-                defaultValue={moment(this.state.activeMarker.date)}
+                defaultValue={moment(this.state.activeDate)}
                 onChange={value => {
                   console.log(value._d);
                   return this.setState({ activeDate: value._d });
