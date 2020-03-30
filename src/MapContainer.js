@@ -4,18 +4,13 @@ import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 // import { Form, FormItem, Input, InputNumber, Checkbox, DatePicker, TimePicker } from "formik-antd";
 // import { Formik, ErrorMessage } from 'formik';
-import { Table } from 'antd';
+import { Table, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
 import { CSVLink, CSVDownload } from "react-csv";
 import DateTimePickerModal from './components/DateTimePickerModal';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
-const map_style = {
-  width: '60%',
-  height: '100%',
-}
-
 
 export class MapContainer extends Component {
   state = {
@@ -214,50 +209,53 @@ export class MapContainer extends Component {
 
     return (
       <div className="outer-wrap">
-        <Map google={this.props.google} style={map_style}
-          initialCenter={{
-            lat: this.props.initialLat, //change this to be set based on location input on form prior to map
-            lng: this.props.initialLon,
-          }}
-          onClick={this.onMapClick}
-        >
-          {this.displayFootprints()}
+        <Row>
+          <Col flex={3}>
+            <Map google={this.props.google}
+              initialCenter={{
+                lat: this.props.initialLat, //change this to be set based on location input on form prior to map
+                lng: this.props.initialLon,
+              }}
+              onClick={this.onMapClick}
+            >
+              {this.displayFootprints()}
 
-          {/* <InfoWindow
-            marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}
-            maxWidth={800}
-          > */}
-        </Map>
+              {/* <InfoWindow
+                marker={this.state.activeMarker}
+                visible={this.state.showingInfoWindow}
+                maxWidth={800}
+              > */}
+            </Map>
 
-        <DateTimePickerModal
-          visible={this.state.showModal || this.state.showingInfoWindow}
-          onOk={this.state.showModal ? this.handleOk : this.handleUpdate}
-          onCancel={this.handleCancel}
-          okText={this.state.showModal ? 'Save Footprint' : 'Update Footprint'}
-          date={this.state.activeDate}
-          time={this.state.activeTime}
-          onDateChange={activeDate => this.setState({ activeDate })}
-          onTimeChange={activeTime => this.setState({ activeTime })}
-        />
+            <DateTimePickerModal
+              visible={this.state.showModal || this.state.showingInfoWindow}
+              onOk={this.state.showModal ? this.handleOk : this.handleUpdate}
+              onCancel={this.handleCancel}
+              okText={this.state.showModal ? 'Save Footprint' : 'Update Footprint'}
+              date={this.state.activeDate}
+              time={this.state.activeTime}
+              onDateChange={activeDate => this.setState({ activeDate })}
+              onTimeChange={activeTime => this.setState({ activeTime })}
+            />
+          </Col>
+          <Col flex={1}>
+            {/* Table outside of map that shows info from state  */}
+            <Table
+              dataSource={dataSource}
+              columns={columns}
+              pagination={false}    // buttons on bottom of table that show which page number to jump to
+              className='table-column'
+              size='small'
+            />
 
-        {/* Table outside of map that shows info from state  */}
-        <Table
-          dataSource={dataSource}
-          columns={columns}
-          pagination={false}    // buttons on bottom of table that show which page number to jump to
-          className='table-column'
-          size='small'
-          style={{ width: '40%', float: 'right' }}
-        />
-
-        <CSVLink
-          data={this.state.footPrints}
-          className="download-csv"
-        >
-          Save to CSV
-        </CSVLink>;
-
+            <CSVLink
+              data={this.state.footPrints}
+              className="download-csv"
+            >
+              Save to CSV
+            </CSVLink>
+          </Col>
+        </Row>
       </div>
     );
   }
