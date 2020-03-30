@@ -4,7 +4,7 @@ import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 // import { Form, FormItem, Input, InputNumber, Checkbox, DatePicker, TimePicker } from "formik-antd";
 // import { Formik, ErrorMessage } from 'formik';
-import { DatePicker, TimePicker, Modal, Table } from 'antd';
+import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
 import { CSVLink, CSVDownload } from "react-csv";
