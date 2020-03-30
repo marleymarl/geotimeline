@@ -11,6 +11,7 @@ const DateTimePickerModal = (props) => {
   return (
     <Modal
       visible={visible}
+      destroyOnClose={true}
       onOk={onOk}
       onCancel={onCancel}
       okText={okText}
