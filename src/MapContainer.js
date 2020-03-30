@@ -8,7 +8,7 @@ import { DatePicker, TimePicker, Modal, Table } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
 import { CSVLink, CSVDownload } from "react-csv";
-import DateTimePickerModal from './components/DateTimePicketModal';
+import DateTimePickerModal from './components/DateTimePickerModal';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
 const now = moment().format('YYYY-MM-DD');
@@ -145,7 +145,7 @@ export class MapContainer extends Component {
         activeLat: '',
         activeLon: '',
         activeTime: '',
-        activeDate: '',  
+        activeDate: '',
         showModal: false,
         showingInfoWindow: false
       })
