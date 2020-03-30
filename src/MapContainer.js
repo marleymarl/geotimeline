@@ -57,7 +57,9 @@ export class MapContainer extends Component {
       this.setState({
         showModal: true,
         activeLat: latitude,
-        activeLon: longitude
+        activeLon: longitude,
+        activeDate: moment(),
+        activeTime: moment(),
       });
     }
   }
