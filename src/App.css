@@ -37,6 +37,6 @@
   }
 }
 
-div {
+#root, .App, .App>div , .outer-wrap, .ant-row, .ant-col {
   height: 100%;
 }
