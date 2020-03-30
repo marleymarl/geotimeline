@@ -11,7 +11,6 @@ import { CSVLink, CSVDownload } from "react-csv";
 import DateTimePickerModal from './components/DateTimePickerModal';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
-const now = moment().format('YYYY-MM-DD');
 const map_style = {
   width: '60%',
   height: '100%',
@@ -111,12 +110,6 @@ export class MapContainer extends Component {
   // When user clicks "save foot print" after inputing time data in modal
   handleOk = () => {
     var { activeLat, activeLon, activeDate, activeTime } = this.state
-    if (!activeDate) {
-      activeDate = moment(now).toDate()
-    }
-    if (!activeTime) {
-      activeTime = moment(now + ' 00:00:01').toDate()
-    }
 
     // copy footprints so we don't modify state indirectly
     let newFootPrints = this.state.footPrints.slice();
