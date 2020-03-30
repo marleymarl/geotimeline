@@ -1,23 +1,22 @@
-import React, {Component } from 'react'; 
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+
+import React, { Component } from 'react';
+import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+
 // import { Form, FormItem, Input, InputNumber, Checkbox, DatePicker, TimePicker } from "formik-antd";
 // import { Formik, ErrorMessage } from 'formik';
-import { DatePicker, TimePicker, Form, Button, Modal, Table } from 'antd';
+import { DatePicker, TimePicker, Modal, Table } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
 import { CSVLink, CSVDownload } from "react-csv";
 import DateTimePickerModal from './components/DateTimePicketModal';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
-
+const now = moment().format('YYYY-MM-DD');
 const map_style = {
   width: '60%',
   height: '100%',
 }
 
-function onChange(date, dateString) {
-	console.log(date, dateString)
-}
 
 export class MapContainer extends Component {
   state = {
@@ -26,13 +25,14 @@ export class MapContainer extends Component {
     activeDate: '',
     activeLon: '',
     activeLat: '',
-    activeTime: '', 
+    activeTime: '',
     activeMarker: {
       lat: '',
       lon: '',
       date: '',
       time: ''
     },
+
     patientId: this.props.patientId,
     showingInfoWindow: false,
     showModal: false,
@@ -69,14 +69,14 @@ export class MapContainer extends Component {
     const longitude = markerProps.position.lng;
 
     // grab footPrint in state that matches with lat/lng position
-    const footPrint = this.state.footPrints.filter((footprint)=> {
+    const footPrint = this.state.footPrints.filter((footprint) => {
       return footprint.lat === latitude && footprint.lng === longitude;
-    })[0];    
+    })[0];
 
     // update state with date/time and active marker
-    this.setState({ 
-      selectedPlace: markerProps, 
-      activeMarker: marker, 
+    this.setState({
+      selectedPlace: markerProps,
+      activeMarker: marker,
       showingInfoWindow: true,
       activeDate: moment(footPrint.date),
       activeTime: moment(footPrint.time)
@@ -105,9 +105,16 @@ export class MapContainer extends Component {
   }
 
 
+
   // When user clicks "save foot print" after inputing time data in modal
   handleOk = () => {
-    const { activeLat, activeLon, activeDate, activeTime } = this.state
+    var { activeLat, activeLon, activeDate, activeTime } = this.state
+    if (!activeDate) {
+      activeDate = moment(now).toDate()
+    }
+    if (!activeTime) {
+      activeTime = moment(now + ' 00:00:01').toDate()
+    }
 
     // copy footprints so we don't modify state indirectly
     let newFootPrints = this.state.footPrints.slice();
@@ -119,7 +126,7 @@ export class MapContainer extends Component {
       date: activeDate.utc().toDate(),
       time: activeTime.utc().toDate(),
     });
-    
+
     // update state
     return (this.setState({
       footPrints: newFootPrints,
@@ -154,7 +161,7 @@ export class MapContainer extends Component {
 
     // shallow copy footprints array
     let newFootPrints = this.state.footPrints.slice();
-    
+
     // grab footprint and index in newFootPrints that matches lat/lon
     let footPrint = newFootPrints.filter((footprint) => {
       return footprint.lat === latitude && footprint.lng === longitude;
@@ -177,25 +184,13 @@ export class MapContainer extends Component {
   }
 
 
-  formatData = () => {
-    let csvData = [ ["date", "time", "latitude", "longitude"] ];
-
-    this.state.footPrints.forEach((footPrint) => {
-      let newFootPrintArr = [];
-      newFootPrintArr.push(footPrint.date, footPrint.time, footPrint.lat, footPrint.lng);
-      csvData.push(newFootPrintArr);
-    });
-
-    return csvData;
-  }
-
-
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId)
+
   }
 
 
-  render() {    
+  render() {
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
       const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
@@ -213,33 +208,33 @@ export class MapContainer extends Component {
       );
     });
 
-    const columns = [ 
-      { title: 'patient_id', dataIndex: 'patient_id' }, 
+    const columns = [
+      { title: 'patient_id', dataIndex: 'patient_id' },
       { title: 'date', dataIndex: 'date' },
       { title: 'time', dataIndex: 'time' },
       { title: 'latitude', dataIndex: 'latitude' },
       { title: 'longitude', dataIndex: 'longitude' }
     ];
 
-    let csvData = this.formatData();
-    
-    return(
+
+    return (
       <div className="outer-wrap">
         <Map google={this.props.google} style={map_style}
           initialCenter={{
-          lat: 43.6532, //change this to be set based on location input on form prior to map
-          lng: -79.3832,
+            lat: this.props.initialLat, //change this to be set based on location input on form prior to map
+            lng: this.props.initialLon,
           }}
           onClick={this.onMapClick}
         >
-
           {this.displayFootprints()}
+
           {/* <InfoWindow
             marker={this.state.activeMarker}
             visible={this.state.showingInfoWindow}
             maxWidth={800}
           > */}
         </Map>
+
         <DateTimePickerModal
           visible={this.state.showModal || this.state.showingInfoWindow}
           onOk={this.state.showModal ? this.handleOk : this.handleUpdate}
@@ -250,23 +245,24 @@ export class MapContainer extends Component {
           onDateChange={activeDate => this.setState({ activeDate })}
           onTimeChange={activeTime => this.setState({ activeTime })}
         />
+
         {/* Table outside of map that shows info from state  */}
         <Table
           dataSource={dataSource}
           columns={columns}
-          pagination={false}    // buttons on bottom of table that show how which page to jump to
+          pagination={false}    // buttons on bottom of table that show which page number to jump to
           className='table-column'
           size='small'
           style={{ width: '40%', float: 'right' }}
         />
 
-        <CSVLink 
-          data={this.state.footPrints} 
+        <CSVLink
+          data={this.state.footPrints}
           className="download-csv"
-          // style={{ float: 'right',  }}
         >
           Save to CSV
         </CSVLink>;
+
       </div>
     );
   }

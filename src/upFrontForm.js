@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { Button } from 'antd';
 import { Form, FormItem, Input, Select, SubmitButton } from 'formik-antd';
 import { Formik, ErrorMessage } from 'formik';
 import 'antd/dist/antd.css';
@@ -271,9 +270,16 @@ const formWrapperStyles = {
 };
 
 export default class upFrontForm extends Component {
-  state = {
-    initialCenter: {}
-  };
+
+  constructor() {
+    super();
+    this.state = {
+      initialCenter: {}
+    };
+    this.patientIDInput =  React.createRef();
+
+  }
+  
 
   // displaySelectOptions = () => {
   // return countryCodes.map((country, index) => {
@@ -299,11 +305,12 @@ export default class upFrontForm extends Component {
   };
 
   componentDidMount() {
-    console.log('up front props: ' + JSON.stringify(this.props))
+    console.log('up front props: ' + JSON.stringify(this.props));
+    this.patientIDInput.current.focus();
   }
 
   render() {
-    // const handlePatientIdSubmit = this.props.handlePatientIdSubmit()
+    
     return (
       <div style={formWrapperStyles}>
         <Formik
@@ -327,7 +334,7 @@ export default class upFrontForm extends Component {
             <Form {...layout} layout="horizontal">
               
               <FormItem name="patientId" label="Patient ID" required={true}>
-                <Input name="patientId" />
+                <Input ref={this.patientIDInput} name="patientId" />
               </FormItem>
               <SubmitButton disabled={isSubmitting}>
                 Start Timeline
