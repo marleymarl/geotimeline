@@ -204,8 +204,8 @@ export class MapContainer extends Component {
           date: formattedDate,
           time: formattedTime,
           // city: // to add later
-          latitude: footprint.lat,
-          longitude: footprint.lng
+          latitude: footprint.lat.toFixed(6),
+          longitude: footprint.lng.toFixed(6)
         }
       );
     });
