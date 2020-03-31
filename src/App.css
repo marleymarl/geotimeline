@@ -41,8 +41,10 @@
   height: 100%;
 }
 
-.ant-col.data {
-  max-width: 40% !important;
+@media (min-width: 920px) {
+  .ant-col.data {
+    max-width: 40% !important;
+  }
 }
 
 .download-csv {
@@ -50,8 +52,18 @@
   position: relative;
 }
 
+.burger {
+  display: none;
+}
+
 @media (max-width: 920px) {
   .ant-col.data {
     display: none;
+  }
+  .burger {
+    display: block;
+    position: absolute; 
+    bottom: 20px;
+    left: 20px
   }
 }

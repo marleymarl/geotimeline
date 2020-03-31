@@ -179,6 +179,18 @@ export class MapContainer extends Component {
 
   }
 
+  toggleInfoTable() {
+    var objData = document.getElementById("data")
+    var objMap = document.getElementById("map")
+    if (objMap.style.display == "") {
+      objData.style.display = "block"
+      objMap.style.display = "none"
+    } else {
+      objData.style.display = ""
+      objMap.style.display = ""
+    }
+  }
+
 
   render() {
     // format datasource for rendering table (datasource is an arr of objects)
@@ -210,7 +222,7 @@ export class MapContainer extends Component {
     return (
       <div className="outer-wrap">
         <Row>
-          <Col flex={3} className="map">
+          <Col flex={3} id="map" className="map">
             <Map google={this.props.google}
               initialCenter={{
                 lat: this.props.initialLat, //change this to be set based on location input on form prior to map
@@ -238,7 +250,7 @@ export class MapContainer extends Component {
               onTimeChange={activeTime => this.setState({ activeTime })}
             />
           </Col>
-          <Col flex={2} className="data">
+          <Col flex={2} id="data" className="data">
             {/* Table outside of map that shows info from state  */}
             <Table
               dataSource={dataSource}
@@ -256,6 +268,9 @@ export class MapContainer extends Component {
             </CSVLink>
           </Col>
         </Row>
+        <div className="burger">
+          <button onClick={this.toggleInfoTable}>...</button>
+        </div>
       </div>
     );
   }
