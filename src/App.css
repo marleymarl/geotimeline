@@ -44,3 +44,8 @@
 .ant-col.data {
   max-width: 40% !important;
 }
+
+.download-csv {
+  top: 50px;
+  position: relative;
+}
