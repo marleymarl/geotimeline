@@ -49,3 +49,9 @@
   top: 50px;
   position: relative;
 }
+
+@media (max-width: 920px) {
+  .ant-col.data {
+    display: none;
+  }
+}
