@@ -261,7 +261,7 @@ export class MapContainer extends Component {
             />
 
             <CSVLink
-              data={this.state.footPrints}
+              data={dataSource}
               className="download-csv"
             >
               Save to CSV
