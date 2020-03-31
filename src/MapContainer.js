@@ -210,7 +210,7 @@ export class MapContainer extends Component {
     return (
       <div className="outer-wrap">
         <Row>
-          <Col flex={3}>
+          <Col flex={3} className="map">
             <Map google={this.props.google}
               initialCenter={{
                 lat: this.props.initialLat, //change this to be set based on location input on form prior to map
@@ -238,7 +238,7 @@ export class MapContainer extends Component {
               onTimeChange={activeTime => this.setState({ activeTime })}
             />
           </Col>
-          <Col flex={1}>
+          <Col flex={2} className="data">
             {/* Table outside of map that shows info from state  */}
             <Table
               dataSource={dataSource}
