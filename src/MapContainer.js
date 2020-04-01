@@ -7,7 +7,7 @@ import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { Table, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
-import { CSVLink } from "./components/CSVLink/CSVLink";
+import { CSVLink } from "react-csv";
 import DateTimePickerModal from './components/DateTimePickerModal';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
@@ -184,10 +184,10 @@ export class MapContainer extends Component {
     });
 
     return (
-        this.setState(Object.assign({}, this.state, {
-          footPrints: newFootPrints,
-          showingInfoWindow: false,
-        }))
+      this.setState(Object.assign({}, this.state, {
+        footPrints: newFootPrints,
+        showingInfoWindow: false,
+      }))
     );
   }
 
