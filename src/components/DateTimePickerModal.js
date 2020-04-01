@@ -22,7 +22,7 @@ const DateTimePickerModal = (props) => {
       footer={[
         editMode ? '' :
           <Button key="delete" type="danger" onClick={onDelete}>
-            Delete Footprint
+            Delete
           </Button>,
         <Button key="back" onClick={onCancel}>
           Cancel
