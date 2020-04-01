@@ -1,5 +1,6 @@
 import React from 'react';
-import {DatePicker, TimePicker, Modal, Button} from 'antd';
+import moment from 'moment';
+import { DatePicker, TimePicker, Modal, Button } from 'antd';
 
 const DateTimePickerModal = (props) => {
 
@@ -7,6 +8,10 @@ const DateTimePickerModal = (props) => {
     visible, onOk, onCancel, onDelete, editMode, date,
     onDateChange, time, onTimeChange,
   } = props;
+
+  function disabledFutureDate(current) {
+    return !(moment().isAfter(current));
+  }
 
   return (
     <Modal
@@ -16,8 +21,8 @@ const DateTimePickerModal = (props) => {
       onCancel={onCancel}
       footer={[
         editMode ? '' :
-        <Button key="delete" type="danger" onClick={onDelete}>
-          Delete Footprint
+          <Button key="delete" type="danger" onClick={onDelete}>
+            Delete Footprint
         </Button>,
         <Button key="back" onClick={onCancel}>
           Cancel
@@ -30,6 +35,7 @@ const DateTimePickerModal = (props) => {
       <DatePicker
         value={date}
         onChange={onDateChange}
+        disabledDate={disabledFutureDate}
       />
       <TimePicker
         value={time}
