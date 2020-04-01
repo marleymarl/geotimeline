@@ -173,6 +173,23 @@ export class MapContainer extends Component {
     );
   }
 
+  handleDelete = () => {
+    const { activeMarker } = this.state;
+    const latitude = activeMarker.position.lat()
+    const longitude = activeMarker.position.lng()
+
+    // filter out selected footprint
+    const newFootPrints = this.state.footPrints.filter((footprint) => {
+      return footprint.lat !== latitude || footprint.lng !== longitude;
+    });
+
+    return (
+        this.setState(Object.assign({}, this.state, {
+          footPrints: newFootPrints,
+          showingInfoWindow: false,
+        }))
+    );
+  }
 
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId)
@@ -243,7 +260,8 @@ export class MapContainer extends Component {
               visible={this.state.showModal || this.state.showingInfoWindow}
               onOk={this.state.showModal ? this.handleOk : this.handleUpdate}
               onCancel={this.handleCancel}
-              okText={this.state.showModal ? 'Save Footprint' : 'Update Footprint'}
+              onDelete={this.handleDelete}
+              editMode={this.state.showModal}
               date={this.state.activeDate}
               time={this.state.activeTime}
               onDateChange={activeDate => this.setState({ activeDate })}
