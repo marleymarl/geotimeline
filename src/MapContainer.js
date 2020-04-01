@@ -212,10 +212,9 @@ export class MapContainer extends Component {
       body: JSON.stringify(footPrintWithCaseID)
     };
 
-
     fetch('https://jsonplaceholder.typicode.com/posts', requestOptions)
       .then(response => response.json())
-      .then(json => console.log(json))
+      .then((json) => {alert(JSON.stringify(json)); window.location.reload(false)})
       .catch(error => {
         console.error('Something went wrong:', error);
       });
