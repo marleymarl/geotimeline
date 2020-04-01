@@ -7,7 +7,7 @@ import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { Table, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "./components/CSVLink/CSVLink";
 import DateTimePickerModal from './components/DateTimePickerModal';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
