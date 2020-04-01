@@ -30,7 +30,6 @@ export class MapContainer extends Component {
     selectedPlace: {}
   }
 
-
   // When user clicks on the map, a red marker shows up
   onMapClick = (mapProps, map, clickEvent) => {
     let markerLatLng = clickEvent.latLng
@@ -54,7 +53,6 @@ export class MapContainer extends Component {
     }
   }
 
-
   // When user clicks on a red marker, an infobox pops up displaying the time for that marker
   superMarkerClick = (markerProps, marker, clickEvent) => {
     const latitude = markerProps.position.lat;
@@ -75,7 +73,6 @@ export class MapContainer extends Component {
     });
   }
 
-
   displayFootprints = () => {
     return this.state.footPrints.map((footprint, index) => {
       return <Marker
@@ -88,8 +85,6 @@ export class MapContainer extends Component {
       />
     })
   }
-
-
 
   // When user clicks "save foot print" after inputing time data in modal
   handleOk = () => {
@@ -130,7 +125,6 @@ export class MapContainer extends Component {
       })
     );
   }
-
 
   // update footprint with new date/time
   handleUpdate = (prop) => {
@@ -195,7 +189,6 @@ export class MapContainer extends Component {
       objMap.style.display = ""
     }
   }
-
 
   render() {
     // format datasource for rendering table (datasource is an arr of objects)
