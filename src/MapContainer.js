@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
-// import { Form, FormItem, Input, InputNumber, Checkbox, DatePicker, TimePicker } from "formik-antd";
-// import { Formik, ErrorMessage } from 'formik';
 import { Table, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
@@ -15,7 +13,6 @@ var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
 export class MapContainer extends Component {
   state = {
     footPrints: [],
-    // footPrints: [{lat: 43.65509405622337, lng: -79.38795019216536, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64756139911764, lng: -79.41372555024623, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64420752674433, lng: -79.39767521150111, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'} ],
     activeDate: '',
     activeLon: '',
     activeLat: '',
@@ -36,7 +33,6 @@ export class MapContainer extends Component {
 
   // When user clicks on the map, a red marker shows up
   onMapClick = (mapProps, map, clickEvent) => {
-    console.log('Greg is awesome because: ' + JSON.stringify(clickEvent))
     let markerLatLng = clickEvent.latLng
     const latitude = markerLatLng.lat();
     const longitude = markerLatLng.lng();
@@ -77,11 +73,6 @@ export class MapContainer extends Component {
       activeDate: moment(footPrint.date),
       activeTime: moment(footPrint.time)
     });
-    //set state with activeMarker info, then use this.state.activeMarker.props to populate info for Modal
-    //change info window visible state to true
-    //then take date and time data from the pickers, along with activeMarker props and push that as footprint into the footprint array in state
-    //on Component Save (needs to be parent component method) take footprint array and save it as a child prop of CaseTimeline Component
-    //CaseTimeline is parent of MapContainer which is parent of Map, Marker, Modal, Form, DatePicker, TimePicker
   }
 
 
@@ -94,9 +85,7 @@ export class MapContainer extends Component {
           lng: footprint.lng
         }}
         onClick={this.superMarkerClick}
-
       />
-
     })
   }
 
@@ -193,7 +182,6 @@ export class MapContainer extends Component {
 
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId)
-
   }
 
   toggleInfoTable() {
@@ -235,7 +223,6 @@ export class MapContainer extends Component {
       { title: 'longitude', dataIndex: 'longitude' }
     ];
 
-
     return (
       <div className="outer-wrap">
         <Row>
@@ -248,12 +235,6 @@ export class MapContainer extends Component {
               onClick={this.onMapClick}
             >
               {this.displayFootprints()}
-
-              {/* <InfoWindow
-                marker={this.state.activeMarker}
-                visible={this.state.showingInfoWindow}
-                maxWidth={800}
-              > */}
             </Map>
 
             <DateTimePickerModal
