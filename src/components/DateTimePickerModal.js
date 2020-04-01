@@ -1,10 +1,10 @@
 import React from 'react';
-import { DatePicker, TimePicker, Modal } from 'antd';
+import {DatePicker, TimePicker, Modal, Button} from 'antd';
 
 const DateTimePickerModal = (props) => {
 
   const {
-    visible, onOk, onCancel, okText, date,
+    visible, onOk, onCancel, onDelete, editMode, date,
     onDateChange, time, onTimeChange,
   } = props;
 
@@ -14,7 +14,18 @@ const DateTimePickerModal = (props) => {
       destroyOnClose={true}
       onOk={onOk}
       onCancel={onCancel}
-      okText={okText}
+      footer={[
+        editMode ? '' :
+        <Button key="delete" type="danger" onClick={onDelete}>
+          Delete Footprint
+        </Button>,
+        <Button key="back" onClick={onCancel}>
+          Cancel
+        </Button>,
+        <Button key="submit" type="primary" onClick={onOk}>
+          {editMode ? 'Save Footprint' : 'Update Footprint'}
+        </Button>,
+      ]}
     >
       <DatePicker
         value={date}
