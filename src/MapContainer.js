@@ -12,24 +12,34 @@ import DateTimePickerModal from './components/DateTimePickerModal';
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
 
 export class MapContainer extends Component {
-  state = {
-    footPrints: [],
-    activeDate: '',
-    activeLon: '',
-    activeLat: '',
-    activeTime: '',
-    activeMarker: {
-      lat: '',
-      lon: '',
-      date: '',
-      time: ''
-    },
 
-    patientId: this.props.patientId,
-    showingInfoWindow: false,
-    showModal: false,
-    selectedPlace: {}
+  constructor(props) {
+    super(props);
+    this.state = {
+      footPrints: [],
+      // footPrints: [{lat: 43.65509405622337, lng: -79.38795019216536, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64756139911764, lng: -79.41372555024623, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64420752674433, lng: -79.39767521150111, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'} ],
+      activeDate: '',
+      activeLon: '',
+      activeLat: '',
+      activeTime: '',
+      activeMarker: {
+        lat: '',
+        lon: '',
+        date: '',
+        time: ''
+      },
+
+      patientId: this.props.patientId,
+      showingInfoWindow: false,
+      showModal: false,
+      selectedPlace: {}
+    }
+
+    this.postData = this.postData.bind(this)
+
   }
+
+
 
   // When user clicks on the map, a red marker shows up
   onMapClick = (mapProps, map, clickEvent) => {
@@ -201,6 +211,36 @@ export class MapContainer extends Component {
     }
   }
 
+   postData() {
+
+     const footPrintWithCaseID = this.state.footPrints.map((obj) => {
+       
+       let row = {};
+       row.case_id = this.props.patientId;
+       row.date = obj.date;
+       row.time = obj.time;
+       row.latitude = obj.lat;
+       row.longitude = obj.lng;
+
+       return row
+     })
+
+
+    const requestOptions = {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json'},
+       body: JSON.stringify(footPrintWithCaseID)
+     };
+     console.log(JSON.stringify(footPrintWithCaseID));
+    fetch(' https://cn1aotmhx0.execute-api.us-east-1.amazonaws.com/default/savetimeline', requestOptions)
+       .then(response => response.json())
+       //.then((json) => {alert(JSON.stringify(requestOptions)); window.location.reload(false)})
+       .catch(error => {
+         console.error('Something went wrong:', error);
+       });
+  }
+
+
   render() {
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
@@ -277,6 +317,10 @@ export class MapContainer extends Component {
             >
               Save to CSV
             </CSVLink>
+            <div >
+              <button className="save-button" onClick={this.postData}>save</button>
+            </div>
+
           </Col>
         </Row>
         <div className="burger">
