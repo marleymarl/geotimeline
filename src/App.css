@@ -82,3 +82,10 @@
     left: 20px
   }
 }
+
+.up-front-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+}

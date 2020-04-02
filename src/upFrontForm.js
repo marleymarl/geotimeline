@@ -262,13 +262,6 @@ const layout = {
   wrapperCol: { span: 8 }
 };
 
-const formWrapperStyles = {
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  height: '100vh'
-};
-
 export default class upFrontForm extends Component {
 
   constructor() {
@@ -312,7 +305,7 @@ export default class upFrontForm extends Component {
   render() {
     
     return (
-      <div style={formWrapperStyles}>
+      <div className="up-front-form-wrapper">
         <Formik
           initialValues={{ patientId: '' }}
           validate={values => {

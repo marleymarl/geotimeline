@@ -2,12 +2,10 @@
 import React, { Component } from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
-// import { Form, FormItem, Input, InputNumber, Checkbox, DatePicker, TimePicker } from "formik-antd";
-// import { Formik, ErrorMessage } from 'formik';
 import { Table, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
-import { CSVLink } from "./components/CSVLink/CSVLink";
+import { CSVLink } from "react-csv";
 import DateTimePickerModal from './components/DateTimePickerModal';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
@@ -44,7 +42,6 @@ export class MapContainer extends Component {
 
   // When user clicks on the map, a red marker shows up
   onMapClick = (mapProps, map, clickEvent) => {
-    console.log('Greg is awesome because: ' + JSON.stringify(clickEvent))
     let markerLatLng = clickEvent.latLng
     const latitude = markerLatLng.lat();
     const longitude = markerLatLng.lng();
@@ -66,7 +63,6 @@ export class MapContainer extends Component {
     }
   }
 
-
   // When user clicks on a red marker, an infobox pops up displaying the time for that marker
   superMarkerClick = (markerProps, marker, clickEvent) => {
     const latitude = markerProps.position.lat;
@@ -85,13 +81,7 @@ export class MapContainer extends Component {
       activeDate: moment(footPrint.date),
       activeTime: moment(footPrint.time)
     });
-    //set state with activeMarker info, then use this.state.activeMarker.props to populate info for Modal
-    //change info window visible state to true
-    //then take date and time data from the pickers, along with activeMarker props and push that as footprint into the footprint array in state
-    //on Component Save (needs to be parent component method) take footprint array and save it as a child prop of CaseTimeline Component
-    //CaseTimeline is parent of MapContainer which is parent of Map, Marker, Modal, Form, DatePicker, TimePicker
   }
-
 
   displayFootprints = () => {
     return this.state.footPrints.map((footprint, index) => {
@@ -102,13 +92,9 @@ export class MapContainer extends Component {
           lng: footprint.lng
         }}
         onClick={this.superMarkerClick}
-
       />
-
     })
   }
-
-
 
   // When user clicks "save foot print" after inputing time data in modal
   handleOk = () => {
@@ -150,7 +136,6 @@ export class MapContainer extends Component {
     );
   }
 
-
   // update footprint with new date/time
   handleUpdate = (prop) => {
     const { activeDate, activeTime, activeMarker } = this.state;
@@ -181,10 +166,26 @@ export class MapContainer extends Component {
     );
   }
 
+  handleDelete = () => {
+    const { activeMarker } = this.state;
+    const latitude = activeMarker.position.lat()
+    const longitude = activeMarker.position.lng()
+
+    // filter out selected footprint
+    const newFootPrints = this.state.footPrints.filter((footprint) => {
+      return footprint.lat !== latitude || footprint.lng !== longitude;
+    });
+
+    return (
+      this.setState(Object.assign({}, this.state, {
+        footPrints: newFootPrints,
+        showingInfoWindow: false,
+      }))
+    );
+  }
 
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId)
-
   }
 
   toggleInfoTable() {
@@ -248,7 +249,6 @@ export class MapContainer extends Component {
       { title: 'longitude', dataIndex: 'longitude' }
     ];
 
-
     return (
       <div className="outer-wrap">
         <Row>
@@ -261,19 +261,14 @@ export class MapContainer extends Component {
               onClick={this.onMapClick}
             >
               {this.displayFootprints()}
-
-              {/* <InfoWindow
-                marker={this.state.activeMarker}
-                visible={this.state.showingInfoWindow}
-                maxWidth={800}
-              > */}
             </Map>
 
             <DateTimePickerModal
               visible={this.state.showModal || this.state.showingInfoWindow}
               onOk={this.state.showModal ? this.handleOk : this.handleUpdate}
               onCancel={this.handleCancel}
-              okText={this.state.showModal ? 'Save Footprint' : 'Update Footprint'}
+              onDelete={this.handleDelete}
+              editMode={this.state.showModal}
               date={this.state.activeDate}
               time={this.state.activeTime}
               onDateChange={activeDate => this.setState({ activeDate })}
