@@ -201,19 +201,29 @@ export class MapContainer extends Component {
   }
 
    postData() {
+
      const footPrintWithCaseID = this.state.footPrints.map((obj) => {
-       let row = Object.assign({}, obj);
-       row.caseID = this.props.patientId;
+       
+       let row = {};
+       row.case_id = this.props.patientId;
+       row.date = obj.date;
+       row.time = obj.time;
+       row.latitude = obj.lat;
+       row.longitude = obj.lng;
+
        return row
      })
+
+
     const requestOptions = {
        method: 'POST',
-       headers: { 'Content-Type': 'application/json', 'apiKey' : 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg' },
+       headers: { 'Content-Type': 'application/json'},
        body: JSON.stringify(footPrintWithCaseID)
      };
+     console.log(JSON.stringify(footPrintWithCaseID));
     fetch(' https://cn1aotmhx0.execute-api.us-east-1.amazonaws.com/default/savetimeline', requestOptions)
        .then(response => response.json())
-       .then((json) => {alert(JSON.stringify(json)); window.location.reload(false)})
+       //.then((json) => {alert(JSON.stringify(requestOptions)); window.location.reload(false)})
        .catch(error => {
          console.error('Something went wrong:', error);
        });
