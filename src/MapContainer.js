@@ -200,26 +200,23 @@ export class MapContainer extends Component {
     }
   }
 
-  postData() {
-    const footPrintWithCaseID = this.state.footPrints.map((obj) => {
-      let row = Object.assign({}, obj);
-      row.caseID = this.props.patientId;
-      return row
-    })
-
+   postData() {
+     const footPrintWithCaseID = this.state.footPrints.map((obj) => {
+       let row = Object.assign({}, obj);
+       row.caseID = this.props.patientId;
+       return row
+     })
     const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(footPrintWithCaseID)
-    };
-
-    fetch('https://jsonplaceholder.typicode.com/posts', requestOptions)
-      .then(response => response.json())
-      .then((json) => {alert(JSON.stringify(json)); window.location.reload(false)})
-      .catch(error => {
-        console.error('Something went wrong:', error);
-      });
-
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json', 'apiKey' : 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg' },
+       body: JSON.stringify(footPrintWithCaseID)
+     };
+    fetch(' https://cn1aotmhx0.execute-api.us-east-1.amazonaws.com/default/savetimeline', requestOptions)
+       .then(response => response.json())
+       .then((json) => {alert(JSON.stringify(json)); window.location.reload(false)})
+       .catch(error => {
+         console.error('Something went wrong:', error);
+       });
   }
 
 
