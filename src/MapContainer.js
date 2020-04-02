@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 import { Table, Row, Col } from 'antd';
+import { DeleteFilled } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
 import { CSVLink } from "react-csv";
@@ -174,6 +175,16 @@ export class MapContainer extends Component {
     );
   }
 
+  deleteByIndex = (index) => {
+    const newFootPrints = this.state.footPrints.slice();
+    newFootPrints.splice(index, 1);
+    return (
+      this.setState(Object.assign({}, this.state, {
+        footPrints: newFootPrints,
+      }))
+    );
+  }
+
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId)
   }
@@ -203,7 +214,7 @@ export class MapContainer extends Component {
           time: formattedTime,
           // city: // to add later
           latitude: footprint.lat.toFixed(6),
-          longitude: footprint.lng.toFixed(6)
+          longitude: footprint.lng.toFixed(6),
         }
       );
     });
@@ -213,7 +224,15 @@ export class MapContainer extends Component {
       { title: 'date', dataIndex: 'date' },
       { title: 'time', dataIndex: 'time' },
       { title: 'latitude', dataIndex: 'latitude' },
-      { title: 'longitude', dataIndex: 'longitude' }
+      { title: 'longitude', dataIndex: 'longitude' },
+      {
+        title: '',
+        render: (_, record) => (
+            <a className="ant-typography ant-typography-danger" onClick={() => this.deleteByIndex(record.key)}>
+              <DeleteFilled/>
+            </a>
+        )
+      }
     ];
 
     return (
