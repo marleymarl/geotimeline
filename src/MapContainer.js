@@ -218,7 +218,7 @@ export class MapContainer extends Component {
        let row = {};
        row.case_id = this.props.patientId;
        row.date = obj.date;
-       row.time = obj.time;
+       row.time = moment(obj.time).format('hh:mm:ss A');
        row.latitude = obj.lat;
        row.longitude = obj.lng;
 
