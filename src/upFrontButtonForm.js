@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import { Button } from 'antd';
+// import DataView from './components/DataView'
 import 'antd/dist/antd.css';
 import * as uuid from 'uuid';
 
@@ -13,6 +14,7 @@ export default class upFrontButtonForm extends  Component {
         return (
             <div className="up-front-form-wrapper">
                 <div>
+           
                     <Button type="primary" onClick={() => this.startTimeline()}>Start Timeline</Button>
                 </div>
             </div>
