@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
+
 import { Table, Row, Col } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import 'antd/dist/antd.css';
@@ -233,7 +234,10 @@ export class MapContainer extends Component {
      };
      console.log(JSON.stringify(footPrintWithCaseID));
     fetch(' https://cn1aotmhx0.execute-api.us-east-1.amazonaws.com/default/savetimeline', requestOptions)
-       .then(response => response.json())
+       .then((response) => {
+         response.json()
+         window.location.href="/dataview"
+       })
        //.then((json) => {alert(JSON.stringify(requestOptions)); window.location.reload(false)})
        .catch(error => {
          console.error('Something went wrong:', error);
@@ -318,7 +322,7 @@ export class MapContainer extends Component {
               Save to CSV
             </CSVLink>
             <div >
-              <button className="save-button" onClick={this.postData}>save</button>
+              <button className="save-button" onClick={this.postData}>Save and Exit</button>
             </div>
 
           </Col>
