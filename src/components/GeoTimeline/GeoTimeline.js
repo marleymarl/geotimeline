@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import MapContainer from '../../MapContainer';
-import UpFrontForm from '../../upFrontForm';
-//import UpFrontForm from '../../upFrontButtonForm';
+// import UpFrontForm from '../../upFrontForm';
+import UpFrontForm from '../../upFrontButtonForm';
 
 var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg';
 
