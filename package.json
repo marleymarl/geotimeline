@@ -8,6 +8,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "antd": "^4.0.3",
+    "axios": "^0.19.2",
     "formik": "^2.1.4",
     "formik-antd": "^2.0.0",
     "google-maps-react": "^2.0.2",
