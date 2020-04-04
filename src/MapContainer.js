@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
+import React, { Component } from 'react';
+import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
-import { Table, Row, Col } from "antd";
-import { DeleteFilled } from "@ant-design/icons";
-import "antd/dist/antd.css";
-import * as moment from "moment";
-import { CSVLink } from "react-csv";
-import DateTimePickerModal from "./components/DateTimePickerModal";
+import { Table, Row, Col } from 'antd';
+import { DeleteFilled } from '@ant-design/icons';
+import 'antd/dist/antd.css';
+import * as moment from 'moment';
+import { CSVLink } from 'react-csv';
+import DateTimePickerModal from './components/DateTimePickerModal';
 
-var apiKey = "AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg";
+var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg';
 
 export class MapContainer extends Component {
   constructor(props) {
@@ -16,15 +16,15 @@ export class MapContainer extends Component {
     this.state = {
       footPrints: [],
       // footPrints: [{lat: 43.65509405622337, lng: -79.38795019216536, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64756139911764, lng: -79.41372555024623, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64420752674433, lng: -79.39767521150111, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'} ],
-      activeDate: "",
-      activeLon: "",
-      activeLat: "",
-      activeTime: "",
+      activeDate: '',
+      activeLon: '',
+      activeLat: '',
+      activeTime: '',
       activeMarker: {
-        lat: "",
-        lon: "",
-        date: "",
-        time: "",
+        lat: '',
+        lon: '',
+        date: '',
+        time: '',
       },
 
       patientId: this.props.patientId,
@@ -113,20 +113,20 @@ export class MapContainer extends Component {
     return this.setState({
       footPrints: newFootPrints,
       showModal: false,
-      activeLat: "",
-      activeLon: "",
-      activeTime: "",
-      activeDate: "",
+      activeLat: '',
+      activeLon: '',
+      activeTime: '',
+      activeDate: '',
     });
   };
 
   // clear active lat/lon and turn modal off
   handleCancel = () => {
     return this.setState({
-      activeLat: "",
-      activeLon: "",
-      activeTime: "",
-      activeDate: "",
+      activeLat: '',
+      activeLon: '',
+      activeTime: '',
+      activeDate: '',
       showModal: false,
       showingInfoWindow: false,
     });
@@ -154,9 +154,9 @@ export class MapContainer extends Component {
     return this.setState({
       footPrints: newFootPrints,
       showingInfoWindow: false,
-      activeDate: "",
-      activeTime: "",
-      activeMarker: "",
+      activeDate: '',
+      activeTime: '',
+      activeMarker: '',
     });
   };
 
@@ -174,7 +174,7 @@ export class MapContainer extends Component {
       Object.assign({}, this.state, {
         footPrints: newFootPrints,
         showingInfoWindow: false,
-      })
+      }),
     );
   };
 
@@ -184,23 +184,23 @@ export class MapContainer extends Component {
     return this.setState(
       Object.assign({}, this.state, {
         footPrints: newFootPrints,
-      })
+      }),
     );
   };
 
   componentDidMount() {
-    console.log("patient id: " + this.props.patientId);
+    console.log('patient id: ' + this.props.patientId);
   }
 
   toggleInfoTable() {
-    var objData = document.getElementById("data");
-    var objMap = document.getElementById("map");
-    if (objMap.style.display == "") {
-      objData.style.display = "block";
-      objMap.style.display = "none";
+    var objData = document.getElementById('data');
+    var objMap = document.getElementById('map');
+    if (objMap.style.display == '') {
+      objData.style.display = 'block';
+      objMap.style.display = 'none';
     } else {
-      objData.style.display = "";
-      objMap.style.display = "";
+      objData.style.display = '';
+      objMap.style.display = '';
     }
   }
 
@@ -209,7 +209,7 @@ export class MapContainer extends Component {
       let row = {};
       row.case_id = this.props.patientId;
       row.date = obj.date;
-      row.time = moment(obj.time).format("hh:mm:ss A");
+      row.time = moment(obj.time).format('hh:mm:ss A');
       row.latitude = obj.lat;
       row.longitude = obj.lng;
 
@@ -217,30 +217,30 @@ export class MapContainer extends Component {
     });
 
     const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(footPrintWithCaseID),
     };
     console.log(JSON.stringify(footPrintWithCaseID));
     fetch(
-      " https://cn1aotmhx0.execute-api.us-east-1.amazonaws.com/default/savetimeline",
-      requestOptions
+      ' https://cn1aotmhx0.execute-api.us-east-1.amazonaws.com/default/savetimeline',
+      requestOptions,
     )
       .then((response) => {
         response.json();
-        window.location.href = "/dataview";
+        window.location.href = '/dataview';
       })
       //.then((json) => {alert(JSON.stringify(requestOptions)); window.location.reload(false)})
       .catch((error) => {
-        console.error("Something went wrong:", error);
+        console.error('Something went wrong:', error);
       });
   }
 
   render() {
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
-      const formattedDate = moment(footprint.date).format("ddd, ll"); // Thu, Mar 26, 2020 format
-      const formattedTime = moment(footprint.time).format("hh:mm:ss A"); // 08:05:46 PM format
+      const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
+      const formattedTime = moment(footprint.time).format('hh:mm:ss A'); // 08:05:46 PM format
       return {
         key: idx,
         patient_id: this.state.patientId,
@@ -253,13 +253,13 @@ export class MapContainer extends Component {
     });
 
     const columns = [
-      { title: "patient_id", dataIndex: "patient_id" },
-      { title: "date", dataIndex: "date" },
-      { title: "time", dataIndex: "time" },
-      { title: "latitude", dataIndex: "latitude" },
-      { title: "longitude", dataIndex: "longitude" },
+      { title: 'patient_id', dataIndex: 'patient_id' },
+      { title: 'date', dataIndex: 'date' },
+      { title: 'time', dataIndex: 'time' },
+      { title: 'latitude', dataIndex: 'latitude' },
+      { title: 'longitude', dataIndex: 'longitude' },
       {
-        title: "",
+        title: '',
         render: (_, record) => (
           <a
             className="ant-typography ant-typography-danger"

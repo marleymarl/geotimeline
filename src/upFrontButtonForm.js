@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Button } from "antd";
+import React, { Component } from 'react';
+import { Button } from 'antd';
 // import DataView from './components/DataView'
-import "antd/dist/antd.css";
-import * as uuid from "uuid";
+import 'antd/dist/antd.css';
+import * as uuid from 'uuid';
 
 export default class upFrontButtonForm extends Component {
   constructor() {

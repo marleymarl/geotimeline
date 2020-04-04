@@ -1,6 +1,6 @@
-import React from "react";
-import moment from "moment";
-import { DatePicker, TimePicker, Modal, Button } from "antd";
+import React from 'react';
+import moment from 'moment';
+import { DatePicker, TimePicker, Modal, Button } from 'antd';
 
 const DateTimePickerModal = (props) => {
   const {
@@ -27,7 +27,7 @@ const DateTimePickerModal = (props) => {
       onCancel={onCancel}
       footer={[
         editMode ? (
-          ""
+          ''
         ) : (
           <Button key="delete" type="danger" onClick={onDelete}>
             Delete
@@ -37,7 +37,7 @@ const DateTimePickerModal = (props) => {
           Cancel
         </Button>,
         <Button key="submit" type="primary" onClick={onOk}>
-          {editMode ? "Save Footprint" : "Update Footprint"}
+          {editMode ? 'Save Footprint' : 'Update Footprint'}
         </Button>,
       ]}
     >

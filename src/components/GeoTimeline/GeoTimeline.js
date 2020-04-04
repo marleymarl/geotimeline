@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import MapContainer from "../../MapContainer";
+import MapContainer from '../../MapContainer';
 // import UpFrontForm from '../../upFrontForm';
-import UpFrontForm from "../../upFrontButtonForm";
+import UpFrontForm from '../../upFrontButtonForm';
 
-var apiKey = "AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg";
+var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg';
 
 export default class GeoTimeline extends Component {
   state = {
-    patientId: "",
+    patientId: '',
     initialCenter: { lat: 43.6532, lng: -79.3832 },
     initialLat: 43.6532,
     initialLon: -79.3832,
@@ -19,7 +19,7 @@ export default class GeoTimeline extends Component {
   };
 
   renderMapOrForm = () => {
-    if (this.state.patientId === "") {
+    if (this.state.patientId === '') {
       return <UpFrontForm handlePatientIdSubmit={this.handlePatientIdSubmit} />;
     } else {
       return (
@@ -35,7 +35,7 @@ export default class GeoTimeline extends Component {
 
   handleBrowserGeo = () => {
     if (!navigator.geolocation) {
-      console.log("no browser geo");
+      console.log('no browser geo');
     } else {
       navigator.geolocation.getCurrentPosition((success, error) => {
         if (error) {
