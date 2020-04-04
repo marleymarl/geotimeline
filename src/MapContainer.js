@@ -1,50 +1,44 @@
+import React, { Component } from "react";
+import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 
-import React, { Component } from 'react';
-import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
-
-
-import { Table, Row, Col } from 'antd';
-import { DeleteFilled } from '@ant-design/icons';
-import 'antd/dist/antd.css';
-import * as moment from 'moment';
+import { Table, Row, Col } from "antd";
+import { DeleteFilled } from "@ant-design/icons";
+import "antd/dist/antd.css";
+import * as moment from "moment";
 import { CSVLink } from "react-csv";
-import DateTimePickerModal from './components/DateTimePickerModal';
+import DateTimePickerModal from "./components/DateTimePickerModal";
 
-var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg'
+var apiKey = "AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg";
 
 export class MapContainer extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       footPrints: [],
       // footPrints: [{lat: 43.65509405622337, lng: -79.38795019216536, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64756139911764, lng: -79.41372555024623, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'}, {lat: 43.64420752674433, lng: -79.39767521150111, date: 'Tue Mar 03 2020', time: '04:04:05 GMT-0400 (Eastern Daylight Time)'} ],
-      activeDate: '',
-      activeLon: '',
-      activeLat: '',
-      activeTime: '',
+      activeDate: "",
+      activeLon: "",
+      activeLat: "",
+      activeTime: "",
       activeMarker: {
-        lat: '',
-        lon: '',
-        date: '',
-        time: ''
+        lat: "",
+        lon: "",
+        date: "",
+        time: "",
       },
 
       patientId: this.props.patientId,
       showingInfoWindow: false,
       showModal: false,
-      selectedPlace: {}
-    }
+      selectedPlace: {},
+    };
 
-    this.postData = this.postData.bind(this)
-
+    this.postData = this.postData.bind(this);
   }
-
-
 
   // When user clicks on the map, a red marker shows up
   onMapClick = (mapProps, map, clickEvent) => {
-    let markerLatLng = clickEvent.latLng
+    let markerLatLng = clickEvent.latLng;
     const latitude = markerLatLng.lat();
     const longitude = markerLatLng.lng();
 
@@ -52,7 +46,7 @@ export class MapContainer extends Component {
     if (this.state.showingInfoWindow) {
       this.setState({
         showingInfoWindow: false,
-        activeMarker: null
+        activeMarker: null,
       });
     } else {
       this.setState({
@@ -63,7 +57,7 @@ export class MapContainer extends Component {
         activeTime: moment(),
       });
     }
-  }
+  };
 
   // When user clicks on a red marker, an infobox pops up displaying the time for that marker
   superMarkerClick = (markerProps, marker, clickEvent) => {
@@ -81,26 +75,28 @@ export class MapContainer extends Component {
       activeMarker: marker,
       showingInfoWindow: true,
       activeDate: moment(footPrint.date),
-      activeTime: moment(footPrint.time)
+      activeTime: moment(footPrint.time),
     });
-  }
+  };
 
   displayFootprints = () => {
     return this.state.footPrints.map((footprint, index) => {
-      return <Marker
-        key={index}
-        position={{
-          lat: footprint.lat,
-          lng: footprint.lng
-        }}
-        onClick={this.superMarkerClick}
-      />
-    })
-  }
+      return (
+        <Marker
+          key={index}
+          position={{
+            lat: footprint.lat,
+            lng: footprint.lng,
+          }}
+          onClick={this.superMarkerClick}
+        />
+      );
+    });
+  };
 
   // When user clicks "save foot print" after inputing time data in modal
   handleOk = () => {
-    var { activeLat, activeLon, activeDate, activeTime } = this.state
+    var { activeLat, activeLon, activeDate, activeTime } = this.state;
 
     // copy footprints so we don't modify state indirectly
     let newFootPrints = this.state.footPrints.slice();
@@ -114,35 +110,33 @@ export class MapContainer extends Component {
     });
 
     // update state
-    return (this.setState({
+    return this.setState({
       footPrints: newFootPrints,
       showModal: false,
-      activeLat: '',
-      activeLon: '',
-      activeTime: '',
-      activeDate: '',
-    }));
-  }
+      activeLat: "",
+      activeLon: "",
+      activeTime: "",
+      activeDate: "",
+    });
+  };
 
   // clear active lat/lon and turn modal off
   handleCancel = () => {
-    return (
-      this.setState({
-        activeLat: '',
-        activeLon: '',
-        activeTime: '',
-        activeDate: '',
-        showModal: false,
-        showingInfoWindow: false
-      })
-    );
-  }
+    return this.setState({
+      activeLat: "",
+      activeLon: "",
+      activeTime: "",
+      activeDate: "",
+      showModal: false,
+      showingInfoWindow: false,
+    });
+  };
 
   // update footprint with new date/time
   handleUpdate = (prop) => {
     const { activeDate, activeTime, activeMarker } = this.state;
-    const latitude = activeMarker.position.lat()
-    const longitude = activeMarker.position.lng()
+    const latitude = activeMarker.position.lat();
+    const longitude = activeMarker.position.lng();
 
     // shallow copy footprints array
     let newFootPrints = this.state.footPrints.slice();
@@ -157,133 +151,132 @@ export class MapContainer extends Component {
     footPrint.time = activeTime;
 
     // update state to show new footprints with updated date/time
-    return (
-      this.setState({
-        footPrints: newFootPrints,
-        showingInfoWindow: false,
-        activeDate: '',
-        activeTime: '',
-        activeMarker: '',
-      })
-    );
-  }
+    return this.setState({
+      footPrints: newFootPrints,
+      showingInfoWindow: false,
+      activeDate: "",
+      activeTime: "",
+      activeMarker: "",
+    });
+  };
 
   handleDelete = () => {
     const { activeMarker } = this.state;
-    const latitude = activeMarker.position.lat()
-    const longitude = activeMarker.position.lng()
+    const latitude = activeMarker.position.lat();
+    const longitude = activeMarker.position.lng();
 
     // filter out selected footprint
     const newFootPrints = this.state.footPrints.filter((footprint) => {
       return footprint.lat !== latitude || footprint.lng !== longitude;
     });
 
-    return (
-      this.setState(Object.assign({}, this.state, {
+    return this.setState(
+      Object.assign({}, this.state, {
         footPrints: newFootPrints,
         showingInfoWindow: false,
-      }))
+      })
     );
-  }
+  };
 
   deleteByIndex = (index) => {
     const newFootPrints = this.state.footPrints.slice();
     newFootPrints.splice(index, 1);
-    return (
-      this.setState(Object.assign({}, this.state, {
+    return this.setState(
+      Object.assign({}, this.state, {
         footPrints: newFootPrints,
-      }))
+      })
     );
-  }
+  };
 
   componentDidMount() {
-    console.log('patient id: ' + this.props.patientId)
+    console.log("patient id: " + this.props.patientId);
   }
 
   toggleInfoTable() {
-    var objData = document.getElementById("data")
-    var objMap = document.getElementById("map")
+    var objData = document.getElementById("data");
+    var objMap = document.getElementById("map");
     if (objMap.style.display == "") {
-      objData.style.display = "block"
-      objMap.style.display = "none"
+      objData.style.display = "block";
+      objMap.style.display = "none";
     } else {
-      objData.style.display = ""
-      objMap.style.display = ""
+      objData.style.display = "";
+      objMap.style.display = "";
     }
   }
 
-   postData() {
+  postData() {
+    const footPrintWithCaseID = this.state.footPrints.map((obj) => {
+      let row = {};
+      row.case_id = this.props.patientId;
+      row.date = obj.date;
+      row.time = moment(obj.time).format("hh:mm:ss A");
+      row.latitude = obj.lat;
+      row.longitude = obj.lng;
 
-     const footPrintWithCaseID = this.state.footPrints.map((obj) => {
-       
-       let row = {};
-       row.case_id = this.props.patientId;
-       row.date = obj.date;
-       row.time = moment(obj.time).format('hh:mm:ss A');
-       row.latitude = obj.lat;
-       row.longitude = obj.lng;
-
-       return row
-     })
-
+      return row;
+    });
 
     const requestOptions = {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json'},
-       body: JSON.stringify(footPrintWithCaseID)
-     };
-     console.log(JSON.stringify(footPrintWithCaseID));
-    fetch(' https://cn1aotmhx0.execute-api.us-east-1.amazonaws.com/default/savetimeline', requestOptions)
-       .then((response) => {
-         response.json()
-         window.location.href="/dataview"
-       })
-       //.then((json) => {alert(JSON.stringify(requestOptions)); window.location.reload(false)})
-       .catch(error => {
-         console.error('Something went wrong:', error);
-       });
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(footPrintWithCaseID),
+    };
+    console.log(JSON.stringify(footPrintWithCaseID));
+    fetch(
+      " https://cn1aotmhx0.execute-api.us-east-1.amazonaws.com/default/savetimeline",
+      requestOptions
+    )
+      .then((response) => {
+        response.json();
+        window.location.href = "/dataview";
+      })
+      //.then((json) => {alert(JSON.stringify(requestOptions)); window.location.reload(false)})
+      .catch((error) => {
+        console.error("Something went wrong:", error);
+      });
   }
-
 
   render() {
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
-      const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
-      const formattedTime = moment(footprint.time).format('hh:mm:ss A'); // 08:05:46 PM format
-      return (
-        {
-          key: idx,
-          patient_id: this.state.patientId,
-          date: formattedDate,
-          time: formattedTime,
-          // city: // to add later
-          latitude: footprint.lat.toFixed(6),
-          longitude: footprint.lng.toFixed(6),
-        }
-      );
+      const formattedDate = moment(footprint.date).format("ddd, ll"); // Thu, Mar 26, 2020 format
+      const formattedTime = moment(footprint.time).format("hh:mm:ss A"); // 08:05:46 PM format
+      return {
+        key: idx,
+        patient_id: this.state.patientId,
+        date: formattedDate,
+        time: formattedTime,
+        // city: // to add later
+        latitude: footprint.lat.toFixed(6),
+        longitude: footprint.lng.toFixed(6),
+      };
     });
 
     const columns = [
-      { title: 'patient_id', dataIndex: 'patient_id' },
-      { title: 'date', dataIndex: 'date' },
-      { title: 'time', dataIndex: 'time' },
-      { title: 'latitude', dataIndex: 'latitude' },
-      { title: 'longitude', dataIndex: 'longitude' },
+      { title: "patient_id", dataIndex: "patient_id" },
+      { title: "date", dataIndex: "date" },
+      { title: "time", dataIndex: "time" },
+      { title: "latitude", dataIndex: "latitude" },
+      { title: "longitude", dataIndex: "longitude" },
       {
-        title: '',
+        title: "",
         render: (_, record) => (
-            <a className="ant-typography ant-typography-danger" onClick={() => this.deleteByIndex(record.key)}>
-              <DeleteFilled/>
-            </a>
-        )
-      }
+          <a
+            className="ant-typography ant-typography-danger"
+            onClick={() => this.deleteByIndex(record.key)}
+          >
+            <DeleteFilled />
+          </a>
+        ),
+      },
     ];
 
     return (
       <div className="outer-wrap">
         <Row>
           <Col flex={3} id="map" className="map">
-            <Map google={this.props.google}
+            <Map
+              google={this.props.google}
               initialCenter={{
                 lat: this.props.initialLat, //change this to be set based on location input on form prior to map
                 lng: this.props.initialLon,
@@ -301,8 +294,8 @@ export class MapContainer extends Component {
               editMode={this.state.showModal}
               date={this.state.activeDate}
               time={this.state.activeTime}
-              onDateChange={activeDate => this.setState({ activeDate })}
-              onTimeChange={activeTime => this.setState({ activeTime })}
+              onDateChange={(activeDate) => this.setState({ activeDate })}
+              onTimeChange={(activeTime) => this.setState({ activeTime })}
             />
           </Col>
           <Col flex={2} id="data" className="data">
@@ -310,21 +303,19 @@ export class MapContainer extends Component {
             <Table
               dataSource={dataSource}
               columns={columns}
-              pagination={false}    // buttons on bottom of table that show which page number to jump to
-              className='table-column'
-              size='small'
+              pagination={false} // buttons on bottom of table that show which page number to jump to
+              className="table-column"
+              size="small"
             />
 
-            <CSVLink
-              data={dataSource}
-              className="download-csv"
-            >
+            <CSVLink data={dataSource} className="download-csv">
               Save to CSV
             </CSVLink>
-            <div >
-              <button className="save-button" onClick={this.postData}>Save and Exit</button>
+            <div>
+              <button className="save-button" onClick={this.postData}>
+                Save and Exit
+              </button>
             </div>
-
           </Col>
         </Row>
         <div className="burger">
@@ -336,5 +327,5 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: (apiKey)
-})(MapContainer)
+  apiKey: apiKey,
+})(MapContainer);

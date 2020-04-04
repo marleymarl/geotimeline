@@ -37,7 +37,12 @@
   }
 }
 
-#root, .App, .App>div , .outer-wrap, .ant-row, .ant-col {
+#root,
+.App,
+.App > div,
+.outer-wrap,
+.ant-row,
+.ant-col {
   height: 100%;
 }
 
@@ -56,7 +61,7 @@
   display: none;
 }
 
-.save-button{
+.save-button {
   margin: 80px auto;
   background-color: #61dafb;
   border: none;
@@ -68,7 +73,6 @@
   font-size: 20px;
   cursor: pointer;
   font-weight: bold;
-
 }
 
 @media (max-width: 920px) {
@@ -77,9 +81,9 @@
   }
   .burger {
     display: block;
-    position: absolute; 
+    position: absolute;
     bottom: 20px;
-    left: 20px
+    left: 20px;
   }
 }
 

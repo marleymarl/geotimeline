@@ -1,7 +1,6 @@
-import React from 'react';
-import './App.css';
-import GeoTime from './components/GeoTimeline/GeoTimeline'
-
+import React from "react";
+import "./App.css";
+import GeoTime from "./components/GeoTimeline/GeoTimeline";
 
 function App() {
   return (
