@@ -190,6 +190,7 @@ export class MapContainer extends Component {
   };
 
   onPlaceSelected = (place) => {
+    if(place && place.geometry)
     this.setState({
       centerLat: place.geometry.location.lat(),
       centerLon: place.geometry.location.lng()
