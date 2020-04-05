@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
 import { Table } from 'antd';
-
 import * as moment from 'moment';
-
 import 'antd/dist/antd.css';
 
 export default class DataView extends Component {
-  state = {
-    data: [],
-  };
+  state = { data: [] };
 
   componentDidMount() {
     this.getFootprintsData();
@@ -22,21 +17,13 @@ export default class DataView extends Component {
     axios({
       method: 'get',
       url: url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
     }).then((data) => {
-      let newDataArray = this.state.data.slice();
-      let responseDataArray = data.data;
-      responseDataArray.map((obj) => {
-        newDataArray.push(obj);
-      });
-      return this.setState({ data: newDataArray });
+      return this.setState({ data: data.data });
     });
   };
 
   render() {
-    console.log(this.state.data);
     const dataSource = this.state.data.map((footprint, idx) => {
       return {
         key: idx,
@@ -59,7 +46,7 @@ export default class DataView extends Component {
       <Table
         dataSource={dataSource}
         columns={columns}
-        pagination={true} // buttons on bottom of table that show which page number to jump to
+        pagination={true}
         className="table-column"
         size="large"
       />
