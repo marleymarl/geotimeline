@@ -194,8 +194,7 @@ export class MapContainer extends Component {
     this.setState({
       centerLat: place.geometry.location.lat(),
       centerLon: place.geometry.location.lng()
-    })
-    // console.log(place.geometry.location.lat())
+    })    
   };
 
   componentDidMount() {
