@@ -18,7 +18,15 @@ export default class GeoTimeline extends Component {
 
   renderMapOrForm = () => {
     if (this.state.patientId === '') {
-      return <UpFrontForm handlePatientIdSubmit={this.handlePatientIdSubmit} />;
+      return (
+        <UpFrontForm
+          handlePatientIdSubmit={this.handlePatientIdSubmit}
+          title={'Lorem ipsum'}
+          description={
+            'Anim amet reprehenderit aliqua ut duis commodo commodo Lorem.'
+          }
+        />
+      );
     } else {
       return (
         <MapContainer

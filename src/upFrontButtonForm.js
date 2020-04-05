@@ -13,6 +13,8 @@ export default class upFrontButtonForm extends Component {
   render() {
     return (
       <div className="up-front-form-wrapper">
+        <h1>{this.props.title}</h1>
+        <p>{this.props.description}</p>
         <div>
         
           <Button type="primary" onClick={() => this.startTimeline()}>
