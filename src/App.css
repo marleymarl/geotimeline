@@ -96,10 +96,16 @@
 
 .ant-col.map > input {
   width: 50%;
-  padding-left: 16px;  
+  padding-left: 16px;
   position: absolute;
   top: 10px;
   left: 200px;
   height: 40px;
-  z-index:1;
+  z-index: 1;
+}
+
+button.ant-typography-danger {
+  border: none;
+  background: none;
+  padding: 0;
 }

@@ -32,8 +32,8 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       showModal: false,
       selectedPlace: {},
-      centerLat : props.initialLat,
-      centerLon : props.initialLon,
+      centerLat: props.initialLat,
+      centerLon: props.initialLon,
     };
 
     this.postData = this.postData.bind(this);
@@ -192,11 +192,11 @@ export class MapContainer extends Component {
   };
 
   onPlaceSelected = (place) => {
-    if(place && place.geometry)
-    this.setState({
-      centerLat: place.geometry.location.lat(),
-      centerLon: place.geometry.location.lng()
-    })    
+    if (place && place.geometry)
+      this.setState({
+        centerLat: place.geometry.location.lat(),
+        centerLon: place.geometry.location.lng(),
+      });
   };
 
   componentDidMount() {
@@ -272,12 +272,12 @@ export class MapContainer extends Component {
       {
         title: '',
         render: (_, record) => (
-          <a
+          <button
             className="ant-typography ant-typography-danger"
             onClick={() => this.deleteByIndex(record.key)}
           >
             <DeleteFilled />
-          </a>
+          </button>
         ),
       },
     ];
@@ -297,8 +297,8 @@ export class MapContainer extends Component {
                 lng: this.props.initialLon,
               }}
               onClick={this.onMapClick}
-              center = {{
-                lat: this.state.centerLat, 
+              center={{
+                lat: this.state.centerLat,
                 lng: this.state.centerLon,
               }}
             >
