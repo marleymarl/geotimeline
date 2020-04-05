@@ -14,9 +14,14 @@ export default class upFrontButtonForm extends Component {
     return (
       <div className="up-front-form-wrapper">
         <div>
+        
           <Button type="primary" onClick={() => this.startTimeline()}>
-            Start Timeline
+            Start Demo Timeline
           </Button>
+          <Button onClick={() => this.startRealTimeline()}>
+            Start Real Timeline
+          </Button>
+        
         </div>
       </div>
     );
@@ -24,6 +29,12 @@ export default class upFrontButtonForm extends Component {
 
   startTimeline() {
     const patientId = uuid.v4();
-    this.props.handlePatientIdSubmit(patientId);
+    const demoOrReal = 'demo';
+    this.props.handlePatientIdSubmit(patientId, demoOrReal);
+  }
+  startRealTimeline() {
+    const patientId = uuid.v4();
+    const demoOrReal = 'real';
+    this.props.handlePatientIdSubmit(patientId, demoOrReal);
   }
 }

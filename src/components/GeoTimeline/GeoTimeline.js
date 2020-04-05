@@ -6,13 +6,14 @@ import * as global from '../../global';
 export default class GeoTimeline extends Component {
   state = {
     patientId: '',
+    demoOrReal: '',
     initialCenter: { lat: 43.6532, lng: -79.3832 },
     initialLat: 43.6532,
     initialLon: -79.3832,
   };
 
-  handlePatientIdSubmit = (patientId) => {
-    this.setState({ patientId });
+  handlePatientIdSubmit = (patientId, demoOrReal) => {
+    this.setState({ patientId, demoOrReal });
   };
 
   renderMapOrForm = () => {
@@ -25,6 +26,7 @@ export default class GeoTimeline extends Component {
           apiKey={global.API_KEY}
           initialLat={this.state.initialLat}
           initialLon={this.state.initialLon}
+          demoOrReal={this.state.demoOrReal}
         />
       );
     }

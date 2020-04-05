@@ -28,6 +28,7 @@ export class MapContainer extends Component {
       },
 
       patientId: this.props.patientId,
+      demoOrReal: this.props.demoOrReal,
       showingInfoWindow: false,
       showModal: false,
       selectedPlace: {},
@@ -200,6 +201,7 @@ export class MapContainer extends Component {
 
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId);
+    console.log('demo or real is: ' + this.props.demoOrReal);
   }
 
   toggleInfoTable() {
