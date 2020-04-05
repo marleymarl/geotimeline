@@ -234,7 +234,8 @@ export class MapContainer extends Component {
       body: JSON.stringify(footPrintWithCaseID),
     };
     console.log(JSON.stringify(footPrintWithCaseID));
-    fetch(global.API_URL + '/savetimeline', requestOptions)
+    const resource = (this.props.demoOrReal === 'real') ? '/saverealtimeline' : '/savetimeline';
+    fetch(global.API_URL + resource, requestOptions)
       .then((response) => {
         response.json();
         window.location.href = '/dataview';
