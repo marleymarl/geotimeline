@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Autocomplete from 'react-google-autocomplete';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 import { Table, Row, Col } from 'antd';
@@ -188,6 +189,13 @@ export class MapContainer extends Component {
     );
   };
 
+  onPlaceSelected = (place) => {
+    this.setState({
+      initialLat: place.geometry.location.lat(),
+      initialLon: place.geometry.location.lng()
+    })
+  };
+
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId);
   }
@@ -195,7 +203,7 @@ export class MapContainer extends Component {
   toggleInfoTable() {
     var objData = document.getElementById('data');
     var objMap = document.getElementById('map');
-    if (objMap.style.display == '') {
+    if (objMap.style.display === '') {
       objData.style.display = 'block';
       objMap.style.display = 'none';
     } else {
@@ -275,6 +283,10 @@ export class MapContainer extends Component {
       <div className="outer-wrap">
         <Row>
           <Col flex={3} id="map" className="map">
+            <Autocomplete
+              onPlaceSelected={this.onPlaceSelected}
+              types={['(regions)']}
+            />
             <Map
               google={this.props.google}
               initialCenter={{

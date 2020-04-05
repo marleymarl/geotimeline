@@ -93,3 +93,13 @@
   justify-content: center;
   height: 100vh;
 }
+
+.ant-col.map > input {
+  width: 50%;
+  padding-left: 16px;  
+  position: absolute;
+  top: 10px;
+  left: 200px;
+  height: 40px;
+  z-index:1;
+}
