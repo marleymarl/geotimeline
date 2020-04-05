@@ -32,6 +32,8 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       showModal: false,
       selectedPlace: {},
+      centerLat : props.initialLat,
+      centerLon : props.initialLon,
     };
 
     this.postData = this.postData.bind(this);
@@ -190,10 +192,11 @@ export class MapContainer extends Component {
   };
 
   onPlaceSelected = (place) => {
+    if(place && place.geometry)
     this.setState({
-      initialLat: place.geometry.location.lat(),
-      initialLon: place.geometry.location.lng()
-    })
+      centerLat: place.geometry.location.lat(),
+      centerLon: place.geometry.location.lng()
+    })    
   };
 
   componentDidMount() {
@@ -294,6 +297,10 @@ export class MapContainer extends Component {
                 lng: this.props.initialLon,
               }}
               onClick={this.onMapClick}
+              center = {{
+                lat: this.state.centerLat, 
+                lng: this.state.centerLon,
+              }}
             >
               {this.displayFootprints()}
             </Map>
