@@ -32,6 +32,8 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       showModal: false,
       selectedPlace: {},
+      centerLat : props.initialLat,
+      centerLon : props.initialLon,
     };
 
     this.postData = this.postData.bind(this);
