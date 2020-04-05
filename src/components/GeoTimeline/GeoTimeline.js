@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-
 import MapContainer from '../../MapContainer';
-// import UpFrontForm from '../../upFrontForm';
 import UpFrontForm from '../../upFrontButtonForm';
-
-var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg';
+import * as global from '../../global';
 
 export default class GeoTimeline extends Component {
   state = {
@@ -25,7 +22,7 @@ export default class GeoTimeline extends Component {
       return (
         <MapContainer
           patientId={this.state.patientId}
-          apiKey={apiKey}
+          apiKey={global.API_KEY}
           initialLat={this.state.initialLat}
           initialLon={this.state.initialLon}
         />

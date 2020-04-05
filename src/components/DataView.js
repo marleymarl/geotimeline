@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Table } from 'antd';
 import * as moment from 'moment';
+import * as global from '../global';
 import 'antd/dist/antd.css';
 
 export default class DataView extends Component {
@@ -12,12 +13,10 @@ export default class DataView extends Component {
   }
 
   getFootprintsData = () => {
-    const url =
-      'https://cn1aotmhx0.execute-api.us-east-1.amazonaws.com/default/getfootprints';
     axios({
       method: 'get',
-      url: url,
-      headers: { 'Content-Type': 'application/json' },
+      url: global.API_URL + '/getfootprints',
+      headers: global.JSON_TYPE,
     }).then((data) => {
       return this.setState({ data: data.data });
     });

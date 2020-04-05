@@ -6,10 +6,9 @@ import { Table, Row, Col } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
+import * as global from './global';
 import { CSVLink } from 'react-csv';
 import DateTimePickerModal from './components/DateTimePickerModal';
-
-var apiKey = 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg';
 
 export class MapContainer extends Component {
   constructor(props) {
@@ -229,14 +228,11 @@ export class MapContainer extends Component {
 
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: global.JSON_TYPE,
       body: JSON.stringify(footPrintWithCaseID),
     };
     console.log(JSON.stringify(footPrintWithCaseID));
-    fetch(
-      ' https://cn1aotmhx0.execute-api.us-east-1.amazonaws.com/default/savetimeline',
-      requestOptions,
-    )
+    fetch(global.API_URL + '/savetimeline', requestOptions)
       .then((response) => {
         response.json();
         window.location.href = '/dataview';
@@ -346,5 +342,5 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: apiKey,
+  apiKey: global.API_KEY,
 })(MapContainer);
