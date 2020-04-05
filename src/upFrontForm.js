@@ -254,25 +254,22 @@ const countryCodes = [
   { code: 'YT', name: 'Mayotte' },
   { code: 'ZA', name: 'South Africa' },
   { code: 'ZM', name: 'Zambia' },
-  { code: 'ZW', name: 'Zimbabwe' }
+  { code: 'ZW', name: 'Zimbabwe' },
 ];
 
 const layout = {
   labelCol: { span: 8 },
-  wrapperCol: { span: 8 }
+  wrapperCol: { span: 8 },
 };
 
 export default class upFrontForm extends Component {
-
   constructor() {
     super();
     this.state = {
-      initialCenter: {}
+      initialCenter: {},
     };
-    this.patientIDInput =  React.createRef();
-
+    this.patientIDInput = React.createRef();
   }
-  
 
   // displaySelectOptions = () => {
   // return countryCodes.map((country, index) => {
@@ -303,29 +300,26 @@ export default class upFrontForm extends Component {
   }
 
   render() {
-    
     return (
       <div className="up-front-form-wrapper">
         <Formik
           initialValues={{ patientId: '' }}
-          validate={values => {
+          validate={(values) => {
             let errors = {};
-            
+
             if (!values.patientId) {
               errors.patientId = 'Required';
             }
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            
-            let patientId = values.patientId
+            let patientId = values.patientId;
             console.log(values);
             this.props.handlePatientIdSubmit(patientId);
           }}
         >
           {({ isSubmitting }) => (
             <Form {...layout} layout="horizontal">
-              
               <FormItem name="patientId" label="Patient ID" required={true}>
                 <Input ref={this.patientIDInput} name="patientId" />
               </FormItem>

@@ -3,14 +3,20 @@ import moment from 'moment';
 import { DatePicker, TimePicker, Modal, Button } from 'antd';
 
 const DateTimePickerModal = (props) => {
-
   const {
-    visible, onOk, onCancel, onDelete, editMode, date,
-    onDateChange, time, onTimeChange,
+    visible,
+    onOk,
+    onCancel,
+    onDelete,
+    editMode,
+    date,
+    onDateChange,
+    time,
+    onTimeChange,
   } = props;
 
   function disabledFutureDate(current) {
-    return !(moment().isAfter(current));
+    return !moment().isAfter(current);
   }
 
   return (
@@ -20,10 +26,13 @@ const DateTimePickerModal = (props) => {
       onOk={onOk}
       onCancel={onCancel}
       footer={[
-        editMode ? '' :
+        editMode ? (
+          ''
+        ) : (
           <Button key="delete" type="danger" onClick={onDelete}>
             Delete
-          </Button>,
+          </Button>
+        ),
         <Button key="back" onClick={onCancel}>
           Cancel
         </Button>,
@@ -37,10 +46,7 @@ const DateTimePickerModal = (props) => {
         onChange={onDateChange}
         disabledDate={disabledFutureDate}
       />
-      <TimePicker
-        value={time}
-        onChange={onTimeChange}
-      />
+      <TimePicker value={time} onChange={onTimeChange} />
     </Modal>
   );
 };
