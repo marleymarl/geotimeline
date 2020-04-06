@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Autocomplete from 'react-google-autocomplete';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
-import { Table, Row, Col } from 'antd';
+import { Table, Row, Col, Button } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
@@ -234,7 +234,8 @@ export class MapContainer extends Component {
       body: JSON.stringify(footPrintWithCaseID),
     };
     console.log(JSON.stringify(footPrintWithCaseID));
-    const resource = (this.props.demoOrReal === 'real') ? '/saverealtimeline' : '/savetimeline';
+    const resource =
+      this.props.demoOrReal === 'real' ? '/saverealtimeline' : '/savetimeline';
     fetch(global.API_URL + resource, requestOptions)
       .then((response) => {
         response.json();
@@ -327,7 +328,7 @@ export class MapContainer extends Component {
             />
 
             <CSVLink data={dataSource} className="download-csv">
-              Save to CSV
+              <Button type="primary">Save to CSV</Button>
             </CSVLink>
             <div>
               <button className="save-button" onClick={this.postData}>
