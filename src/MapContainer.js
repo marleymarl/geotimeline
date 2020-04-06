@@ -287,7 +287,7 @@ export class MapContainer extends Component {
           <Col flex={3} id="map" className="map">
             <Autocomplete
               onPlaceSelected={this.onPlaceSelected}
-              types={['(regions)']}
+              types={[]}
             />
             <Map
               google={this.props.google}
