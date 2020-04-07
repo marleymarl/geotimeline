@@ -57,6 +57,11 @@
   position: relative;
 }
 
+.check-my-case {
+  top: 60px;
+  position: relative;
+}
+
 .burger {
   display: none;
 }

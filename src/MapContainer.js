@@ -9,6 +9,8 @@ import * as moment from 'moment';
 import * as global from './global';
 import { CSVLink } from 'react-csv';
 import DateTimePickerModal from './components/DateTimePickerModal';
+import { CheckPositions } from './components/CheckPositions';
+
 
 export class MapContainer extends Component {
   constructor(props) {
@@ -34,6 +36,7 @@ export class MapContainer extends Component {
       selectedPlace: {},
       centerLat: props.initialLat,
       centerLon: props.initialLon,
+      showCheckPositions: false,
     };
 
     this.postData = this.postData.bind(this);
@@ -247,6 +250,18 @@ export class MapContainer extends Component {
       });
   }
 
+  checkAgainstConfirmed = () => {
+    this.setState(Object.assign({}, this.state, {
+      showCheckPositions: true
+    }));
+  };
+
+  closeCheckAgainstConfirmed = () => {
+    this.setState(Object.assign({}, this.state, {
+      showCheckPositions: false
+    }));
+  };
+
   render() {
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
@@ -330,6 +345,9 @@ export class MapContainer extends Component {
             <CSVLink data={dataSource} className="download-csv">
               <Button type="primary">Save to CSV</Button>
             </CSVLink>
+            <div className="check-my-case">
+              <Button type="default" onClick={this.checkAgainstConfirmed}>Check My Footprints Against Confirmed Cases</Button>
+            </div>
             <div>
               <button className="save-button" onClick={this.postData}>
                 Save and Exit
@@ -340,6 +358,10 @@ export class MapContainer extends Component {
         <div className="burger">
           <button onClick={this.toggleInfoTable}>...</button>
         </div>
+        {this.state.showCheckPositions && <CheckPositions
+            onClose={this.closeCheckAgainstConfirmed}
+            positions={this.state.footPrints}></CheckPositions>}
+
       </div>
     );
   }
