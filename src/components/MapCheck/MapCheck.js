@@ -6,7 +6,7 @@ import { Table, Row, Col, Button, Tabs } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
-import * as global from '../global';
+import * as global from '../../global';
 import { CSVLink } from 'react-csv';
 import DateTimePickerModal from '../DateTimePickerModal';
 
@@ -345,4 +345,4 @@ export class MapCheck extends Component {
 
 export default GoogleApiWrapper({
   apiKey: global.API_KEY,
-})(MapContainer);
+})(MapCheck);
