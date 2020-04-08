@@ -32,11 +32,12 @@ export class MapCheck extends Component {
       showingInfoWindow: false,
       showModal: false,
       selectedPlace: {},
-      centerLat: props.initialLat,
-      centerLon: props.initialLon,
+      centerLat: 43.6532,
+      centerLon: -79.3832,
+      apiKey: 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg',
     };
 
-    this.postData = this.postData.bind(this);
+    this.checkData = this.checkData.bind(this);
   }
 
   // When user clicks on the map, a red marker shows up
@@ -216,7 +217,7 @@ export class MapCheck extends Component {
     }
   }
 
-  postData() {
+  checkData() {
     const footPrintWithCaseID = this.state.footPrints.map((obj) => {
       let row = {};
       row.case_id = this.props.patientId;
@@ -283,9 +284,9 @@ export class MapCheck extends Component {
     ];
 
     return (
-      <div className="outer-wrap">
+      <div className="outer-wrap1">
         <Row>
-          <Col flex={3} id="map" className="map">
+          <Col flex={3}>
             <Autocomplete
               onPlaceSelected={this.onPlaceSelected}
               types={[]}
@@ -293,8 +294,8 @@ export class MapCheck extends Component {
             <Map
               google={this.props.google}
               initialCenter={{
-                lat: this.props.initialLat, //change this to be set based on location input on form prior to map
-                lng: this.props.initialLon,
+                lat: this.state.centerLat, //change this to be set based on location input on form prior to map
+                lng: this.state.centerLon,
               }}
               onClick={this.onMapClick}
               center={{
@@ -317,7 +318,7 @@ export class MapCheck extends Component {
               onTimeChange={(activeTime) => this.setState({ activeTime })}
             />
           </Col>
-          <Col flex={2} id="data" className="data">
+          <Col flex={2}>
             {/* Table outside of map that shows info from state  */}
             <Table
               dataSource={dataSource}
@@ -329,8 +330,8 @@ export class MapCheck extends Component {
 
             
             <div>
-              <button className="save-button" onClick={this.postData}>
-                Check Footprints
+              <button className="save-button" onClick={this.checkData}>
+                Check Your Footprints
               </button>
             </div>
           </Col>
@@ -344,5 +345,5 @@ export class MapCheck extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: global.API_KEY,
+  apiKey: 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg',
 })(MapCheck);

@@ -29,6 +29,7 @@ export class MapContainer extends Component {
 
       patientId: this.props.patientId,
       demoOrReal: this.props.demoOrReal,
+      inputOrCheck: this.props.inputOrCheck,
       showingInfoWindow: false,
       showModal: false,
       selectedPlace: {},
@@ -216,6 +217,11 @@ export class MapContainer extends Component {
     }
   }
 
+  showWhatButtonText () {
+    return this.props.inputOrCheck === 'check' ? 'Check Footprints' : 'Save and Exit'
+              
+  }
+
   postData() {
     const footPrintWithCaseID = this.state.footPrints.map((obj) => {
       let row = {};
@@ -332,7 +338,7 @@ export class MapContainer extends Component {
             </CSVLink>
             <div>
               <button className="save-button" onClick={this.postData}>
-                Save and Exit
+                {this.showWhatButtonText()}
               </button>
             </div>
           </Col>
