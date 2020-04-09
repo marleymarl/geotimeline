@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import Autocomplete from 'react-google-autocomplete';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { Steps } from 'intro.js-react';
 
-import { Table, Row, Col, Button } from 'antd';
+import { Table, Row, Col, Button, Tabs } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
-import * as global from './global';
+import * as global from '../../global';
 import { CSVLink } from 'react-csv';
-import DateTimePickerModal from './components/DateTimePickerModal';
-import 'intro.js/introjs.css';
+import DateTimePickerModal from '../DateTimePickerModal';
 
-export class MapContainer extends Component {
+export class MapCheck extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,23 +26,18 @@ export class MapContainer extends Component {
         date: '',
         time: '',
       },
-      stepsEnabled: true,
-      initialStep: 0,
-      
-      
 
       patientId: this.props.patientId,
       demoOrReal: this.props.demoOrReal,
-      inputOrCheck: this.props.inputOrCheck,
       showingInfoWindow: false,
       showModal: false,
-      initialStep: 0,
       selectedPlace: {},
-      centerLat: props.initialLat,
-      centerLon: props.initialLon,
+      centerLat: 43.6532,
+      centerLon: -79.3832,
+      apiKey: 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg',
     };
 
-    this.postData = this.postData.bind(this);
+    this.checkData = this.checkData.bind(this);
   }
 
   // When user clicks on the map, a red marker shows up
@@ -210,10 +203,6 @@ export class MapContainer extends Component {
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId);
     console.log('demo or real is: ' + this.props.demoOrReal);
-    if(window.innerWidth > 920) { console.log('yo screen big')}
-      else if (window.innerWidth < 920) { console.log('yo screen small') }
-    
-    
   }
 
   toggleInfoTable() {
@@ -228,18 +217,7 @@ export class MapContainer extends Component {
     }
   }
 
-  showWhatButtonText () {
-    return this.props.inputOrCheck === 'check' ? 'Check Footprints' : 'Save and Exit'
-              
-  }
-
-
-
-  onExit = () => {
-      this.setState(() => ({stepsEnabled: false}));
-  }
-
-  postData() {
+  checkData() {
     const footPrintWithCaseID = this.state.footPrints.map((obj) => {
       let row = {};
       row.case_id = this.props.patientId;
@@ -271,30 +249,6 @@ export class MapContainer extends Component {
   }
 
   render() {
-    const { stepsEnabled, initialStep } = this.state;
-    const steps = window.innerWidth > 919 ? [{        
-            element: '.outer-wrap',
-            intro: 'Click on the map and pick a date and time and click Save Footprint to record a footprint. Click on individual markers on the map if you want to edit them. View the table on the right to see your full timeline.',
-            position: 'right',
-    
-            },
-            {
-            element: '.data',
-            intro: 'As you save footprints you will see them update in this table. If you need to delete any click on the red trash can beside the footprint you need to delete.',
-             },
-             {
-            element: '.save-button',
-            intro: 'When you have finished entering in your footprints, click this button to complete the process. ',
-             }] : [{        
-            element: '.outer-wrap',
-            intro: 'Click on the map and pick a date and time to record a footprint. Click on individual markers on the map if you want to edit them.',
-            position: 'right',
-    
-            },
-            {
-            element: '.burger',
-            intro: 'Click on this button to open up the table that displays all your footprints and press Save and Exit to anonymously save your timeline. ',
-             }]
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
       const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
@@ -330,9 +284,9 @@ export class MapContainer extends Component {
     ];
 
     return (
-      <div className="outer-wrap">
+      <div className="outer-wrap1">
         <Row>
-          <Col flex={3} id="map" className="map">
+          <Col flex={3}>
             <Autocomplete
               onPlaceSelected={this.onPlaceSelected}
               types={[]}
@@ -340,8 +294,8 @@ export class MapContainer extends Component {
             <Map
               google={this.props.google}
               initialCenter={{
-                lat: this.props.initialLat, //change this to be set based on location input on form prior to map
-                lng: this.props.initialLon,
+                lat: this.state.centerLat, //change this to be set based on location input on form prior to map
+                lng: this.state.centerLon,
               }}
               onClick={this.onMapClick}
               center={{
@@ -363,15 +317,8 @@ export class MapContainer extends Component {
               onDateChange={(activeDate) => this.setState({ activeDate })}
               onTimeChange={(activeTime) => this.setState({ activeTime })}
             />
-            <Steps
-          enabled={stepsEnabled}
-          steps={steps}
-          initialStep={initialStep}
-          onExit={this.onExit}
-          hideNext={window.innerWidth < 920 ? false : true }
-        />
           </Col>
-          <Col flex={2} id="data" className="data">
+          <Col flex={2}>
             {/* Table outside of map that shows info from state  */}
             <Table
               dataSource={dataSource}
@@ -381,12 +328,10 @@ export class MapContainer extends Component {
               size="small"
             />
 
-            <CSVLink data={dataSource} className="download-csv">
-              <Button type="primary">Save to CSV</Button>
-            </CSVLink>
+            
             <div>
-              <button className="save-button" onClick={this.postData}>
-                {this.showWhatButtonText()}
+              <button className="save-button" onClick={this.checkData}>
+                Check Your Footprints
               </button>
             </div>
           </Col>
@@ -400,5 +345,5 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: global.API_KEY,
-})(MapContainer);
+  apiKey: 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg',
+})(MapCheck);
