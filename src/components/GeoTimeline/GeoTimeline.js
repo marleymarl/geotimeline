@@ -7,13 +7,18 @@ export default class GeoTimeline extends Component {
   state = {
     patientId: '',
     demoOrReal: '',
-    inputOrCheck: '',
+    inputOrCheck: 'input',
+
     initialCenter: { lat: 43.6532, lng: -79.3832 },
     initialLat: 43.6532,
     initialLon: -79.3832,
   };
 
   handlePatientIdSubmit = (patientId, demoOrReal, inputOrCheck) => {
+    this.setState({ patientId, demoOrReal, inputOrCheck });
+  };
+
+  handleCheckFootprintSubmit = (patientId, demoOrReal, inputOrCheck) => {
     this.setState({ patientId, demoOrReal, inputOrCheck });
   };
 
