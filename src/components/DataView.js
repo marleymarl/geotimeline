@@ -4,14 +4,24 @@ import { Table } from 'antd';
 import * as moment from 'moment';
 import * as global from '../global';
 import 'antd/dist/antd.css';
+import { getRealOrDemo } from '../utils/demoOrReal'
 
 const getFootprintsData = async () => {
-  const results = await axios({
-    method: 'get',
-    url: global.API_URL + '/getfootprints',
-    headers: global.JSON_TYPE,
-  })
-  return results.data
+  const realOrDemo = getRealOrDemo()
+  const url = `${global.API_URL}/${realOrDemo==='real'?'getrealfootprints':'getfootprints'}`
+  try {
+    // fetch data from a url endpoint
+    const results = await axios({
+      method: 'get',
+      url,
+      headers: global.JSON_TYPE,
+    })
+    return results ? results.data : []
+  } catch(error) {
+    console.error('API call failed')
+    return []
+  }
+ 
 };
 
 const columns = [
@@ -73,12 +83,11 @@ const DataView = () => {
 
 
   useEffect(() => {
-    (async ( )=> {
+    (async () => {
       const data = await getFootprintsData();
       updateData(data)
     })();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [0])
+  }, [])
 
   return (
     <Table
