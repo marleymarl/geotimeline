@@ -405,7 +405,7 @@ export class MapContainer extends Component {
           </Col>
         </Row>
         <div className="burger">
-          <button onClick={this.toggleInfoTable}>...</button>
+          <button className="burger-button" onClick={this.toggleInfoTable}>...</button>
         </div>
         {this.state.showCheckPositions && <CheckPositions
             onClose={this.closeCheckAgainstConfirmed}
