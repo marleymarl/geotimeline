@@ -64,7 +64,10 @@ export default class upFrontButtonForm extends Component {
           <Button onClick={() => this.startRealTimeline()} className='start-real'>
             Start Real Timeline
           </Button>
-        
+          <Button onClick={() => this.startCheckAgainstConfirmed()} className='start-real'>
+            Check My Footprints
+          </Button>
+
         </div>
         <Steps
           enabled={stepsEnabled}
@@ -79,12 +82,20 @@ export default class upFrontButtonForm extends Component {
   startTimeline() {
     const patientId = uuid.v4();
     const demoOrReal = 'demo';
-    this.props.handlePatientIdSubmit(patientId, demoOrReal);
+    const inputOrCheck = 'input';
+    this.props.handlePatientIdSubmit(patientId, demoOrReal, inputOrCheck);
   }
   startRealTimeline() {
     const patientId = uuid.v4();
     const demoOrReal = 'real';
-    this.props.handlePatientIdSubmit(patientId, demoOrReal);
+    const inputOrCheck = 'input';
+    this.props.handlePatientIdSubmit(patientId, demoOrReal, inputOrCheck);
+  }
+  startCheckAgainstConfirmed() {
+    const patientId = uuid.v4();
+    const demoOrReal = 'real';
+    const inputOrCheck = 'check';
+    this.props.handlePatientIdSubmit(patientId, demoOrReal, inputOrCheck);
   }
   startDemoCheckFootprints() {
     const patientId = 'not applicable';
