@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {Modal} from "antd";
+import {Button, Modal} from "antd";
 import * as global from '../global';
 import axios from "axios";
 import { Table } from 'antd';
 
-const MAX_TIME_DIFF = 24 * 3600;
-const MAX_DISTANCE = 10000000;
+const MAX_TIME_DIFF = 15 * 60; // in seconds
+const MAX_DISTANCE = 100; // in meters
 
 export class CheckPositions extends Component {
     constructor(props) {
@@ -21,6 +21,9 @@ export class CheckPositions extends Component {
     componentDidMount() {
         if(this.props.positions.length === 0)
             return;
+        this.setState(Object.assign({}, this.state, {
+            error: null
+        }));
         const boundaries = this.getBoundaries();
         this.loadConfirmedCases(boundaries).then(resp => {
             if(resp.errorMessage !== undefined) {
@@ -85,6 +88,8 @@ export class CheckPositions extends Component {
         for(let casePos of allCases) {
             //console.log(casePos);
             const caseDate = Date.parse(casePos.date.replace(/T\d+.+$/, `T${casePos.time}`));
+            if(isNaN(caseDate))
+                continue;
             for(let userPos of this.props.positions) {
                 // time diff, in seconds
                 const timeDiff = Math.round(Math.abs(userPos.date.getTime() - caseDate) / 1000);
@@ -111,6 +116,15 @@ export class CheckPositions extends Component {
         return Math.acos(Math.sin(lat1)*Math.sin(lat2) +
             Math.cos(lat1)*Math.cos(lat2) *
             Math.cos(lon2-lon1)) * R;
+    }
+
+    renderMatchResult() {
+        if(this.data && this.data.length) {
+            return this.renderMatchesTable();
+        }
+        return (<div className="ant-typography">
+            You're not contacted the confirmed cases
+        </div>);
     }
 
     renderMatchesTable = () => {
@@ -150,8 +164,11 @@ export class CheckPositions extends Component {
             {this.state.loading ?
                 <div>Loading data...</div>
                 : this.state.error
-                    ? <div className="ant-typography ant-typography-danger">{this.state.error}</div>
-                    : this.renderMatchesTable()}
+                    ? <div className="ant-typography ant-typography-danger">
+                        <div>{this.state.error}</div>
+                        <Button type="danger" onClick={() => this.componentDidMount()}>Repeat</Button>
+                    </div>
+                    : this.renderMatchResult()}
         </Modal>)
     }
 
