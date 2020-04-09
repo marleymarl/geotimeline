@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Autocomplete from 'react-google-autocomplete';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { Steps } from 'intro.js-react';
 
 import { Table, Row, Col, Button } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
@@ -10,6 +11,7 @@ import * as global from './global';
 import { CSVLink } from 'react-csv';
 import DateTimePickerModal from './components/DateTimePickerModal';
 import { CheckPositions } from './components/CheckPositions';
+import 'intro.js/introjs.css';
 
 
 export class MapContainer extends Component {
@@ -28,11 +30,13 @@ export class MapContainer extends Component {
         date: '',
         time: '',
       },
-
+      stepsEnabled: true,
       patientId: this.props.patientId,
       demoOrReal: this.props.demoOrReal,
+      inputOrCheck: this.props.inputOrCheck,
       showingInfoWindow: false,
       showModal: false,
+      initialStep: 0,
       selectedPlace: {},
       centerLat: props.initialLat,
       centerLon: props.initialLon,
@@ -205,6 +209,10 @@ export class MapContainer extends Component {
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId);
     console.log('demo or real is: ' + this.props.demoOrReal);
+    if(window.innerWidth > 920) { console.log('yo screen big')}
+      else if (window.innerWidth < 920) { console.log('yo screen small') }
+    
+    
   }
 
   toggleInfoTable() {
@@ -217,6 +225,17 @@ export class MapContainer extends Component {
       objData.style.display = '';
       objMap.style.display = '';
     }
+  }
+
+  showWhatButtonText () {
+    return this.props.inputOrCheck === 'check' ? 'Check Footprints' : 'Save and Exit'
+              
+  }
+
+
+
+  onExit = () => {
+      this.setState(() => ({stepsEnabled: false}));
   }
 
   postData() {
@@ -263,6 +282,30 @@ export class MapContainer extends Component {
   };
 
   render() {
+    const { stepsEnabled, initialStep } = this.state;
+    const steps = window.innerWidth > 919 ? [{        
+            element: '.outer-wrap',
+            intro: 'Click on the map and pick a date and time and click Save Footprint to record a footprint. Click on individual markers on the map if you want to edit them. View the table on the right to see your full timeline.',
+            position: 'right',
+    
+            },
+            {
+            element: '.data',
+            intro: 'As you save footprints you will see them update in this table. If you need to delete any click on the red trash can beside the footprint you need to delete.',
+             },
+             {
+            element: '.save-button',
+            intro: 'When you have finished entering in your footprints, click this button to complete the process. ',
+             }] : [{        
+            element: '.outer-wrap',
+            intro: 'Click on the map and pick a date and time to record a footprint. Click on individual markers on the map if you want to edit them.',
+            position: 'right',
+    
+            },
+            {
+            element: '.burger',
+            intro: 'Click on this button to open up the table that displays all your footprints and press Save and Exit to anonymously save your timeline. ',
+             }]
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
       const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
@@ -331,6 +374,13 @@ export class MapContainer extends Component {
               onDateChange={(activeDate) => this.setState({ activeDate })}
               onTimeChange={(activeTime) => this.setState({ activeTime })}
             />
+            <Steps
+          enabled={stepsEnabled}
+          steps={steps}
+          initialStep={initialStep}
+          onExit={this.onExit}
+          hideNext={window.innerWidth < 920 ? false : true }
+        />
           </Col>
           <Col flex={2} id="data" className="data">
             {/* Table outside of map that shows info from state  */}
@@ -350,7 +400,7 @@ export class MapContainer extends Component {
             </div>
             <div>
               <button className="save-button" onClick={this.postData}>
-                Save and Exit
+                {this.showWhatButtonText()}
               </button>
             </div>
           </Col>

@@ -12,6 +12,8 @@
     "formik": "^2.1.4",
     "formik-antd": "^2.0.0",
     "google-maps-react": "^2.0.2",
+    "intro.js": "^2.9.3",
+    "intro.js-react": "^0.2.0",
     "moment": "^2.24.0",
     "react": "^16.13.0",
     "react-csv": "^2.0.3",
