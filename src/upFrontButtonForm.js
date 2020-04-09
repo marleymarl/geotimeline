@@ -86,4 +86,18 @@ export default class upFrontButtonForm extends Component {
     const demoOrReal = 'real';
     this.props.handlePatientIdSubmit(patientId, demoOrReal);
   }
+  startDemoCheckFootprints() {
+    const patientId = 'not applicable';
+    const demoOrReal = 'demo';
+    const inputOrCheck = 'check';
+    this.props.handleCheckFootprintSubmit(patientId, demoOrReal, inputOrCheck);
+
+  }
+  startRealCheckFootprints() {
+    const patientId = 'not applicable';
+    const demoOrReal = 'real';
+    const inputOrCheck = 'check';
+    this.props.handleCheckFootprintSubmit(patientId, demoOrReal, inputOrCheck);
+
+  }
 }
