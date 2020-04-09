@@ -10,7 +10,9 @@ import * as moment from 'moment';
 import * as global from './global';
 import { CSVLink } from 'react-csv';
 import DateTimePickerModal from './components/DateTimePickerModal';
+import { CheckPositions } from './components/CheckPositions';
 import 'intro.js/introjs.css';
+
 
 export class MapContainer extends Component {
   constructor(props) {
@@ -29,10 +31,6 @@ export class MapContainer extends Component {
         time: '',
       },
       stepsEnabled: true,
-      initialStep: 0,
-      
-      
-
       patientId: this.props.patientId,
       demoOrReal: this.props.demoOrReal,
       inputOrCheck: this.props.inputOrCheck,
@@ -42,6 +40,7 @@ export class MapContainer extends Component {
       selectedPlace: {},
       centerLat: props.initialLat,
       centerLon: props.initialLon,
+      showCheckPositions: false,
     };
 
     this.postData = this.postData.bind(this);
@@ -233,13 +232,15 @@ export class MapContainer extends Component {
               
   }
 
-
-
   onExit = () => {
       this.setState(() => ({stepsEnabled: false}));
   }
 
   postData() {
+    if(this.props.inputOrCheck === 'check') {
+      this.checkAgainstConfirmed();
+      return;
+    }
     const footPrintWithCaseID = this.state.footPrints.map((obj) => {
       let row = {};
       row.case_id = this.props.patientId;
@@ -269,6 +270,18 @@ export class MapContainer extends Component {
         console.error('Something went wrong:', error);
       });
   }
+
+  checkAgainstConfirmed = () => {
+    this.setState(Object.assign({}, this.state, {
+      showCheckPositions: true
+    }));
+  };
+
+  closeCheckAgainstConfirmed = () => {
+    this.setState(Object.assign({}, this.state, {
+      showCheckPositions: false
+    }));
+  };
 
   render() {
     const { stepsEnabled, initialStep } = this.state;
@@ -394,6 +407,10 @@ export class MapContainer extends Component {
         <div className="burger">
           <button onClick={this.toggleInfoTable}>...</button>
         </div>
+        {this.state.showCheckPositions && <CheckPositions
+            onClose={this.closeCheckAgainstConfirmed}
+            positions={this.state.footPrints}></CheckPositions>}
+
       </div>
     );
   }
