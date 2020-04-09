@@ -79,6 +79,9 @@
   cursor: pointer;
   font-weight: bold;
 }
+.burger-button {
+  background-color: #ffffff;
+}
 
 @media (max-width: 920px) {
   .ant-col.data {
