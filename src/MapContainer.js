@@ -232,13 +232,15 @@ export class MapContainer extends Component {
               
   }
 
-
-
   onExit = () => {
       this.setState(() => ({stepsEnabled: false}));
   }
 
   postData() {
+    if(this.props.inputOrCheck === 'check') {
+      this.checkAgainstConfirmed();
+      return;
+    }
     const footPrintWithCaseID = this.state.footPrints.map((obj) => {
       let row = {};
       row.case_id = this.props.patientId;
@@ -395,9 +397,6 @@ export class MapContainer extends Component {
             <CSVLink data={dataSource} className="download-csv">
               <Button type="primary">Save to CSV</Button>
             </CSVLink>
-            <div className="check-my-case">
-              <Button type="default" onClick={this.checkAgainstConfirmed}>Check My Footprints Against Confirmed Cases</Button>
-            </div>
             <div>
               <button className="save-button" onClick={this.postData}>
                 {this.showWhatButtonText()}
