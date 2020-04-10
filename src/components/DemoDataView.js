@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import * as global from '../global';
 import 'antd/dist/antd.css';
 
-export default class DataView extends Component {
+export default class DemoDataView extends Component {
   state = { data: [] };
 
   componentDidMount() {
@@ -15,7 +15,7 @@ export default class DataView extends Component {
   getFootprintsData = () => {
     axios({
       method: 'get',
-      url: global.API_URL + '/getrealfootprints',
+      url: global.API_URL + '/getfootprints',
       headers: global.JSON_TYPE,
     }).then((data) => {
       return this.setState({ data: data.data });
