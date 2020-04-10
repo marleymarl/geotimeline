@@ -263,7 +263,7 @@ export class MapContainer extends Component {
     fetch(global.API_URL + resource, requestOptions)
       .then((response) => {
         response.json();
-        window.location.href = '/dataview';
+        this.props.demoOrReal === 'real' ? window.location.href = '/dataview' : window.location.href = '/demodataview';
       })
       //.then((json) => {alert(JSON.stringify(requestOptions)); window.location.reload(false)})
       .catch((error) => {
