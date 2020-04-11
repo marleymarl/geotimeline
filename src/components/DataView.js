@@ -1,13 +1,95 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {Button, Table} from 'antd';
+import { Button, Table, Input } from 'antd';
 import * as moment from 'moment';
 import * as global from '../global';
 import 'antd/dist/antd.css';
-import { CSVLink } from "react-csv";
+import { CSVLink } from 'react-csv';
+import Highlighter from 'react-highlight-words';
+import { SearchOutlined } from '@ant-design/icons';
 
 export default class DataView extends Component {
-  state = { data: null };
+  state = {
+    data: null,
+    searchText: '',
+    searchedColumn: '',
+  };
+
+  getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={(node) => {
+              this.searchInput = node;
+            }}
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() =>
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Button
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90, marginRight: 8 }}
+          >
+            Search
+        </Button>
+          <Button
+            onClick={() => this.handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+        </Button>
+        </div>
+      ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    render: (text) =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text.toString()}
+        />
+      ) : (
+          text
+        ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = (clearFilters) => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
 
   componentDidMount() {
     this.getFootprintsData();
@@ -38,20 +120,20 @@ export default class DataView extends Component {
     };
   }
 
-  onChangeTable({currentDataSource}) {
-    this.setState(Object.assign({}, this.state, {
-      filteredData: currentDataSource,
-    }));
+  onChangeTable({ currentDataSource }) {
+    this.setState(
+      Object.assign({}, this.state, {
+        filteredData: currentDataSource,
+      }),
+    );
   }
 
   loading() {
-    return (<div>
-      ...Loading
-    </div>)
+    return <div>...Loading</div>;
   }
 
   render() {
-    if(!this.state.data) {
+    if (!this.state.data) {
       return this.loading();
     }
     const dataSource = this.state.data;
@@ -60,6 +142,7 @@ export default class DataView extends Component {
         title: 'case_id',
         dataIndex: 'case_id',
         sorter: (a, b) => a.case_id - b.case_id,
+        ...this.getColumnSearchProps('case_id')
       },
       {
         title: 'date',
@@ -74,7 +157,8 @@ export default class DataView extends Component {
             value: '5',
           },
         ],
-        onFilter: (value, record) => moment(record.date) > moment().subtract(value, 'days'),
+        onFilter: (value, record) =>
+          moment(record.date) > moment().subtract(value, 'days'),
         sorter: (a, b) => a.date - b.date,
       },
       {
@@ -97,8 +181,12 @@ export default class DataView extends Component {
     return (
       <div>
         <div className="dataview-heeader">
-          <CSVLink data={this.state.filteredData} className="dataview-csv-button" filename="footprints.csv">
-            <Button type="primary" >Save to CSV</Button>
+          <CSVLink
+            data={this.state.filteredData}
+            className="dataview-csv-button"
+            filename="footprints.csv"
+          >
+            <Button type="primary">Save to CSV</Button>
           </CSVLink>
         </div>
         <Table
