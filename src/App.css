@@ -118,3 +118,13 @@ button.ant-typography-danger {
   background: none;
   padding: 0;
 }
+
+.dataview-heeader {
+  display: flex;
+  flex-direction: column;
+}
+
+.dataview-csv-button {
+  display: flex;
+  align-self: flex-end;
+}

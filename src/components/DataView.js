@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table } from 'antd';
+import {Button, Table} from 'antd';
 import * as moment from 'moment';
 import * as global from '../global';
 import 'antd/dist/antd.css';
+import { CSVLink } from "react-csv";
 
 export default class DataView extends Component {
-  state = { data: [] };
+  state = { data: null };
 
   componentDidMount() {
     this.getFootprintsData();
@@ -18,21 +19,42 @@ export default class DataView extends Component {
       url: global.API_URL + '/getrealfootprints',
       headers: global.JSON_TYPE,
     }).then((data) => {
-      return this.setState({ data: data.data });
+      const dataSource = data.data.map(this.footprintToDataItem);
+      return this.setState({
+        data: dataSource,
+        filteredData: dataSource,
+      });
     });
   };
 
+  footprintToDataItem(footprint, idx) {
+    return {
+      key: idx,
+      case_id: footprint.case_id,
+      date: moment(footprint.date).format('ddd, ll'),
+      time: footprint.time,
+      latitude: footprint.latitude,
+      longitude: footprint.longitude,
+    };
+  }
+
+  onChangeTable({currentDataSource}) {
+    this.setState(Object.assign({}, this.state, {
+      filteredData: currentDataSource,
+    }));
+  }
+
+  loading() {
+    return (<div>
+      ...Loading
+    </div>)
+  }
+
   render() {
-    const dataSource = this.state.data.map((footprint, idx) => {
-      return {
-        key: idx,
-        case_id: footprint.case_id,
-        date: moment(footprint.date).format('ddd, ll'),
-        time: footprint.time,
-        latitude: footprint.latitude,
-        longitude: footprint.longitude,
-      };
-    });
+    if(!this.state.data) {
+      return this.loading();
+    }
+    const dataSource = this.state.data;
     const columns = [
       {
         title: 'case_id',
@@ -73,13 +95,21 @@ export default class DataView extends Component {
     ];
 
     return (
-      <Table
-        dataSource={dataSource}
-        columns={columns}
-        pagination={true}
-        className="table-column"
-        size="large"
-      />
+      <div>
+        <div className="dataview-heeader">
+          <CSVLink data={this.state.filteredData} className="dataview-csv-button" filename="footprints.csv">
+            <Button type="primary" >Save to CSV</Button>
+          </CSVLink>
+        </div>
+        <Table
+          dataSource={dataSource}
+          onChange={(_, __, ___, ex) => this.onChangeTable(ex)}
+          columns={columns}
+          pagination={true}
+          className="table-column"
+          size="large"
+        />
+      </div>
     );
   }
 }
