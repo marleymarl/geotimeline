@@ -287,10 +287,7 @@ export class MapCheck extends Component {
       <div className="outer-wrap1">
         <Row>
           <Col flex={3}>
-            <Autocomplete
-              onPlaceSelected={this.onPlaceSelected}
-              types={[]}
-            />
+            <Autocomplete onPlaceSelected={this.onPlaceSelected} types={[]} />
             <Map
               google={this.props.google}
               initialCenter={{
@@ -328,7 +325,6 @@ export class MapCheck extends Component {
               size="small"
             />
 
-            
             <div>
               <button className="save-button" onClick={this.checkData}>
                 Check Your Footprints
