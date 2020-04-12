@@ -78,6 +78,75 @@ export default class DataView extends Component {
         ),
   });
 
+  getCoordSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={(node) => {
+              this.searchMax = node;
+            }}
+            placeholder={`Max ${dataIndex}`}
+            onPressEnter={() =>
+              this.searchMin.select()
+            }
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Input
+            ref={(node) => {
+              this.searchMin = node;
+            }}
+            placeholder={`Min ${dataIndex}`}
+            onPressEnter={() =>
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Button
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90, marginRight: 8 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => {
+              this.searchMin.state.value = null;
+              this.searchMax.state.value = null;
+              clearFilters();
+            }}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </div>
+      ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
+    onFilter: (value, record) => {
+      console.log(record[dataIndex])
+      if (this.searchMin.state.value && this.searchMax.state.value) {
+        return (record[dataIndex] > this.searchMin.state.value && record[dataIndex] < this.searchMax.state.value)
+      } else {
+        return true;
+      }
+    },
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchMax.select());
+      }
+    },
+    render: (text) => text
+  });
+
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -170,11 +239,13 @@ export default class DataView extends Component {
         title: 'latitude',
         dataIndex: 'latitude',
         sorter: (a, b) => a.latitude - b.latitude,
+        ...this.getCoordSearchProps('latitude')
       },
       {
         title: 'longitude',
         dataIndex: 'longitude',
         sorter: (a, b) => a.longitude - b.longitude,
+        ...this.getCoordSearchProps('longitude')
       },
     ];
 
