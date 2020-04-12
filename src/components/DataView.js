@@ -24,17 +24,11 @@ export default class DataView extends Component {
     }) => (
         <div style={{ padding: 8 }}>
           <Input
-            ref={(node) => {
-              this.searchInput = node;
-            }}
+            ref={(node) => { this.searchInput = node; }}
             placeholder={`Search ${dataIndex}`}
             value={selectedKeys[0]}
-            onChange={(e) =>
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
-            onPressEnter={() =>
-              this.handleSearch(selectedKeys, confirm, dataIndex)
-            }
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
             style={{ width: 188, marginBottom: 8, display: 'block' }}
           />
           <Button
@@ -43,16 +37,12 @@ export default class DataView extends Component {
             icon={<SearchOutlined />}
             size="small"
             style={{ width: 90, marginRight: 8 }}
-          >
-            Search
-        </Button>
+          >Search</Button>
           <Button
             onClick={() => this.handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
-          >
-            Reset
-        </Button>
+          >Reset</Button>
         </div>
       ),
     filterIcon: (filtered) => (
@@ -87,23 +77,17 @@ export default class DataView extends Component {
     }) => (
         <div style={{ padding: 8 }}>
           <Input
-            ref={(node) => {
-              this.searchMax = node;
-            }}
+            ref={(node) => { this.searchMax = node; }}
             placeholder={`Max ${dataIndex}`}
-            onPressEnter={() =>
-              this.searchMin.select()
-            }
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => this.searchMin.select()}
             style={{ width: 188, marginBottom: 8, display: 'block' }}
           />
           <Input
-            ref={(node) => {
-              this.searchMin = node;
-            }}
+            ref={(node) => { this.searchMin = node; }}
             placeholder={`Min ${dataIndex}`}
-            onPressEnter={() =>
-              this.handleSearch(selectedKeys, confirm, dataIndex)
-            }
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
             style={{ width: 188, marginBottom: 8, display: 'block' }}
           />
           <Button
@@ -112,9 +96,7 @@ export default class DataView extends Component {
             icon={<SearchOutlined />}
             size="small"
             style={{ width: 90, marginRight: 8 }}
-          >
-            Search
-          </Button>
+          >Search</Button>
           <Button
             onClick={() => {
               this.searchMin.state.value = null;
@@ -123,16 +105,13 @@ export default class DataView extends Component {
             }}
             size="small"
             style={{ width: 90 }}
-          >
-            Reset
-          </Button>
+          >Reset</Button>
         </div>
       ),
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
     onFilter: (value, record) => {
-      console.log(record[dataIndex])
       if (this.searchMin.state.value && this.searchMax.state.value) {
         return (record[dataIndex] > this.searchMin.state.value && record[dataIndex] < this.searchMax.state.value)
       } else {
