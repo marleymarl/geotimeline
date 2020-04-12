@@ -22,29 +22,39 @@ export default class DataView extends Component {
       confirm,
       clearFilters,
     }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            ref={(node) => { this.searchInput = node; }}
-            placeholder={`Search ${dataIndex}`}
-            value={selectedKeys[0]}
-            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            style={{ width: 188, marginBottom: 8, display: 'block' }}
-          />
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90, marginRight: 8 }}
-          >Search</Button>
-          <Button
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >Reset</Button>
-        </div>
-      ),
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearch(selectedKeys, confirm, dataIndex)
+          }
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon={<SearchOutlined />}
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button
+          onClick={() => this.handleReset(clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          Reset
+        </Button>
+      </div>
+    ),
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
@@ -64,8 +74,8 @@ export default class DataView extends Component {
           textToHighlight={text.toString()}
         />
       ) : (
-          text
-        ),
+        text
+      ),
   });
 
   getCoordSearchProps = (dataIndex) => ({
@@ -75,45 +85,62 @@ export default class DataView extends Component {
       confirm,
       clearFilters,
     }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            ref={(node) => { this.searchMax = node; }}
-            placeholder={`Max ${dataIndex}`}
-            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={() => this.searchMin.select()}
-            style={{ width: 188, marginBottom: 8, display: 'block' }}
-          />
-          <Input
-            ref={(node) => { this.searchMin = node; }}
-            placeholder={`Min ${dataIndex}`}
-            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            style={{ width: 188, marginBottom: 8, display: 'block' }}
-          />
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90, marginRight: 8 }}
-          >Search</Button>
-          <Button
-            onClick={() => {
-              this.searchMin.state.value = null;
-              this.searchMax.state.value = null;
-              clearFilters();
-            }}
-            size="small"
-            style={{ width: 90 }}
-          >Reset</Button>
-        </div>
-      ),
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            this.searchMax = node;
+          }}
+          placeholder={`Max ${dataIndex}`}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => this.searchMin.select()}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Input
+          ref={(node) => {
+            this.searchMin = node;
+          }}
+          placeholder={`Min ${dataIndex}`}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearch(selectedKeys, confirm, dataIndex)
+          }
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon={<SearchOutlined />}
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button
+          onClick={() => {
+            this.searchMin.state.value = null;
+            this.searchMax.state.value = null;
+            clearFilters();
+          }}
+          size="small"
+          style={{ width: 90 }}
+        >
+          Reset
+        </Button>
+      </div>
+    ),
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
     onFilter: (value, record) => {
       if (this.searchMin.state.value && this.searchMax.state.value) {
-        return (record[dataIndex] > this.searchMin.state.value && record[dataIndex] < this.searchMax.state.value)
+        return (
+          record[dataIndex] > this.searchMin.state.value &&
+          record[dataIndex] < this.searchMax.state.value
+        );
       } else {
         return true;
       }
@@ -123,7 +150,7 @@ export default class DataView extends Component {
         setTimeout(() => this.searchMax.select());
       }
     },
-    render: (text) => text
+    render: (text) => text,
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -190,7 +217,7 @@ export default class DataView extends Component {
         title: 'case_id',
         dataIndex: 'case_id',
         sorter: (a, b) => a.case_id - b.case_id,
-        ...this.getColumnSearchProps('case_id')
+        ...this.getColumnSearchProps('case_id'),
       },
       {
         title: 'date',
@@ -218,13 +245,13 @@ export default class DataView extends Component {
         title: 'latitude',
         dataIndex: 'latitude',
         sorter: (a, b) => a.latitude - b.latitude,
-        ...this.getCoordSearchProps('latitude')
+        ...this.getCoordSearchProps('latitude'),
       },
       {
         title: 'longitude',
         dataIndex: 'longitude',
         sorter: (a, b) => a.longitude - b.longitude,
-        ...this.getCoordSearchProps('longitude')
+        ...this.getCoordSearchProps('longitude'),
       },
     ];
 
