@@ -127,3 +127,11 @@ button.ant-typography-danger {
   display: flex;
   align-self: flex-end;
 }
+
+.ant-collapse {
+  text-align: left;
+}
+
+.ant-collapse-header {
+  font-weight: bold;
+}

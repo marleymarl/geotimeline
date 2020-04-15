@@ -12,6 +12,9 @@ import { CSVLink } from 'react-csv';
 import DateTimePickerModal from './components/DateTimePickerModal';
 import { CheckPositions } from './components/CheckPositions';
 import 'intro.js/introjs.css';
+import { Collapse } from 'antd';
+
+const { Panel } = Collapse;
 
 export class MapContainer extends Component {
   constructor(props) {
@@ -295,36 +298,36 @@ export class MapContainer extends Component {
     const steps =
       window.innerWidth > 919
         ? [
-            {
-              element: '.outer-wrap',
-              intro:
-                'Click on the map and pick a date and time and click Save Footprint to record a footprint. Click on individual markers on the map if you want to edit them. View the table on the right to see your full timeline.',
-              position: 'right',
-            },
-            {
-              element: '.data',
-              intro:
-                'As you save footprints you will see them update in this table. If you need to delete any click on the red trash can beside the footprint you need to delete.',
-            },
-            {
-              element: '.save-button',
-              intro:
-                'When you have finished entering in your footprints, click this button to complete the process. ',
-            },
-          ]
+          {
+            element: '.outer-wrap',
+            intro:
+              'Click on the map and pick a date and time and click Save Footprint to record a footprint. Click on individual markers on the map if you want to edit them. View the table on the right to see your full timeline.',
+            position: 'right',
+          },
+          {
+            element: '.data',
+            intro:
+              'As you save footprints you will see them update in this table. If you need to delete any click on the red trash can beside the footprint you need to delete.',
+          },
+          {
+            element: '.save-button',
+            intro:
+              'When you have finished entering in your footprints, click this button to complete the process. ',
+          },
+        ]
         : [
-            {
-              element: '.outer-wrap',
-              intro:
-                'Click on the map and pick a date and time to record a footprint. Click on individual markers on the map if you want to edit them.',
-              position: 'right',
-            },
-            {
-              element: '.burger',
-              intro:
-                'Click on this button to open up the table that displays all your footprints and press Save and Exit to anonymously save your timeline. ',
-            },
-          ];
+          {
+            element: '.outer-wrap',
+            intro:
+              'Click on the map and pick a date and time to record a footprint. Click on individual markers on the map if you want to edit them.',
+            position: 'right',
+          },
+          {
+            element: '.burger',
+            intro:
+              'Click on this button to open up the table that displays all your footprints and press Save and Exit to anonymously save your timeline. ',
+          },
+        ];
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
       const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
@@ -399,7 +402,16 @@ export class MapContainer extends Component {
             />
           </Col>
           <Col flex={2} id="data" className="data">
-            {/* Table outside of map that shows info from state  */}
+            <Collapse defaultActiveKey={['1']} >
+              <Panel header="Instruction (Card Component, ant design)" key="1">
+                <ol>
+                  <li>The map by default shows the COVID19 cases' footprint TODAY</li>
+                  <li>Use the calendar to pick a date and see the COVID19 cases for THAT TODAY</li>
+                  <li>Click on specific pin to show detail for that pin</li>
+                </ol>
+              </Panel>
+            </Collapse>
+
             <Table
               dataSource={dataSource}
               columns={columns}
