@@ -28,9 +28,7 @@ export default class GeoTimeline extends Component {
         <UpFrontForm
           handlePatientIdSubmit={this.handlePatientIdSubmit}
           title={'Welcome to the GeoTimeline Application'}
-          description={
-            `Click 'Start Demo Timeline' to try out the application. Click 'Start Real Timeline' to record your footprint history if you have been confirmed to have Covid19 Coronavirus.`
-          }
+          description={`Click 'Start Demo Timeline' to try out the application. Click 'Start Real Timeline' to record your footprint history if you have been confirmed to have Covid19 Coronavirus.`}
         />
       );
     } else {
