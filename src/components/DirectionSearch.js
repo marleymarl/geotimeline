@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Autocomplete from 'react-google-autocomplete';
 import {Button} from "antd";
+import {SyncOutlined} from '@ant-design/icons';
 
 
 export default class DirectionSearch extends Component {
@@ -16,7 +17,10 @@ export default class DirectionSearch extends Component {
     this.fromCoord = null;
     this.toCoord = null;
     this.fromAddr = '';
-    this.toAddr = ''
+    this.toAddr = '';
+
+    this.fromRef = React.createRef();
+    this.toRef = React.createRef();
   }
 
   onSelected(place, key) {
@@ -105,7 +109,7 @@ export default class DirectionSearch extends Component {
       }
       const geocoder = new window.google.maps.Geocoder();
       geocoder.geocode( { 'address': address}, function(results, status) {
-        if (status == 'OK') {
+        if (status === 'OK') {
           const loc = results[0].geometry.location;
           resolve({
             lat: loc.lat(),
@@ -120,22 +124,43 @@ export default class DirectionSearch extends Component {
     })
   }
 
+  swapDirection() {
+    [this.fromCoord, this.toCoord] = [this.toCoord, this.fromCoord];
+    [this.fromAddr, this.toAddr] = [this.toAddr, this.fromAddr];
+
+    const fromInput = this.fromRef.current.refs.input;
+    const toInput = this.toRef.current.refs.input;
+    [fromInput.value, toInput.value] = [toInput.value, fromInput.value];
+
+    this.setState(Object.assign({}, this.state, {
+      fromError: false,
+      toError: false,
+    }));
+  }
+
   render() {
     return (
       <div className="direction-search">
-        <div className={this.state.fromError ? "ant-form-item-has-error" : ""}>
-          <Autocomplete className="ant-input" placeholder="from"
-                        onPlaceSelected={x => this.onSelected(x, 'from')}
-                        onInput={x => this.onInput(x, 'from')}></Autocomplete>
-          {this.state.fromError && this.state.fromErrorMessage && <div className="ant-typography ant-typography-danger">
-            {this.state.fromErrorMessage}</div>}
-        </div>
-        <div className={this.state.toError ? "ant-form-item-has-error" : ""}>
-          <Autocomplete className="ant-input" placeholder="to"
-                        onPlaceSelected={x => this.onSelected(x, 'to')}
-                        onInput={x => this.onInput(x, 'to')}></Autocomplete>
-          {this.state.toError && this.state.toErrorMessage && <div className="ant-typography ant-typography-danger">
-            {this.state.toErrorMessage}</div>}
+        <div className="direction-search-form">
+          <div className="direction-search-switch">
+            <a onClick={() => this.swapDirection()}><SyncOutlined/></a>
+          </div>
+          <div className="direction-search-main">
+            <div className={this.state.fromError ? "ant-form-item-has-error" : ""}>
+              <Autocomplete className="ant-input" placeholder="from" ref={this.fromRef}
+                            onPlaceSelected={x => this.onSelected(x, 'from')}
+                            onInput={x => this.onInput(x, 'from')}/>
+              {this.state.fromError && this.state.fromErrorMessage && <div className="ant-typography ant-typography-danger">
+                {this.state.fromErrorMessage}</div>}
+            </div>
+            <div className={this.state.toError ? "ant-form-item-has-error" : ""}>
+              <Autocomplete className="ant-input" placeholder="to" ref={this.toRef}
+                            onPlaceSelected={x => this.onSelected(x, 'to')}
+                            onInput={x => this.onInput(x, 'to')}/>
+              {this.state.toError && this.state.toErrorMessage && <div className="ant-typography ant-typography-danger">
+                {this.state.toErrorMessage}</div>}
+            </div>
+          </div>
         </div>
         <Button type="primary" loading={this.state.searchLoading} onClick={() => this.search()}>Search</Button>
       </div>
