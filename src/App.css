@@ -144,3 +144,14 @@ button.ant-typography-danger {
   font-weight: bold;
 }
 
+.direction-search {
+  text-align: right;
+}
+
+.direction-search .ant-input {
+  margin-bottom: 10px;
+}
+
+.direction-search button {
+  margin-top: 10px;
+}

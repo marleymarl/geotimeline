@@ -6,7 +6,13 @@ import {Button} from "antd";
 export default class DirectionSearch extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      fromError: false,
+      fromErrorMessage: '',
+      toError: false,
+      toErrorMessage: '',
+      searchLoading: false,
+    };
     this.fromCoord = null;
     this.toCoord = null;
     this.fromAddr = '';
@@ -23,19 +29,60 @@ export default class DirectionSearch extends Component {
   onInput(e, key) {
     this[`${key}Coord`] = null;
     this[`${key}Addr`] = e.target.value;
+
+    const state = {};
+    state[`${key}Error`] = false;
+    state[`${key}ErrorMessage`] = false;
+    this.setState(Object.assign({}, this.state, state));
   }
 
   async search() {
+    if(!this.validate())
+      return;
+
+    if(this.state.searchLoading)
+      return;
+
+    this.setState(Object.assign({}, this.state, {searchLoading: true}));
+
     Promise.all(['from', 'to'].map(k => this.getCoordPromise(k)))
       .then((from, to) => {
         console.log(from, to);
       })
       .catch(err => {
-        alert(err);
+        if(err.key) {
+          const state = {};
+          state[`${err.key}Error`] = true;
+          state[`${err.key}ErrorMessage`] = err.error;
+          this.setState(Object.assign({}, this.state, state));
+        } else {
+          alert(err);
+        }
       })
-    //console.log(this.fromCoord, this.toCoord);
-    //const geocoder = new window.google.maps.Geocoder();
-    //console.log(geocoder);
+      .finally(() => {
+        this.setState(Object.assign({}, this.state, {searchLoading: false}));
+      });
+  }
+
+  validate() {
+    const state = {};
+    let hasErrors = false;
+    if(this.isEmpty('from')) {
+      state.fromError = true;
+      hasErrors = true;
+    }
+    if(this.isEmpty('to')) {
+      state.toError = true;
+      hasErrors = true;
+    }
+    if(hasErrors) {
+      this.setState(Object.assign({}, this.state, state));
+    }
+    return !hasErrors;
+  }
+
+  isEmpty(key) {
+    return this[`${key}Coord`] === null && this[`${key}Addr`] === '';
   }
 
   getCoordPromise(key) {
@@ -48,12 +95,12 @@ export default class DirectionSearch extends Component {
 
       const address = this[`${key}Addr`];
       if(!address) {
-        reject('Address is empty');
+        reject({key, error: 'Address is empty'});
         return;
       }
 
       if(!window.google || !window.google.maps || !window.google.maps.Geocoder) {
-        reject('Geocoder API is not initialized');
+        reject({key, error: 'Geocoder API is not initialized'});
         return;
       }
       const geocoder = new window.google.maps.Geocoder();
@@ -64,8 +111,10 @@ export default class DirectionSearch extends Component {
             lat: loc.lat(),
             lng: loc.lng(),
           });
+        } else if(status === 'ZERO_RESULTS'){
+          reject({key, error: 'Address not found'});
         } else {
-          reject('Geocode was not successful for the following reason: ' + status);
+          reject({key, error: 'Geocode was not successful: ' + status});
         }
       });
     })
@@ -73,14 +122,22 @@ export default class DirectionSearch extends Component {
 
   render() {
     return (
-      <div>
-        <Autocomplete className="ant-input" placeholder="from"
-                      onPlaceSelected={x => this.onSelected(x, 'from')}
-                      onInput={x => this.onInput(x, 'from')}></Autocomplete>
-        <Autocomplete className="ant-input" placeholder="to"
-                      onPlaceSelected={x => this.onSelected(x, 'to')}
-                      onInput={x => this.onInput(x, 'to')}></Autocomplete>
-        <Button type="primary" onClick={() => this.search()}>Search</Button>
+      <div className="direction-search">
+        <div className={this.state.fromError ? "ant-form-item-has-error" : ""}>
+          <Autocomplete className="ant-input" placeholder="from"
+                        onPlaceSelected={x => this.onSelected(x, 'from')}
+                        onInput={x => this.onInput(x, 'from')}></Autocomplete>
+          {this.state.fromError && this.state.fromErrorMessage && <div className="ant-typography ant-typography-danger">
+            {this.state.fromErrorMessage}</div>}
+        </div>
+        <div className={this.state.toError ? "ant-form-item-has-error" : ""}>
+          <Autocomplete className="ant-input" placeholder="to"
+                        onPlaceSelected={x => this.onSelected(x, 'to')}
+                        onInput={x => this.onInput(x, 'to')}></Autocomplete>
+          {this.state.toError && this.state.toErrorMessage && <div className="ant-typography ant-typography-danger">
+            {this.state.toErrorMessage}</div>}
+        </div>
+        <Button type="primary" loading={this.state.searchLoading} onClick={() => this.search()}>Search</Button>
       </div>
     )
   }
