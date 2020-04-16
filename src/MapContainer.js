@@ -13,6 +13,7 @@ import DateTimePickerModal from './components/DateTimePickerModal';
 import { CheckPositions } from './components/CheckPositions';
 import 'intro.js/introjs.css';
 import { Collapse } from 'antd';
+import DirectionSearch from "./components/DirectionSearch";
 
 const { Panel } = Collapse;
 
@@ -409,6 +410,9 @@ export class MapContainer extends Component {
                   <li>Use the calendar to pick a date and see the COVID19 cases for THAT TODAY</li>
                   <li>Click on specific pin to show detail for that pin</li>
                 </ol>
+              </Panel>
+              <Panel key="2" header="Direction Search">
+                <DirectionSearch></DirectionSearch>
               </Panel>
             </Collapse>
 
