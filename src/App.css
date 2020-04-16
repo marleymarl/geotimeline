@@ -118,3 +118,11 @@ button.ant-typography-danger {
   background: none;
   padding: 0;
 }
+
+.question-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ 
+}

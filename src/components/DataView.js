@@ -19,6 +19,7 @@ export default class DataView extends Component {
       headers: global.JSON_TYPE,
     }).then((data) => {
       return this.setState({ data: data.data });
+      
     });
   };
 
