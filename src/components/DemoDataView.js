@@ -52,7 +52,8 @@ export default class DemoDataView extends Component {
             value: '5',
           },
         ],
-        onFilter: (value, record) => moment(record.date) > moment().subtract(value, 'days'),
+        onFilter: (value, record) =>
+          moment(record.date) > moment().subtract(value, 'days'),
         sorter: (a, b) => a.date - b.date,
       },
       {

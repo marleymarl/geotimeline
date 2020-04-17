@@ -6,7 +6,6 @@ import DataView from '../components/DataView';
 import DemoDataView from '../components/DemoDataView';
 import MapCheck from '../components/MapCheck/MapCheck';
 
-
 export default class MainRouter extends Component {
   render() {
     return (
