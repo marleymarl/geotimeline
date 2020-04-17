@@ -146,3 +146,31 @@ button.ant-typography-danger {
 }
 
 
+.direction-search {
+  text-align: right;
+}
+
+.direction-search-form {
+  display: flex;
+  flex-direction: row;
+}
+
+.direction-search-switch {
+  flex: 30px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.direction-search-main {
+  flex: 1;
+}
+
+.direction-search .ant-input:first-child {
+  margin-bottom: 10px;
+}
+
+.direction-search button {
+  margin-top: 10px;
+}
+
