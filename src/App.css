@@ -126,6 +126,7 @@ button.ant-typography-danger {
   align-items: center;
  
 }
+
 .dataview-heeader {
   display: flex;
   flex-direction: column;
@@ -143,6 +144,7 @@ button.ant-typography-danger {
 .ant-collapse-header {
   font-weight: bold;
 }
+
 
 .direction-search {
   text-align: right;
@@ -171,3 +173,4 @@ button.ant-typography-danger {
 .direction-search button {
   margin-top: 10px;
 }
+
