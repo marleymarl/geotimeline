@@ -118,13 +118,11 @@ button.ant-typography-danger {
   padding: 0;
 }
 
-
 .question-form-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
- 
 }
 
 .dataview-heeader {
@@ -144,7 +142,6 @@ button.ant-typography-danger {
 .ant-collapse-header {
   font-weight: bold;
 }
-
 
 .direction-search {
   text-align: right;
@@ -173,4 +170,3 @@ button.ant-typography-danger {
 .direction-search button {
   margin-top: 10px;
 }
-

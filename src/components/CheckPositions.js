@@ -155,7 +155,7 @@ export class CheckPositions extends Component {
           const minutes = Math.round(record.timeDiff / 60);
           const h = Math.floor(minutes / 60);
           const m = h % 60;
-          if (h == 0) return `${m}m`;
+          if (h === 0) return `${m}m`;
           return `${h}h${m}m`;
         },
       },

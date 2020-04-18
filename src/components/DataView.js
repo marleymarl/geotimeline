@@ -176,13 +176,11 @@ export default class DataView extends Component {
       url: global.API_URL + '/getrealfootprints',
       headers: global.JSON_TYPE,
     }).then((data) => {
-
       const dataSource = data.data.map(this.footprintToDataItem);
       return this.setState({
         data: dataSource,
         filteredData: dataSource,
       });
-
     });
   };
 
