@@ -3,17 +3,17 @@ import Autocomplete from 'react-google-autocomplete';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { Steps } from 'intro.js-react';
 
-import { Table, Row, Col, Button } from 'antd';
+import { Table, Row, Col, Button, Collapse } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import 'antd/dist/antd.css';
+import 'intro.js/introjs.css';
 import * as moment from 'moment';
 import * as global from './global';
 import { CSVLink } from 'react-csv';
 import DateTimePickerModal from './components/DateTimePickerModal';
 import { CheckPositions } from './components/CheckPositions';
-import 'intro.js/introjs.css';
-import { Collapse } from 'antd';
-import DirectionSearch from "./components/DirectionSearch";
+import DirectionSearch from './components/DirectionSearch';
+import DaterangeSearch from './components/DaterangeSearch';
 
 const { Panel } = Collapse;
 
@@ -299,36 +299,36 @@ export class MapContainer extends Component {
     const steps =
       window.innerWidth > 919
         ? [
-          {
-            element: '.outer-wrap',
-            intro:
-              'Click on the map and pick a date and time and click Save Footprint to record a footprint. Click on individual markers on the map if you want to edit them. View the table on the right to see your full timeline.',
-            position: 'right',
-          },
-          {
-            element: '.data',
-            intro:
-              'As you save footprints you will see them update in this table. If you need to delete any click on the red trash can beside the footprint you need to delete.',
-          },
-          {
-            element: '.save-button',
-            intro:
-              'When you have finished entering in your footprints, click this button to complete the process. ',
-          },
-        ]
+            {
+              element: '.outer-wrap',
+              intro:
+                'Click on the map and pick a date and time and click Save Footprint to record a footprint. Click on individual markers on the map if you want to edit them. View the table on the right to see your full timeline.',
+              position: 'right',
+            },
+            {
+              element: '.data',
+              intro:
+                'As you save footprints you will see them update in this table. If you need to delete any click on the red trash can beside the footprint you need to delete.',
+            },
+            {
+              element: '.save-button',
+              intro:
+                'When you have finished entering in your footprints, click this button to complete the process. ',
+            },
+          ]
         : [
-          {
-            element: '.outer-wrap',
-            intro:
-              'Click on the map and pick a date and time to record a footprint. Click on individual markers on the map if you want to edit them.',
-            position: 'right',
-          },
-          {
-            element: '.burger',
-            intro:
-              'Click on this button to open up the table that displays all your footprints and press Save and Exit to anonymously save your timeline. ',
-          },
-        ];
+            {
+              element: '.outer-wrap',
+              intro:
+                'Click on the map and pick a date and time to record a footprint. Click on individual markers on the map if you want to edit them.',
+              position: 'right',
+            },
+            {
+              element: '.burger',
+              intro:
+                'Click on this button to open up the table that displays all your footprints and press Save and Exit to anonymously save your timeline. ',
+            },
+          ];
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
       const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
@@ -403,16 +403,24 @@ export class MapContainer extends Component {
             />
           </Col>
           <Col flex={2} id="data" className="data">
-            <Collapse defaultActiveKey={['1']} >
-              <Panel header="Instruction (Card Component, ant design)" key="1">
+            <Collapse defaultActiveKey={['1']}>
+              <Panel key="1" header="Instruction (Card Component, ant design)">
                 <ol>
-                  <li>The map by default shows the COVID19 cases' footprint TODAY</li>
-                  <li>Use the calendar to pick a date and see the COVID19 cases for THAT TODAY</li>
+                  <li>
+                    The map by default shows the COVID19 cases' footprint TODAY
+                  </li>
+                  <li>
+                    Use the calendar to pick a date and see the COVID19 cases
+                    for THAT TODAY
+                  </li>
                   <li>Click on specific pin to show detail for that pin</li>
                 </ol>
               </Panel>
               <Panel key="2" header="Direction Search">
                 <DirectionSearch></DirectionSearch>
+              </Panel>
+              <Panel key="3" header="Date range Search">
+                <DaterangeSearch></DaterangeSearch>
               </Panel>
             </Collapse>
 
