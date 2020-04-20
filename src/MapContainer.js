@@ -403,11 +403,11 @@ export class MapContainer extends Component {
           </Col>
           <Col flex={2} id="data" className="data">
             <Collapse defaultActiveKey={['1']} >
-              <Panel header="Instruction (Card Component, ant design)" key="1">
+              <Panel header="Instructions" key="1">
                 <ol>
-                  <li>The map by default shows the COVID19 cases' footprint TODAY</li>
-                  <li>Use the calendar to pick a date and see the COVID19 cases for THAT TODAY</li>
-                  <li>Click on specific pin to show detail for that pin</li>
+                  <li>Click on the map and choose a date and time to record each footprint.</li>
+                  <li>You will see the footprints you save below in the table as a timeline.</li>
+                  <li>Click Save and Exit when you have completed a timeline of footprints.</li>
                 </ol>
               </Panel>
             </Collapse>
