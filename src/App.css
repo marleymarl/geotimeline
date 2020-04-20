@@ -118,13 +118,11 @@ button.ant-typography-danger {
   padding: 0;
 }
 
-
 .question-form-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
- 
 }
 
 .dataview-heeader {
@@ -145,4 +143,30 @@ button.ant-typography-danger {
   font-weight: bold;
 }
 
+.direction-search {
+  text-align: right;
+}
 
+.direction-search-form {
+  display: flex;
+  flex-direction: row;
+}
+
+.direction-search-switch {
+  flex: 30px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.direction-search-main {
+  flex: 1;
+}
+
+.direction-search .ant-input:first-child {
+  margin-bottom: 10px;
+}
+
+.direction-search button {
+  margin-top: 10px;
+}
