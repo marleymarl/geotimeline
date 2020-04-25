@@ -255,7 +255,7 @@ export class MapContainer extends Component {
 
       return row;
     });
-
+    console.log(footPrintWithCaseID)
     const requestOptions = {
       method: 'POST',
       headers: global.JSON_TYPE,

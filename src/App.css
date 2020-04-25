@@ -41,6 +41,7 @@
 .App,
 .App > div,
 .outer-wrap,
+.outer-wrap-usermap,
 .ant-row,
 .ant-col {
   height: 100%;
@@ -48,6 +49,9 @@
 
 @media (min-width: 920px) {
   .ant-col.data {
+    max-width: 40% !important;
+  }
+  .ant-col.usermap-data {
     max-width: 40% !important;
   }
 }
@@ -87,6 +91,9 @@
   .ant-col.data {
     display: none;
   }
+  .ant-col.usermap-data {
+    display: none;
+  }
   .burger {
     display: block;
     position: absolute;
@@ -103,6 +110,16 @@
 }
 
 .ant-col.map > input {
+  width: 50%;
+  padding-left: 16px;
+  position: absolute;
+  top: 10px;
+  left: 200px;
+  height: 40px;
+  z-index: 1;
+}
+
+.ant-col.user-map > input {
   width: 50%;
   padding-left: 16px;
   position: absolute;

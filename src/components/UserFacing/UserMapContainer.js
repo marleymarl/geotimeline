@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import Autocomplete from 'react-google-autocomplete';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { Steps } from 'intro.js-react';
 
-import { Table, Row, Col, Button, Tabs } from 'antd';
+import { Table, Row, Col, Button } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import * as moment from 'moment';
 import * as global from '../../global';
 import { CSVLink } from 'react-csv';
-import DateTimePickerModal from '../DateTimePickerModal';
+import DateTimePickerModal from '../../components/DateTimePickerModal';
+import { CheckPositions } from './CheckPositions';
+import 'intro.js/introjs.css';
+import { Collapse } from 'antd';
 
-export class MapCheck extends Component {
+const { Panel } = Collapse;
+
+export class UserMapContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,18 +32,20 @@ export class MapCheck extends Component {
         date: '',
         time: '',
       },
-
+      stepsEnabled: true,
       patientId: this.props.patientId,
       demoOrReal: this.props.demoOrReal,
+      inputOrCheck: this.props.inputOrCheck,
       showingInfoWindow: false,
       showModal: false,
+      initialStep: 0,
       selectedPlace: {},
-      centerLat: 43.6532,
-      centerLon: -79.3832,
-      apiKey: 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg',
+      centerLat: props.initialLat,
+      centerLon: props.initialLon,
+      showCheckPositions: false,
     };
 
-    this.checkData = this.checkData.bind(this);
+    this.postData = this.postData.bind(this);
   }
 
   // When user clicks on the map, a red marker shows up
@@ -203,6 +211,11 @@ export class MapCheck extends Component {
   componentDidMount() {
     console.log('patient id: ' + this.props.patientId);
     console.log('demo or real is: ' + this.props.demoOrReal);
+    if (window.innerWidth > 920) {
+      console.log('yo screen big');
+    } else if (window.innerWidth < 920) {
+      console.log('yo screen small');
+    }
   }
 
   toggleInfoTable() {
@@ -217,7 +230,21 @@ export class MapCheck extends Component {
     }
   }
 
-  checkData() {
+  showWhatButtonText() {
+    return this.props.inputOrCheck === 'check'
+      ? 'Check Footprints'
+      : 'Save and Exit';
+  }
+
+  onExit = () => {
+    this.setState(() => ({ stepsEnabled: false }));
+  };
+
+  postData() {
+    if (this.props.inputOrCheck === 'check') {
+      this.checkAgainstConfirmed();
+      return;
+    }
     const footPrintWithCaseID = this.state.footPrints.map((obj) => {
       let row = {};
       row.case_id = this.props.patientId;
@@ -228,7 +255,7 @@ export class MapCheck extends Component {
 
       return row;
     });
-
+    console.log(footPrintWithCaseID)
     const requestOptions = {
       method: 'POST',
       headers: global.JSON_TYPE,
@@ -240,7 +267,9 @@ export class MapCheck extends Component {
     fetch(global.API_URL + resource, requestOptions)
       .then((response) => {
         response.json();
-        window.location.href = '/dataview';
+        this.props.demoOrReal === 'real'
+          ? (window.location.href = '/dataview')
+          : (window.location.href = '/demodataview');
       })
       //.then((json) => {alert(JSON.stringify(requestOptions)); window.location.reload(false)})
       .catch((error) => {
@@ -248,7 +277,57 @@ export class MapCheck extends Component {
       });
   }
 
+  checkAgainstConfirmed = () => {
+    this.setState(
+      Object.assign({}, this.state, {
+        showCheckPositions: true,
+      }),
+    );
+  };
+
+  closeCheckAgainstConfirmed = () => {
+    this.setState(
+      Object.assign({}, this.state, {
+        showCheckPositions: false,
+      }),
+    );
+  };
+
   render() {
+    const { stepsEnabled, initialStep } = this.state;
+    const steps =
+      window.innerWidth > 919
+        ? [
+          {
+            element: '.outer-wrap',
+            intro:
+              'Click on the map and pick a date and time and click Save Footprint to record a footprint. Click on individual markers on the map if you want to edit them. View the table on the right to see your full timeline.',
+            position: 'right',
+          },
+          {
+            element: '.data',
+            intro:
+              'As you save footprints you will see them update in this table. If you need to delete any click on the red trash can beside the footprint you need to delete.',
+          },
+          {
+            element: '.save-button',
+            intro:
+              'When you have finished entering in your footprints, click this button to complete the process. ',
+          },
+        ]
+        : [
+          {
+            element: '.outer-wrap',
+            intro:
+              'Click on the map and pick a date and time to record a footprint. Click on individual markers on the map if you want to edit them.',
+            position: 'right',
+          },
+          {
+            element: '.burger',
+            intro:
+              'Click on this button to open up the table that displays all your footprints and press Save and Exit to anonymously save your timeline. ',
+          },
+        ];
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
       const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
@@ -284,15 +363,15 @@ export class MapCheck extends Component {
     ];
 
     return (
-      <div className="outer-wrap1">
+      <div className="outer-wrap-usermap">
         <Row>
-          <Col flex={3}>
+          <Col flex={3} id="user-map" className="user-map">
             <Autocomplete onPlaceSelected={this.onPlaceSelected} types={[]} />
             <Map
               google={this.props.google}
               initialCenter={{
-                lat: this.state.centerLat, //change this to be set based on location input on form prior to map
-                lng: this.state.centerLon,
+                lat: this.props.initialLat, //change this to be set based on location input on form prior to map
+                lng: this.props.initialLon,
               }}
               onClick={this.onMapClick}
               center={{
@@ -314,9 +393,25 @@ export class MapCheck extends Component {
               onDateChange={(activeDate) => this.setState({ activeDate })}
               onTimeChange={(activeTime) => this.setState({ activeTime })}
             />
+            <Steps
+              enabled={stepsEnabled}
+              steps={steps}
+              initialStep={initialStep}
+              onExit={this.onExit}
+              hideNext={window.innerWidth < 920 ? false : true}
+            />
           </Col>
-          <Col flex={2}>
-            {/* Table outside of map that shows info from state  */}
+          <Col flex={2} id="usermap-data" className="usermap-data">
+            <Collapse defaultActiveKey={['1']} >
+              <Panel header="Instructions" key="1">
+                <ol>
+                  <li>Click on the map and choose a date and time to record each footprint.</li>
+                  <li>You will see the footprints you save below in the table as a timeline.</li>
+                  <li>Click Save and Exit when you have completed a timeline of footprints.</li>
+                </ol>
+              </Panel>
+            </Collapse>
+
             <Table
               dataSource={dataSource}
               columns={columns}
@@ -325,21 +420,30 @@ export class MapCheck extends Component {
               size="small"
             />
 
+            
             <div>
-              <button className="save-button" onClick={this.checkData}>
-                Check Your Footprints
+              <button className="save-button" onClick={this.postData}>
+                {this.showWhatButtonText()}
               </button>
             </div>
           </Col>
         </Row>
         <div className="burger">
-          <button onClick={this.toggleInfoTable}>...</button>
+          <button className="burger-button" onClick={this.toggleInfoTable}>
+            ...
+          </button>
         </div>
+        {this.state.showCheckPositions && (
+          <CheckPositions
+            onClose={this.closeCheckAgainstConfirmed}
+            positions={this.state.footPrints}
+          ></CheckPositions>
+        )}
       </div>
     );
   }
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyA61clFhCrihwKKKsF8lz0SJ_jb32nhiXg',
-})(MapCheck);
+  apiKey: global.API_KEY,
+})(UserMapContainer);
