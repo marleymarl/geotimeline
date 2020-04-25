@@ -41,6 +41,7 @@
 .App,
 .App > div,
 .outer-wrap,
+.outer-wrap-usermap,
 .ant-row,
 .ant-col {
   height: 100%;
@@ -48,6 +49,9 @@
 
 @media (min-width: 920px) {
   .ant-col.data {
+    max-width: 40% !important;
+  }
+  .ant-col.usermap-data {
     max-width: 40% !important;
   }
 }
@@ -87,6 +91,9 @@
   .ant-col.data {
     display: none;
   }
+  .ant-col.usermap-data {
+    display: none;
+  }
   .burger {
     display: block;
     position: absolute;
@@ -112,17 +119,29 @@
   z-index: 1;
 }
 
+.ant-col.user-map > input {
+  width: 50%;
+  padding-left: 16px;
+  position: absolute;
+  top: 10px;
+  left: 200px;
+  height: 40px;
+  z-index: 1;
+}
+
 button.ant-typography-danger {
   border: none;
   background: none;
   padding: 0;
 }
 
+
 .question-form-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+ 
 }
 
 .dataview-heeader {
@@ -143,30 +162,3 @@ button.ant-typography-danger {
   font-weight: bold;
 }
 
-.direction-search {
-  text-align: right;
-}
-
-.direction-search-form {
-  display: flex;
-  flex-direction: row;
-}
-
-.direction-search-switch {
-  flex: 30px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.direction-search-main {
-  flex: 1;
-}
-
-.direction-search .ant-input:first-child {
-  margin-bottom: 10px;
-}
-
-.direction-search button {
-  margin-top: 10px;
-}
