@@ -63,7 +63,7 @@ export default class upFrontButtonForm extends Component {
             Start Real Timeline
           </Button>
           <Button
-            onClick={() => this.startCheckAgainstConfirmed()}
+            onClick={() => (window.location.href = '/usermap')}
             className="start-real"
           >
             Check My Footprints
