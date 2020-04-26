@@ -44,7 +44,7 @@
 .outer-wrap-usermap,
 .ant-row,
 .ant-col {
-  height: 100%;
+  height: 100vh;
 }
 
 @media (min-width: 920px) {
@@ -83,6 +83,11 @@
   cursor: pointer;
   font-weight: bold;
 }
+
+.checkfootprint-holder {
+  display: flex;
+}
+
 .burger-button {
   background-color: #ffffff;
 }
