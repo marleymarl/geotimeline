@@ -421,7 +421,7 @@ export class UserMapContainer extends Component {
             />
 
             
-            <div>
+            <div className="checkfootprint-holder">
               <button className="save-button" onClick={this.postData}>
                 {this.showWhatButtonText()}
               </button>
