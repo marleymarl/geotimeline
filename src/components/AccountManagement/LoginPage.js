@@ -33,8 +33,8 @@ export default class LoginPage extends Component {
 		return (
 			<Fragment>
 			<Row>
-			<Col span={12} id="SignupAside" className="SignupAside"></Col>
-			<Col span={12} id="SignupForm" className="SignupForm">
+			<Col id="SignupAside" className="SignupAside"></Col>
+			<Col id="SignupForm" className="SignupForm">
 				<Formik
 				initialValues={{ email: '', password: ''}}
 				
@@ -75,4 +75,4 @@ export default class LoginPage extends Component {
 			)
 	}
 
-}
+} 

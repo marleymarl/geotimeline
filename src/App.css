@@ -1,3 +1,4 @@
+ 
 .App {
   text-align: center;
 }
@@ -88,6 +89,7 @@
   display: flex;
 }
 
+
 .burger-button {
   background-color: #ffffff;
 }
@@ -168,20 +170,50 @@ button.ant-typography-danger {
   font-weight: bold;
 }
 
+
 .SignupAside {
- 
+  width: 50%;
   background-color: #66DAC7;
 }
 
 .SignupForm {
-
+  width: 50%;
   background-color: #2E4158;
   padding: 25px 40px;
   overflow: auto;
 }
 
+
+@media only screen and (max-width: 768px) {
+
+  .SignupAside, .SignupForm {
+    width: 100%;
+    position: absolute;
+    
+  }
+
+  .SignupForm {
+    top: -100%;
+  }
+
+  .SignupAside {
+    top: 100%
+  }
+
+  .FormField {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .FormField__Link {
+    margin: 1rem auto;
+  }
+}
+
 .FormCenter {
   margin-bottom: 100px;
+  margin: 1.5rem auto;
 }
 
 .FormTitle__Link {
@@ -226,7 +258,7 @@ button.ant-typography-danger {
 }
 
 .FormField__Input::placeholder {
-  color: #616E7F;
+  color: rgb(157, 164, 173);
 }
 
 .FormField__Button {
@@ -236,16 +268,17 @@ button.ant-typography-danger {
   outline: none;
   border-radius: 25px;
   padding: 15px 70px;
-  font-size: .8em;
+  font-size: 1.3em;
   font-weight: 500;
 }
 
 .FormField__Link {
-  color: #66707D;
+  color: rgb(141, 151, 163);
   text-decoration: none;
   display: inline-block;
   border-bottom: 1.5px solid #225E62;
   padding-bottom: 5px;
+  font-size: 1.1em;
 }
 
 .FormField__CheckboxLabel {
