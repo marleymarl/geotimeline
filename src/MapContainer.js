@@ -44,6 +44,10 @@ export class MapContainer extends Component {
       centerLat: props.initialLat,
       centerLon: props.initialLon,
       showCheckPositions: false,
+      showCheckDirections: false,
+      showSaveToCSV: false,
+      showInstructions: false
+      
     };
 
     this.postData = this.postData.bind(this);
@@ -278,6 +282,41 @@ export class MapContainer extends Component {
       });
   }
 
+  displayDirectionsAndDateSearch = () => {
+    if (this.state.showCheckDirections === true) {
+       return (
+         <>
+         <Collapse>
+         <Panel key="2" header="Direction Search">
+         <DirectionSearch></DirectionSearch>
+         </Panel>
+         <Panel key="3" header="Date range Search">
+         <DaterangeSearch></DaterangeSearch>
+         </Panel>
+         </Collapse>
+         </>
+
+         )
+    } else {
+
+    }
+  }
+
+  // displayCSVSave = () => {
+  //   if (this.state.showSaveToCSV === true) {
+  //     return (
+  //       <>
+  //       <CSVLink data={dataSource} className="download-csv">
+  //             <Button type="primary">Save to CSV</Button>
+  //           </CSVLink>
+  //       </>
+
+  //       )
+  //   } else {
+
+  //   }
+  // }
+
   checkAgainstConfirmed = () => {
     this.setState(
       Object.assign({}, this.state, {
@@ -413,13 +452,9 @@ export class MapContainer extends Component {
 
                 </ol>
               </Panel>
-              <Panel key="2" header="Direction Search">
-                <DirectionSearch></DirectionSearch>
-              </Panel>
-              <Panel key="3" header="Date range Search">
-                <DaterangeSearch></DaterangeSearch>
-              </Panel>
+              
             </Collapse>
+            {this.displayDirectionsAndDateSearch()}
 
             <Table
               dataSource={dataSource}
@@ -429,9 +464,7 @@ export class MapContainer extends Component {
               size="small"
             />
 
-            <CSVLink data={dataSource} className="download-csv">
-              <Button type="primary">Save to CSV</Button>
-            </CSVLink>
+           
             <div>
               <button className="save-button" onClick={this.postData}>
                 {this.showWhatButtonText()}
