@@ -249,7 +249,7 @@ export class UserMapContainer extends Component {
       let row = {};
       row.case_id = this.props.patientId;
       row.date = obj.date;
-      row.time = moment(obj.time).format('hh:mm:ss A');
+      row.time = moment(obj.time).format('hh:mm A');
       row.latitude = obj.lat;
       row.longitude = obj.lng;
 
@@ -331,7 +331,7 @@ export class UserMapContainer extends Component {
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
       const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
-      const formattedTime = moment(footprint.time).format('hh:mm:ss A'); // 08:05:46 PM format
+      const formattedTime = moment(footprint.time).format('hh:mm A'); // 08:05:46 PM format
       return {
         key: idx,
         patient_id: this.state.patientId,
@@ -420,7 +420,7 @@ export class UserMapContainer extends Component {
               size="small"
             />
 
-            
+
             <div className="checkfootprint-holder">
               <button className="save-button" onClick={this.postData}>
                 {this.showWhatButtonText()}

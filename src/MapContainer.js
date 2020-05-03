@@ -47,7 +47,7 @@ export class MapContainer extends Component {
       showCheckDirections: false,
       showSaveToCSV: false,
       showInstructions: false
-      
+
     };
 
     this.postData = this.postData.bind(this);
@@ -254,7 +254,7 @@ export class MapContainer extends Component {
       let row = {};
       row.case_id = this.props.patientId;
       row.date = obj.date;
-      row.time = moment(obj.time).format('hh:mm:ss A');
+      row.time = moment(obj.time).format('hh:mm A');
       row.latitude = obj.lat;
       row.longitude = obj.lng;
 
@@ -284,19 +284,19 @@ export class MapContainer extends Component {
 
   displayDirectionsAndDateSearch = () => {
     if (this.state.showCheckDirections === true) {
-       return (
-         <>
-         <Collapse>
-         <Panel key="2" header="Direction Search">
-         <DirectionSearch></DirectionSearch>
-         </Panel>
-         <Panel key="3" header="Date range Search">
-         <DaterangeSearch></DaterangeSearch>
-         </Panel>
-         </Collapse>
-         </>
+      return (
+        <>
+          <Collapse>
+            <Panel key="2" header="Direction Search">
+              <DirectionSearch></DirectionSearch>
+            </Panel>
+            <Panel key="3" header="Date range Search">
+              <DaterangeSearch></DaterangeSearch>
+            </Panel>
+          </Collapse>
+        </>
 
-         )
+      )
     } else {
 
     }
@@ -338,40 +338,40 @@ export class MapContainer extends Component {
     const steps =
       window.innerWidth > 919
         ? [
-            {
-              element: '.outer-wrap',
-              intro:
-                'Click on the map and pick a date and time and click Save Footprint to record a footprint. Click on individual markers on the map if you want to edit them. View the table on the right to see your full timeline.',
-              position: 'right',
-            },
-            {
-              element: '.data',
-              intro:
-                'As you save footprints you will see them update in this table. If you need to delete any click on the red trash can beside the footprint you need to delete.',
-            },
-            {
-              element: '.save-button',
-              intro:
-                'When you have finished entering in your footprints, click this button to complete the process. ',
-            },
-          ]
+          {
+            element: '.outer-wrap',
+            intro:
+              'Click on the map and pick a date and time and click Save Footprint to record a footprint. Click on individual markers on the map if you want to edit them. View the table on the right to see your full timeline.',
+            position: 'right',
+          },
+          {
+            element: '.data',
+            intro:
+              'As you save footprints you will see them update in this table. If you need to delete any click on the red trash can beside the footprint you need to delete.',
+          },
+          {
+            element: '.save-button',
+            intro:
+              'When you have finished entering in your footprints, click this button to complete the process. ',
+          },
+        ]
         : [
-            {
-              element: '.outer-wrap',
-              intro:
-                'Click on the map and pick a date and time to record a footprint. Click on individual markers on the map if you want to edit them.',
-              position: 'right',
-            },
-            {
-              element: '.burger',
-              intro:
-                'Click on this button to open up the table that displays all your footprints and press Save and Exit to anonymously save your timeline. ',
-            },
-          ];
+          {
+            element: '.outer-wrap',
+            intro:
+              'Click on the map and pick a date and time to record a footprint. Click on individual markers on the map if you want to edit them.',
+            position: 'right',
+          },
+          {
+            element: '.burger',
+            intro:
+              'Click on this button to open up the table that displays all your footprints and press Save and Exit to anonymously save your timeline. ',
+          },
+        ];
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
       const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
-      const formattedTime = moment(footprint.time).format('hh:mm:ss A'); // 08:05:46 PM format
+      const formattedTime = moment(footprint.time).format('hh:mm A'); // 08:05:46 PM format
       return {
         key: idx,
         patient_id: this.state.patientId,
@@ -452,7 +452,7 @@ export class MapContainer extends Component {
 
                 </ol>
               </Panel>
-              
+
             </Collapse>
             {this.displayDirectionsAndDateSearch()}
 
@@ -464,7 +464,7 @@ export class MapContainer extends Component {
               size="small"
             />
 
-           
+
             <div>
               <button className="save-button" onClick={this.postData}>
                 {this.showWhatButtonText()}
