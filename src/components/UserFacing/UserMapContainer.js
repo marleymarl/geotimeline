@@ -87,7 +87,7 @@ export class UserMapContainer extends Component {
       activeMarker: marker,
       showingInfoWindow: true,
       activeDate: moment(footPrint.date),
-      activeTime: moment(footPrint.time),
+      activeTime: moment(footPrint.time).format('hh:mm A'),
     });
   };
 
@@ -331,7 +331,7 @@ export class UserMapContainer extends Component {
     // format datasource for rendering table (datasource is an arr of objects)
     const dataSource = this.state.footPrints.map((footprint, idx) => {
       const formattedDate = moment(footprint.date).format('ddd, ll'); // Thu, Mar 26, 2020 format
-      const formattedTime = moment(footprint.time).format('hh:mm A'); // 08:05:46 PM format
+      const formattedTime = moment(footprint.time).format('hh:mm A'); // 08:05 PM format
       return {
         key: idx,
         patient_id: this.state.patientId,
