@@ -29,10 +29,10 @@ const DateTimePickerModal = (props) => {
         editMode ? (
           ''
         ) : (
-            <Button key="delete" type="danger" onClick={onDelete}>
-              Delete
-            </Button>
-          ),
+          <Button key="delete" type="danger" onClick={onDelete}>
+            Delete
+          </Button>
+        ),
         <Button key="back" onClick={onCancel}>
           Cancel
         </Button>,
@@ -46,7 +46,7 @@ const DateTimePickerModal = (props) => {
         onChange={onDateChange}
         disabledDate={disabledFutureDate}
       />
-      <TimePicker value={time} onChange={onTimeChange} format='HH:mm' />
+      <TimePicker value={time} onChange={onTimeChange} format="HH:mm" />
     </Modal>
   );
 };

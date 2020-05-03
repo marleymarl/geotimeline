@@ -8,7 +8,6 @@ import UserMap from '../components/UserFacing/UserMap';
 import SignUpForm from '../components/AccountManagement/SignupLoginPage';
 import LoginForm from '../components/AccountManagement/LoginPage';
 
-
 export default class MainRouter extends Component {
   render() {
     return (
