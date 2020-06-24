@@ -1,10 +1,10 @@
-# GeoTime - Map Data Input For Confirmed Case Location History
+# GeoTimeline - Map Data Input For Confirmed Case Location History
 
 This is a map-based React data input component that will output historical geo-timeline information for confirmed cases like what's available for Korea, Taiwan and Israel, but for any geo.
 
 This project won the [Supply Chain and Medical Logistics](https://devpost.com/software/geotime-map-data-input-for-confirmed-case-location-history) prize at the [EndCoronavirus.org](https://www.endcoronavirus.org/) Hackathon on March 21-22, 2020.
 
-This repository represents what is currently on the demo site for [GeoTimeline](https://app.geotimeline.com).
+This repository represents what is currently on the demo site for [GeoTimelineline](https://app.geotimeline.com).
 
 If you would like to contribute to this project, volunteer at our project listing on [helpwithcovid.com](https://helpwithcovid.com/projects/245-geotime-data-input-of-historical-footprints-of-confirmed-cases-with-lat-lon-timestamp).
 
@@ -19,13 +19,13 @@ We ask that in all cases the data should be shared openly in a patient-anonymize
 ### Cloning the repository
 
 ```bash
-git clone https://github.com/marleymarl/geotime
+git clone https://github.com/marleymarl/geotimeline
 ```
 
 ### Installing dependencies and starting demo
 
 ```bash
-cd geotime && npm install
+cd geotimeline && npm install
 ```
 
 ```bash
@@ -36,7 +36,7 @@ This project makes heavy use of [react-google-maps](https://www.npmjs.com/packag
 
 ### Importing as an NPM Module
 
-We are currently working on making this React component available on NPM for easy install/import. The NPM link will be here when it is available. In the meantime you can view the status of that [here](https://github.com/marleymarl/geotime-npm).
+We are currently working on making this React component available on NPM for easy install/import. The NPM link will be here when it is available. In the meantime you can view the status of that [here](https://github.com/marleymarl/geotimeline-npm).
 
 ### Copying Component
 
