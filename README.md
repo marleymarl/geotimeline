@@ -4,7 +4,7 @@ This is a map-based React data input component that will output historical geo-t
 
 This project won the [Supply Chain and Medical Logistics](https://devpost.com/software/geotime-map-data-input-for-confirmed-case-location-history) prize at the [EndCoronavirus.org](https://www.endcoronavirus.org/) Hackathon on March 21-22, 2020.
 
-This repository represents what is currently on the demo site for [GeoTimelineline](https://app.geotimeline.com).
+This repository represents what is currently on the demo site for [GeoTimeline](https://app.geotimeline.com).
 
 If you would like to contribute to this project, volunteer at our project listing on [helpwithcovid.com](https://helpwithcovid.com/projects/245-geotime-data-input-of-historical-footprints-of-confirmed-cases-with-lat-lon-timestamp).
 
